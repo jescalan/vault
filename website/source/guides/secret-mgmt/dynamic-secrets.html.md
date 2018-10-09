@@ -488,6 +488,52 @@ Now, when you check the list of users in PostgreSQL, none of the Vault generated
 user name exists.
 
 
+## Additional Discussion
+
+It is important to understand lease configuration to avoid having your
+secret leases expire earlier than you expected.
+
+#### 1. Determine the TTLs specific to the mount
+
+```shell
+$ vault secrets list -detailed
+
+Path          Type         Accessor              Plugin    Default TTL    Max TTL    ...
+----          ----         --------              ------    -----------    -------    --------------  
+cubbyhole/    cubbyhole    cubbyhole_7269046d    n/a       n/a            n/a        ...
+identity/     identity     identity_6d9496c0     n/a       system         system     ...
+secret/       kv           kv_14b1afa1           n/a       system         system     ...
+sys/          system       system_559afc4a       n/a       n/a            n/a        ...
+```
+
+Notice the **Default TTL** and **Max TTL** columns.
+
+#### 2. Tune the system TTLs
+
+Override the global defaults by specifying `default_lease_ttl` and
+`max_lease_ttl` to meet your requirements.
+
+**Example:**
+
+The following example assumes that you have a database secret engine configured.
+
+```shell
+$ vault write sys/mounts/database/tune default_lease_ttl="8640"
+```
+
+Or
+
+```shell
+$ curl --header "X-Vault-Token:..." \
+       --request POST \
+       --data '{ "max_lease_ttl": 129600}' \
+       http://127.0.0.1:8200/v1/sys/mounts/database/tune
+```
+
+
+
+
+
 ## Next steps
 
 This guide discussed how to generate credentials on-demand so that the access
