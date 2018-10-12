@@ -1,13 +1,12 @@
 ---
 layout: "guides"
-page_title: "Tokens and Leases - Guides"
-sidebar_current: "guides-identity-lease"
+page_title: "Vault Tokens - Guides"
+sidebar_current: "guides-identity-tokens"
 description: |-
   Tokens are the core method for authentication within Vault. For every
-  authentication token and dynamic secret, Vault creates a lease
-  containing information such as duration, renewability, and more.
-  Understanding the lifecycle of leases means understanding the lifecycle of
-  tokens in some sense.
+  authentication token and dynamic secret, Vault creates a lease containing
+  information such as duration, renewability, and more. This guide helps you
+  understand the lifecycle of tokens.
 ---
 
 # Tokens
@@ -19,31 +18,34 @@ need valid tokens to interact with Vault.
 There are two types of tokens: **service tokens** and **batch tokens**. The
 service tokens are persisted; therefore, they can be renewed or revoked before
 reaching its time-to-live (TTL). On the other hand, batch tokens are _not_
-persisted. They are standalone values that use an AEAD to encrypt and
-authenticate. Therefore, batch tokens are extremely lightweight; however, they
-do not support most of the features that are available with service tokens.
+persisted. They are encrypted binary large objects (blobs) that carry enough
+information for them to be used for Vault actions. Therefore, batch tokens are
+extremely lightweight and scalable; however, they lack most of the flexibility
+and features of service tokens.
 
 
 ### Service Tokens vs. Batch Tokens
 
-When you have microservices and scale the number of machines using Vault for
-secret management, Vault's performance becomes very important. 
+As the number of machines and apps using Vault for secret management scale,
+Vault must manage the growing number of client tokens. The creation of service
+tokens can start affecting the Vault performance since they must be replicated
+across the primary and secondary clusters. On the other hand, batch tokens are
+neither persisted to disk nor live in memory, they are not a part of data
+replication process.
 
 
 
 
 
-The first part of this guide walks you through service tokens. The second part
+
+
+-> The first part of this guide walks you through service tokens. The second part
 of this guide introduces you batch tokens.
 
 ## Reference Material
 
-- The [Validation](/guides/secret-mgmt/dynamic-secrets.html#validation) section of the
-[Secret as a Service](/guides/secret-mgmt/dynamic-secrets.html) guide demonstrates lease
-renewal and revocation
 - [Tokens documentation](/docs/concepts/tokens.html)
 - [Token Auth Method (API)](/api/auth/token/index.html)
-- [Lease, Renew, and Revoke](/docs/concepts/lease.html)
 
 ## Estimated Time to Complete
 

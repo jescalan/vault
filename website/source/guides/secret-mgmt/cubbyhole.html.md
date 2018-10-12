@@ -552,4 +552,4 @@ Also, refer to [Cubbyhole Secret Engine (API)](/api/secret/cubbyhole/index.html)
 The use of [AppRole Pull Authentication](/guides/identity/authentication.html) is a good
 use case to leverage the response wrapping. Go through the guide if you have not
 done so.  To better understand the lifecycle of Vault tokens, proceed to [Tokens
-and Leases](/guides/identity/lease.html) guide.
+and Leases](/guides/identity/tokens.html) guide.

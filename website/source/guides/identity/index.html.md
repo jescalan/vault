@@ -34,10 +34,9 @@ the [Delivering Secret Zero: Vault AppRole with Terraform and
 Chef](https://www.hashicorp.com/resources/delivering-secret-zero-vault-approle-terraform-chef)
 webinar.
 
-- [Token and Leases](/guides/identity/lease.html) guide helps you
-understand how tokens and leases work in Vault. The understanding of the
-lease hierarchy and expiration mechanism helps you plan for break glass
-procedures and more.
+- [Vault Tokens](/guides/identity/tokens.html) guide helps you
+understand how tokens work in Vault. The understanding of its expiration
+mechanism helps you plan for secure introduction of Vault clients.
 
 - [Identity - Entities & Groups](/guides/identity/identity.html) guide
 demonstrates the usage of _Entities_ and _Groups_ to manage Vault clients'

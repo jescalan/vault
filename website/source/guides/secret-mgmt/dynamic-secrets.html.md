@@ -537,6 +537,6 @@ $ curl --header "X-Vault-Token:..." \
 ## Next steps
 
 This guide discussed how to generate credentials on-demand so that the access
-credentials no longer need to be written to disk. Next, learn about the
-[Tokens and Leases](/guides/identity/lease.html) so that you can control the
-lifecycle of those credentials.
+credentials no longer need to be written to disk. Next, learn about the [Direct
+Application Integration](/guides/secret-mgmt/app-integration.html) so that your
+application can leverage the secrets managed by Vault.
