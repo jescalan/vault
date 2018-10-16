@@ -4,6 +4,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hashicorp/vault/helper/consts"
+
 	"github.com/hashicorp/vault/api"
 	"github.com/mitchellh/cli"
 )
@@ -36,13 +38,13 @@ func TestPluginRegisterCommand_Run(t *testing.T) {
 		},
 		{
 			"too_many_args",
-			[]string{"foo", "bar"},
+			[]string{"foo", "bar", "fizz"},
 			"Too many arguments",
 			1,
 		},
 		{
 			"not_a_plugin",
-			[]string{"nope_definitely_never_a_plugin_nope"},
+			[]string{"nope_definitely_never_a_plugin_nope", consts.PluginTypeCredential.String()},
 			"",
 			2,
 		},
@@ -90,7 +92,7 @@ func TestPluginRegisterCommand_Run(t *testing.T) {
 
 		code := cmd.Run([]string{
 			"-sha256", sha256Sum,
-			pluginName,
+			pluginName, consts.PluginTypeCredential.String(),
 		})
 		if exp := 0; code != exp {
 			t.Errorf("expected %d to be %d", code, exp)
@@ -102,7 +104,9 @@ func TestPluginRegisterCommand_Run(t *testing.T) {
 			t.Errorf("expected %q to contain %q", combined, expected)
 		}
 
-		resp, err := client.Sys().ListPlugins(&api.ListPluginsInput{})
+		resp, err := client.Sys().ListPlugins(&api.ListPluginsInput{
+			Type: consts.PluginTypeCredential,
+		})
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -129,7 +133,7 @@ func TestPluginRegisterCommand_Run(t *testing.T) {
 
 		code := cmd.Run([]string{
 			"-sha256", "abcd1234",
-			"my-plugin",
+			"my-plugin", consts.PluginTypeCredential.String(),
 		})
 		if exp := 2; code != exp {
 			t.Errorf("expected %d to be %d", code, exp)

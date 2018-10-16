@@ -17,7 +17,7 @@ import (
 
 	"github.com/armon/go-metrics"
 	log "github.com/hashicorp/go-hclog"
-	cache "github.com/patrickmn/go-cache"
+	"github.com/patrickmn/go-cache"
 
 	"google.golang.org/grpc"
 
@@ -135,6 +135,8 @@ type unlockInformation struct {
 // backends, router, security barrier, and audit trails.
 type Core struct {
 	entCore
+
+	builtinRegistry BuiltinRegistry
 
 	// N.B.: This is used to populate a dev token down replication, as
 	// otherwise, after replication is started, a dev would have to go through
@@ -394,9 +396,17 @@ type Core struct {
 	allLoggersLock sync.RWMutex
 }
 
+type BuiltinRegistry interface {
+	Contains(name string, pluginType consts.PluginType) bool
+	Get(name string, pluginType consts.PluginType) (func() (interface{}, error), bool)
+	Keys(pluginType consts.PluginType) []string
+}
+
 // CoreConfig is used to parameterize a core
 type CoreConfig struct {
 	DevToken string `json:"dev_token" structs:"dev_token" mapstructure:"dev_token"`
+
+	BuiltinRegistry BuiltinRegistry `json:"builtin_registry" structs:"builtin_registry" mapstructure:"builtin_registry"`
 
 	LogicalBackends map[string]logical.Factory `json:"logical_backends" structs:"logical_backends" mapstructure:"logical_backends"`
 
@@ -528,6 +538,7 @@ func NewCore(conf *CoreConfig) (*Core, error) {
 		disablePerfStandby:               true,
 		activeContextCancelFunc:          new(atomic.Value),
 		allLoggers:                       conf.AllLoggers,
+		builtinRegistry:                  conf.BuiltinRegistry,
 	}
 
 	atomic.StoreUint32(c.sealed, 1)

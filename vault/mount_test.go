@@ -17,7 +17,7 @@ import (
 
 func TestMount_ReadOnlyViewDuringMount(t *testing.T) {
 	c, _, _ := TestCoreUnsealed(t)
-	c.logicalBackends["noop"] = func(ctx context.Context, config *logical.BackendConfig) (logical.Backend, error) {
+	c.logicalBackends["test"] = func(ctx context.Context, config *logical.BackendConfig) (logical.Backend, error) {
 		err := config.StorageView.Put(ctx, &logical.StorageEntry{
 			Key:   "bar",
 			Value: []byte("baz"),
@@ -31,7 +31,7 @@ func TestMount_ReadOnlyViewDuringMount(t *testing.T) {
 	me := &MountEntry{
 		Table: mountTableType,
 		Path:  "foo",
-		Type:  "noop",
+		Type:  "test",
 	}
 	err := c.mount(namespace.TestContext(), me)
 	if err != nil {
@@ -120,7 +120,7 @@ func TestCore_Mount_Local(t *testing.T) {
 		Entries: []*MountEntry{
 			&MountEntry{
 				Table:            mountTableType,
-				Path:             "noop/",
+				Path:             "test/",
 				Type:             "kv",
 				UUID:             "abcd",
 				Accessor:         "kv-abcd",
@@ -130,7 +130,7 @@ func TestCore_Mount_Local(t *testing.T) {
 			},
 			&MountEntry{
 				Table:            mountTableType,
-				Path:             "noop2/",
+				Path:             "test2/",
 				Type:             "kv",
 				UUID:             "bcde",
 				Accessor:         "kv-bcde",
@@ -184,8 +184,8 @@ func TestCore_Mount_Local(t *testing.T) {
 	// This requires some explanation: because we're directly munging the mount
 	// table, the table initially when core unseals contains cubbyhole as per
 	// above, but then we overwrite it with our own table with one local entry,
-	// so we should now only expect the noop2 entry
-	if len(localMountsTable.Entries) != 1 || localMountsTable.Entries[0].Path != "noop2/" {
+	// so we should now only expect the test2 entry
+	if len(localMountsTable.Entries) != 1 || localMountsTable.Entries[0].Path != "test2/" {
 		t.Fatalf("expected one entry in local mount table, got %#v", localMountsTable)
 	}
 
@@ -250,7 +250,7 @@ func TestCore_Unmount(t *testing.T) {
 func TestCore_Unmount_Cleanup(t *testing.T) {
 	noop := &NoopBackend{}
 	c, _, root := TestCoreUnsealed(t)
-	c.logicalBackends["noop"] = func(context.Context, *logical.BackendConfig) (logical.Backend, error) {
+	c.logicalBackends["test"] = func(context.Context, *logical.BackendConfig) (logical.Backend, error) {
 		return noop, nil
 	}
 
@@ -258,7 +258,7 @@ func TestCore_Unmount_Cleanup(t *testing.T) {
 	me := &MountEntry{
 		Table: mountTableType,
 		Path:  "test/",
-		Type:  "noop",
+		Type:  "test",
 	}
 	if err := c.mount(namespace.TestContext(), me); err != nil {
 		t.Fatalf("err: %v", err)
@@ -370,15 +370,15 @@ func TestCore_Remount(t *testing.T) {
 func TestCore_Remount_Cleanup(t *testing.T) {
 	noop := &NoopBackend{}
 	c, _, root := TestCoreUnsealed(t)
-	c.logicalBackends["noop"] = func(context.Context, *logical.BackendConfig) (logical.Backend, error) {
+	c.logicalBackends["test"] = func(context.Context, *logical.BackendConfig) (logical.Backend, error) {
 		return noop, nil
 	}
 
-	// Mount the noop backend
+	// Mount the test backend
 	me := &MountEntry{
 		Table: mountTableType,
 		Path:  "test/",
-		Type:  "noop",
+		Type:  "test",
 	}
 	if err := c.mount(namespace.TestContext(), me); err != nil {
 		t.Fatalf("err: %v", err)
@@ -468,7 +468,7 @@ func TestDefaultMountTable(t *testing.T) {
 func TestCore_MountTable_UpgradeToTyped(t *testing.T) {
 	c, _, _ := TestCoreUnsealed(t)
 
-	c.auditBackends["noop"] = func(ctx context.Context, config *audit.BackendConfig) (audit.Backend, error) {
+	c.auditBackends["test"] = func(ctx context.Context, config *audit.BackendConfig) (audit.Backend, error) {
 		return &NoopAudit{
 			Config: config,
 		}, nil
@@ -477,21 +477,21 @@ func TestCore_MountTable_UpgradeToTyped(t *testing.T) {
 	me := &MountEntry{
 		Table: auditTableType,
 		Path:  "foo",
-		Type:  "noop",
+		Type:  "test",
 	}
 	err := c.enableAudit(namespace.TestContext(), me, true)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
 
-	c.credentialBackends["noop"] = func(context.Context, *logical.BackendConfig) (logical.Backend, error) {
+	c.credentialBackends["test"] = func(context.Context, *logical.BackendConfig) (logical.Backend, error) {
 		return &NoopBackend{}, nil
 	}
 
 	me = &MountEntry{
 		Table: credentialTableType,
 		Path:  "foo",
-		Type:  "noop",
+		Type:  "test",
 	}
 	err = c.enableCredential(namespace.TestContext(), me)
 	if err != nil {

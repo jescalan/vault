@@ -11,6 +11,7 @@ import (
 	"github.com/go-test/deep"
 	"github.com/hashicorp/vault/api"
 	"github.com/hashicorp/vault/builtin/plugin"
+	"github.com/hashicorp/vault/helper/consts"
 	"github.com/hashicorp/vault/helper/namespace"
 	"github.com/hashicorp/vault/helper/pluginutil"
 	vaulthttp "github.com/hashicorp/vault/http"
@@ -108,7 +109,7 @@ func TestSystemBackend_Plugin_MismatchType(t *testing.T) {
 	core := cluster.Cores[0]
 
 	// Replace the plugin with a credential backend
-	vault.TestAddTestPlugin(t, core.Core, "mock-plugin", "TestBackend_PluginMainCredentials", []string{}, "")
+	vault.TestAddTestPlugin(t, core.Core, "test", consts.PluginTypeCredential, "TestBackend_PluginMainCredentials", []string{}, "")
 
 	// Make a request to lazy load the now-credential plugin
 	// and expect an error
@@ -148,7 +149,7 @@ func testPlugin_CatalogRemoved(t *testing.T, btype logical.BackendType, testMoun
 	core := cluster.Cores[0]
 
 	// Remove the plugin from the catalog
-	req := logical.TestRequest(t, logical.DeleteOperation, "sys/plugins/catalog/mock-plugin")
+	req := logical.TestRequest(t, logical.DeleteOperation, "sys/plugins/catalog/database/test")
 	req.ClientToken = core.Client.Token()
 	resp, err := core.HandleRequest(namespace.RootContext(nil), req)
 	if err != nil || (resp != nil && resp.IsError()) {
@@ -183,19 +184,15 @@ func testPlugin_CatalogRemoved(t *testing.T, btype logical.BackendType, testMoun
 		switch btype {
 		case logical.TypeLogical:
 			// Add plugin back to the catalog
-			vault.TestAddTestPlugin(t, core.Core, "mock-plugin", "TestBackend_PluginMainLogical", []string{}, "")
+			vault.TestAddTestPlugin(t, core.Core, "test", consts.PluginTypeSecrets, "TestBackend_PluginMainLogical", []string{}, "")
 			_, err = core.Client.Logical().Write("sys/mounts/mock-0", map[string]interface{}{
-				"type": "plugin",
-				"config": map[string]interface{}{
-					"plugin_name": "mock-plugin",
-				},
+				"type": "test",
 			})
 		case logical.TypeCredential:
 			// Add plugin back to the catalog
-			vault.TestAddTestPlugin(t, core.Core, "mock-plugin", "TestBackend_PluginMainCredentials", []string{}, "")
+			vault.TestAddTestPlugin(t, core.Core, "test", consts.PluginTypeCredential, "TestBackend_PluginMainCredentials", []string{}, "")
 			_, err = core.Client.Logical().Write("sys/auth/mock-0", map[string]interface{}{
-				"type":        "plugin",
-				"plugin_name": "mock-plugin",
+				"type": "test",
 			})
 		}
 		if err == nil {
@@ -233,7 +230,7 @@ func testPlugin_continueOnError(t *testing.T, btype logical.BackendType, mismatc
 	core := cluster.Cores[0]
 
 	// Get the registered plugin
-	req := logical.TestRequest(t, logical.ReadOperation, "sys/plugins/catalog/mock-plugin")
+	req := logical.TestRequest(t, logical.ReadOperation, "sys/plugins/catalog/database/test")
 	req.ClientToken = core.Client.Token()
 	resp, err := core.HandleRequest(namespace.RootContext(nil), req)
 	if err != nil || resp == nil || (resp != nil && resp.IsError()) {
@@ -247,7 +244,7 @@ func testPlugin_continueOnError(t *testing.T, btype logical.BackendType, mismatc
 
 	// Trigger a sha256 mismatch or missing plugin error
 	if mismatch {
-		req = logical.TestRequest(t, logical.UpdateOperation, "sys/plugins/catalog/mock-plugin")
+		req = logical.TestRequest(t, logical.UpdateOperation, "sys/plugins/catalog/database/test")
 		req.Data = map[string]interface{}{
 			"sha256":  "d17bd7334758e53e6fbab15745d2520765c06e296f2ce8e25b7919effa0ac216",
 			"command": filepath.Base(command),
@@ -288,15 +285,15 @@ func testPlugin_continueOnError(t *testing.T, btype logical.BackendType, mismatc
 	// Re-add the plugin to the catalog
 	switch btype {
 	case logical.TypeLogical:
-		vault.TestAddTestPlugin(t, core.Core, "mock-plugin", "TestBackend_PluginMainLogical", []string{}, cluster.TempDir)
+		vault.TestAddTestPlugin(t, core.Core, "test", consts.PluginTypeSecrets, "TestBackend_PluginMainLogical", []string{}, cluster.TempDir)
 	case logical.TypeCredential:
-		vault.TestAddTestPlugin(t, core.Core, "mock-plugin", "TestBackend_PluginMainCredentials", []string{}, cluster.TempDir)
+		vault.TestAddTestPlugin(t, core.Core, "test", consts.PluginTypeCredential, "TestBackend_PluginMainCredentials", []string{}, cluster.TempDir)
 	}
 
 	// Reload the plugin
 	req = logical.TestRequest(t, logical.UpdateOperation, "sys/plugins/reload/backend")
 	req.Data = map[string]interface{}{
-		"plugin": "mock-plugin",
+		"plugin": "test",
 	}
 	req.ClientToken = core.Client.Token()
 	resp, err = core.HandleRequest(namespace.RootContext(nil), req)
@@ -393,7 +390,7 @@ func TestSystemBackend_Plugin_SealUnseal(t *testing.T) {
 
 func TestSystemBackend_Plugin_reload(t *testing.T) {
 	data := map[string]interface{}{
-		"plugin": "mock-plugin",
+		"plugin": "test",
 	}
 	t.Run("plugin", func(t *testing.T) { testSystemBackend_PluginReload(t, data) })
 
@@ -485,18 +482,11 @@ func testSystemBackendMock(t *testing.T, numCores, numMounts int, backendType lo
 
 	switch backendType {
 	case logical.TypeLogical:
-		vault.TestAddTestPlugin(t, core.Core, "mock-plugin", "TestBackend_PluginMainLogical", []string{}, tempDir)
+		vault.TestAddTestPlugin(t, core.Core, "test", consts.PluginTypeSecrets, "TestBackend_PluginMainLogical", []string{}, tempDir)
 		for i := 0; i < numMounts; i++ {
 			// Alternate input styles for plugin_name on every other mount
 			options := map[string]interface{}{
-				"type": "plugin",
-			}
-			if (i+1)%2 == 0 {
-				options["config"] = map[string]interface{}{
-					"plugin_name": "mock-plugin",
-				}
-			} else {
-				options["plugin_name"] = "mock-plugin"
+				"type": "test",
 			}
 			resp, err := client.Logical().Write(fmt.Sprintf("sys/mounts/mock-%d", i), options)
 			if err != nil {
@@ -507,18 +497,11 @@ func testSystemBackendMock(t *testing.T, numCores, numMounts int, backendType lo
 			}
 		}
 	case logical.TypeCredential:
-		vault.TestAddTestPlugin(t, core.Core, "mock-plugin", "TestBackend_PluginMainCredentials", []string{}, tempDir)
+		vault.TestAddTestPlugin(t, core.Core, "test", consts.PluginTypeCredential, "TestBackend_PluginMainCredentials", []string{}, tempDir)
 		for i := 0; i < numMounts; i++ {
 			// Alternate input styles for plugin_name on every other mount
 			options := map[string]interface{}{
-				"type": "plugin",
-			}
-			if (i+1)%2 == 0 {
-				options["config"] = map[string]interface{}{
-					"plugin_name": "mock-plugin",
-				}
-			} else {
-				options["plugin_name"] = "mock-plugin"
+				"type": "test",
 			}
 			resp, err := client.Logical().Write(fmt.Sprintf("sys/auth/mock-%d", i), options)
 			if err != nil {
@@ -546,7 +529,7 @@ func TestSystemBackend_Plugin_Env(t *testing.T) {
 func testSystemBackend_SingleCluster_Env(t *testing.T, env []string) *vault.TestCluster {
 	coreConfig := &vault.CoreConfig{
 		LogicalBackends: map[string]logical.Factory{
-			"plugin": plugin.Factory,
+			"test": plugin.Factory,
 		},
 	}
 
@@ -570,10 +553,9 @@ func testSystemBackend_SingleCluster_Env(t *testing.T, env []string) *vault.Test
 
 	os.Setenv(pluginutil.PluginCACertPEMEnv, cluster.CACertPEMFile)
 
-	vault.TestAddTestPlugin(t, core.Core, "mock-plugin", "TestBackend_PluginMainEnv", env, tempDir)
+	vault.TestAddTestPlugin(t, core.Core, "test", consts.PluginTypeUnknown, "TestBackend_PluginMainEnv", env, tempDir)
 	options := map[string]interface{}{
-		"type":        "plugin",
-		"plugin_name": "mock-plugin",
+		"type": "test",
 	}
 
 	resp, err := client.Logical().Write("sys/mounts/mock", options)

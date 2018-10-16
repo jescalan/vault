@@ -8,14 +8,15 @@ import (
 	"sync"
 
 	uuid "github.com/hashicorp/go-uuid"
+	"github.com/hashicorp/vault/helper/consts"
 	"github.com/hashicorp/vault/logical"
 	"github.com/hashicorp/vault/logical/framework"
 	bplugin "github.com/hashicorp/vault/logical/plugin"
 )
 
 var (
-	ErrMismatchType  = fmt.Errorf("mismatch on mounted backend and plugin backend type")
-	ErrMismatchPaths = fmt.Errorf("mismatch on mounted backend and plugin backend special paths")
+	ErrMismatchType  = fmt.Errorf("mismatch on mounted PluginBackend and plugin PluginBackend type")
+	ErrMismatchPaths = fmt.Errorf("mismatch on mounted PluginBackend and plugin PluginBackend special paths")
 )
 
 // Factory returns a configured plugin logical.Backend.
@@ -35,16 +36,21 @@ func Factory(ctx context.Context, conf *logical.BackendConfig) (logical.Backend,
 	return b, nil
 }
 
-// Backend returns an instance of the backend, either as a plugin if external
+// Backend returns an instance of the PluginBackend, either as a plugin if external
 // or as a concrete implementation if builtin, casted as logical.Backend.
 func Backend(ctx context.Context, conf *logical.BackendConfig) (logical.Backend, error) {
-	var b backend
+	var b PluginBackend
 
 	name := conf.Config["plugin_name"]
+	pluginType, err := consts.ParsePluginType(conf.Config["plugin_type"])
+	if err != nil {
+		return nil, err
+	}
+
 	sys := conf.System
 
 	// NewBackend with isMetadataMode set to true
-	raw, err := bplugin.NewBackend(ctx, name, sys, conf.Logger, true)
+	raw, err := bplugin.NewBackend(ctx, name, pluginType, sys, conf, true)
 	if err != nil {
 		return nil, err
 	}
@@ -56,10 +62,10 @@ func Backend(ctx context.Context, conf *logical.BackendConfig) (logical.Backend,
 	paths := raw.SpecialPaths()
 	btype := raw.Type()
 
-	// Cleanup meta plugin backend
+	// Cleanup meta plugin PluginBackend
 	raw.Cleanup(ctx)
 
-	// Initialize b.Backend with dummy backend since plugin
+	// Initialize b.Backend with dummy PluginBackend since plugin
 	// backends will need to be lazy loaded.
 	b.Backend = &framework.Backend{
 		PathsSpecial: paths,
@@ -71,8 +77,8 @@ func Backend(ctx context.Context, conf *logical.BackendConfig) (logical.Backend,
 	return &b, nil
 }
 
-// backend is a thin wrapper around plugin.BackendPluginClient
-type backend struct {
+// PluginBackend is a thin wrapper around plugin.BackendPluginClient
+type PluginBackend struct {
 	logical.Backend
 	sync.RWMutex
 
@@ -85,19 +91,23 @@ type backend struct {
 	loaded bool
 }
 
-func (b *backend) reloadBackend(ctx context.Context) error {
-	b.Logger().Debug("reloading plugin backend", "plugin", b.config.Config["plugin_name"])
+func (b *PluginBackend) reloadBackend(ctx context.Context) error {
+	b.Logger().Debug("reloading plugin PluginBackend", "plugin", b.config.Config["plugin_name"])
 	return b.startBackend(ctx)
 }
 
-// startBackend starts a plugin backend
-func (b *backend) startBackend(ctx context.Context) error {
+// startBackend starts a plugin PluginBackend
+func (b *PluginBackend) startBackend(ctx context.Context) error {
 	pluginName := b.config.Config["plugin_name"]
+	pluginType, err := consts.ParsePluginType(b.config.Config["plugin_type"])
+	if err != nil {
+		return err
+	}
 
-	// Ensure proper cleanup of the backend (i.e. call client.Kill())
+	// Ensure proper cleanup of the PluginBackend (i.e. call client.Kill())
 	b.Backend.Cleanup(ctx)
 
-	nb, err := bplugin.NewBackend(ctx, pluginName, b.config.System, b.config.Logger, false)
+	nb, err := bplugin.NewBackend(ctx, pluginName, pluginType, b.config.System, b.config, false)
 	if err != nil {
 		return err
 	}
@@ -106,7 +116,7 @@ func (b *backend) startBackend(ctx context.Context) error {
 		return err
 	}
 
-	// If the backend has not been loaded (i.e. still in metadata mode),
+	// If the PluginBackend has not been loaded (i.e. still in metadata mode),
 	// check if type and special paths still matches
 	if !b.loaded {
 		if b.Backend.Type() != nb.Type() {
@@ -128,11 +138,11 @@ func (b *backend) startBackend(ctx context.Context) error {
 }
 
 // HandleRequest is a thin wrapper implementation of HandleRequest that includes automatic plugin reload.
-func (b *backend) HandleRequest(ctx context.Context, req *logical.Request) (*logical.Response, error) {
+func (b *PluginBackend) HandleRequest(ctx context.Context, req *logical.Request) (*logical.Response, error) {
 	b.RLock()
 	canary := b.canary
 
-	// Lazy-load backend
+	// Lazy-load PluginBackend
 	if !b.loaded {
 		// Upgrade lock
 		b.RUnlock()
@@ -179,11 +189,11 @@ func (b *backend) HandleRequest(ctx context.Context, req *logical.Request) (*log
 }
 
 // HandleExistenceCheck is a thin wrapper implementation of HandleRequest that includes automatic plugin reload.
-func (b *backend) HandleExistenceCheck(ctx context.Context, req *logical.Request) (bool, bool, error) {
+func (b *PluginBackend) HandleExistenceCheck(ctx context.Context, req *logical.Request) (bool, bool, error) {
 	b.RLock()
 	canary := b.canary
 
-	// Lazy-load backend
+	// Lazy-load PluginBackend
 	if !b.loaded {
 		// Upgrade lock
 		b.RUnlock()

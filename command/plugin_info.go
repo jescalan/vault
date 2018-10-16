@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/hashicorp/vault/helper/consts"
+
 	"github.com/hashicorp/vault/api"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
@@ -58,10 +60,10 @@ func (c *PluginInfoCommand) Run(args []string) int {
 
 	args = f.Args()
 	switch {
-	case len(args) < 1:
+	case len(args) < 2:
 		c.UI.Error(fmt.Sprintf("Not enough arguments (expected 1, got %d)", len(args)))
 		return 1
-	case len(args) > 1:
+	case len(args) > 2:
 		c.UI.Error(fmt.Sprintf("Too many arguments (expected 1, got %d)", len(args)))
 		return 1
 	}
@@ -73,9 +75,15 @@ func (c *PluginInfoCommand) Run(args []string) int {
 	}
 
 	pluginName := strings.TrimSpace(args[0])
+	pluginType, err := consts.ParsePluginType(strings.TrimSpace(args[1]))
+	if err != nil {
+		c.UI.Error(err.Error())
+		return 2
+	}
 
 	resp, err := client.Sys().GetPlugin(&api.GetPluginInput{
 		Name: pluginName,
+		Type: pluginType,
 	})
 	if err != nil {
 		c.UI.Error(fmt.Sprintf("Error reading plugin named %s: %s", pluginName, err))
