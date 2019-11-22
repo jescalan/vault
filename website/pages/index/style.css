@@ -1,0 +1,37 @@
+@import '@hashicorp/react-global-styles/custom-properties/color.css';
+@import '@hashicorp/react-hero/dist/style.css';
+@import '@hashicorp/react-section-header/dist/style.css';
+@import '@hashicorp/react-callouts/dist/style.css';
+@import '@hashicorp/react-linked-text-summary-list/dist/style.css';
+@import '@hashicorp/react-split-cta/dist/style.css';
+
+#p-index {
+  & > .padded {
+    padding-top: 96px;
+    padding-bottom: 96px;
+
+    @media (max-width: 768px) {
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+  }
+
+  /* override fiest section because hero includes bottom padding */
+  & #use-cases {
+    padding-top: 0;
+
+    & .g-section-header {
+      margin-bottom: 72px;
+    }
+  }
+
+  & #features {
+    background: var(--DEPRECATED-gray-10);
+
+    & .buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+  }
+}

@@ -1,48 +1,93 @@
-# Vault Website
+# Website Template
 
-This subdirectory contains the entire source for the [Vault Website][vault].
-This is a [Middleman][middleman] project, which builds a static site from these
-source files.
+This repository contains a generic template for creating a new website based on the standard platform used by HashiCorp.
 
-## Updating Navigation
+## Installation
 
-There are a couple different places on the website that present navigation interfaces with differing levels of detail.
+A copy of this base template can be created using [next-hashicorp](https://github.com/hashicorp/next-hashicorp/), using the binary command `next-hashicorp generate website`. We suggest running it with `npx` to avoid a global installation, the command for this would look like `npx next-hashicorp generate website`.
 
-On the homepage, docs index page, and api docs index page, there are grids of major categories [that look like this](https://cl.ly/73df9722848d/Screen%20Shot%202018-11-09%20at%2011.40.56%20AM.png). These major category grids can be updated through [`data/docs_basic_categories.yml`](data/docs_basic_categories.yml) and [`data/api_basic_categories.yml`](data/api_basic_categories.yml).
+After the template is generates, make sure to run `npm install` to install dependencies.
 
-On the docs and api index pages, there are more detailed breakdowns of top-level documentation pages within each category [that look like this](https://cl.ly/b05cf42402eb/Screen%20Shot%202018-11-09%20at%2011.43.25%20AM.png). These more detailed category listings can be updated through [`data/docs_detailed_categories.yml`](data/docs_detailed_categories.yml) and [`data/api_detailed_categories.yml`](data/api_detailed_categories.yml).
+## Local Development
 
-Finally, within a given docs page, there is a sidebar which displays a fully nested version of all docs pages. This sidebar navigation can be updated through via middleman's layouts, found at [`source/layouts/docs.erb`](source/layouts/docs.erb) and [`source/layouts/api.erb`](source/layouts/api.erb). You will see within these files that it is no longer necessary to type out full nested html list item and link tags, you can simply add the documentation page's slug, defined as `sidebar_current` within the frontmatter of any docs markdown file. The sidebar nav component will go find the page by slug and render out its human-readable title and a link for you. This component does not allow broken links or nesting mistakes, so if you make a typo on the slug or put a page in the wrong category, the build will fail.
+There are two ways that the website can be run locally. If you do not have node installed and prefer not to, it can be run through Docker. The caveat here is that everything will be a little bit slower due to the additional overhead, so for frequent contributors it may be worth it to install node. Additionally, if the modifications you are introducing change the node dependencies, you will need to rebuild the Docker container in order for the dependency changes to appear, as the Docker workflow build pre-installed dependencies into the image so that they do not need to be re-installed each time it runs.
 
-## Contributions Welcome!
+### Local Development with Docker
 
-If you find a typo or you feel like you can improve the HTML, CSS, or
-JavaScript, we welcome contributions. Feel free to open issues or pull requests
-like any normal GitHub project, and we'll merge it in.
+To run the website in a Docker container, you must have Docker installed, but do not need node to be installed. First run `make build-image` to build a Docker image with node dependencies installed. After this, you can run `make website` to run the website in development mode. You only need to run `make build-image` the first time you start working on the site, or if dependencies change.
 
-## Running the Site Locally
+### Local Development with Node
 
-When running the site locally, you can choose between running it directly on your machine, or running it through Docker. Docker has the advantage of requiring only Docker to be installed - no other dependencies are needed on your machine. However, Docker's overhead makes the site's compilation perform much slower than running it directly on your machine. If you are a frequent contributor, are bothered by the performance in Docker, or have no issues with installing ruby and node / already have them installed, it might be an advantage to try running the site directly on your machine. Instructions for both approaches are included below.
+To start the website in development mode if [you have node installed](https://nodejs.org/en/), you can run `npm start`. This will start the site in dynamic mode, booting up quickly and compiling each page as its loaded.
 
-### Running the Site with Docker
+To export a static version of the website, run `npm run static`. It will be exported to a folder called `out`.
 
-First, make sure that [docker](docker) is installed. It can be installed in many ways, [the desktop app](docker-desktop) is the simplest. To run the site, clone this repo down, `cd` into the `website` directory, and run `make website`. If it is your first time running the site, the build will take a little longer as it needs to download a docker image and a bunch of dependencies, so maybe go grab a coffee. On subsequent runs, it will be faster as dependencies are cached.
+To run the website with a server in production mode, run `npm run dynamic` to build the assets in production mode and kick off an express server.
 
-### Running the Site Directly
+In both scenarios, you can **visit the local website at `http://localhost:3000`**. When you modify content, the website will automatically reload, you do not have to stop and restart the development environment.
 
-This site requires a recent version of ruby as well as nodejs to be installed in order to run. There are [many ways to install ruby](https://www.ruby-lang.org/en/documentation/installation/), we recommend [rbenv](rbenv), which has very clear installation instructions in its readme, linked here, and installing ruby version `2.4.3`. Once ruby has been installed, you will need to install `bundler` as well, using `gem install bundler`. Node is quite easy to install [via universal binary](node) or [homebrew](homebrew) if you are a mac user.
+### Creating Content
 
-Once ruby and node have been installed, within this directory, you can run `sh bootstrap.sh` to install all the dependencies needed to run the site, then run `middleman` to start the dev server.
+#### Pages
 
-### Browsing the Site Locally
+To create a page, create a Markdown (`mdx`), TypeScript (`tsx` or `ts`), or JavaScript (`jsx` or `js`) file in the `pages/` directory. The path to the file will also be the URL to the page.
 
-Once you have the local dev server running, head to `http://localhost:4567` in your browser. Note that for some URLs, you may need to append
-".html" to make them work (in the navigation).
+Markdown files can be used for mostly static, text-based content. You can read the documentation for that in the [Markdown section](#markdown).
 
-[middleman]: https://www.middlemanapp.com
-[vault]: https://www.vaultproject.io
-[docker]: https://www.docker.com/
-[docker-desktop]: https://www.docker.com/products/docker-desktop
-[rbenv]: https://github.com/rbenv/rbenv#installation
-[node]: https://nodejs.org/en/
-[homebrew]: https://brew.sh/
+TypeScript and JavaScript files enable more complex behavior, data querying, and more. These should be used for layout files, dynamic pages, etc. For TypeScript or JavaScript files, the defaut ES6 export should be a
+React Component. This will be rendered for the page. More documentation can be found on the [Next.js website](https://nextjs.org/docs/#fetching-data-and-component-lifecycle). You will see examples of both of these types of content in the `/pages` folder.
+
+#### Markdown
+
+HashiCorp websites often use Markdown for content authoring. To create a new page with Markdown, create a file ending in `.mdx` in the `pages/` directory. The path in the pages directory will be the URL route. For example, `pages/hello/world.mdx` will be served from the `/hello/world` URL.
+
+This file can be standard Markdown and also supports [YAML frontmatter](https://middlemanapp.com/basics/frontmatter/). YAML frontmatter is optional, there are defaults for all keys.
+
+```yaml
+---
+layout: 'custom'
+title: 'My Title'
+---
+
+```
+
+The significant keys in the YAML frontmatter are:
+
+- `layout` `(string)` - This is the name of the layout file to wrap the Markdown page with, found in `pages/layouts`
+- `title` `(string)` - This is the title of the page that will be set in the HTML title.
+
+#### Analytics
+
+If your project needs to implement analytics, you can run the provided npm script, `npm run generate:analytics` to generate a typed analytics client based on a specific [Tracking Plan](https://github.com/hashicorp/web-tracking-plans). By default the generated files will be located within an `analytics/generated` directory. Pass an `-o` or `--outputPath` flag to specify a specific output directory. i.e. `next-hashicorp analytics --outputPath ./analytics/typewriter`
+
+### Deployment
+
+Websites can be configured to deploy in one or more ways:
+
+- **Manually** - This requires manually clicking a deploy button on Netlify.com. This is usefulf or humans.
+
+- **On Git Push** - This will automatically deploy the website anytime you push to a configured Git branch. This is useful for patterns such as having a `stable-website` branch outside of `master`.
+
+- **Webhook** - This will give you one or more URLs to `GET` to trigger a deploy. No auth is required, the URL is security through obscurity. This is useful for other automation systems, such as CI.
+
+The methods for deployment are all configured via the Terraform automation explained in the next section.
+
+#### Initial Setup
+
+When you're ready to deploy your website publicly, you'll have to start by configuring all the services that our platform uses, such as Netlify. We've automated this with [Terraform](https://www.terraform.io/).
+
+Copy the `terraform.tfvars.example` file to `terraform.tfvars` in this folderand change the settings that are there. They should be documented with comments.
+
+Set the following environment variables for auth:
+
+- `GITHUB_TOKEN` - This should be a valid GitHub access token with `repo` access to the repository with your website. You can [create tokens here](https://github.com/settings/tokens).
+
+- `NETLIFY_TOKEN` - This should be a valid Netlify personal access token. You can [create a personal access token here](https://app.netlify.com/account/applications).
+
+Then run `make terraform`. This will create and configure the website and the outputs from Terraform will show where you can view the website, view deploy progress, and more.
+
+You shouldn't have to run Terraform again unless noted otherwise.
+
+#### Teardown/Destroy
+
+**To destroy your website,** run `terraform destroy`. This will remove all Netlify configuration, delete deployment keys, and more.

@@ -1,0 +1,37 @@
+query VaultHomepage {
+  vaultOssPage {
+    hero {
+      ...heroFields
+    }
+    useCasesHeadline {
+      ...sectionHeaderFields
+    }
+    useCasesCallouts {
+      ...calloutsFields
+    }
+    featuresHeadline {
+      ...sectionHeaderFields
+    }
+    featuresButtons {
+      buttons {
+        ...temporary_buttonFields
+      }
+    }
+    documentationHeadline {
+      ...sectionHeaderFields
+    }
+    ossEnterpriseCtas {
+      ...splitCtasFields
+    }
+  }
+}
+
+fragment temporary_buttonFields on SbcButtonRecord {
+  title: text
+  url
+  external
+  theme: appearance {
+    name
+    slug
+  }
+}
