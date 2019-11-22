@@ -71,12 +71,12 @@ Golang SDK. This means it supports the common ways of [providing credentials to
 Google Cloud][cloud-creds].
 
 1. The environment variable `GOOGLE_APPLICATION_CREDENTIALS`. This is specified
-   as the **path** to a Google Cloud credentials file, typically for a service
-   account. If this environment variable is present, the resulting credentials are
-   used. If the credentials are invalid, an error is returned.
+as the **path** to a Google Cloud credentials file, typically for a service
+account. If this environment variable is present, the resulting credentials are
+used. If the credentials are invalid, an error is returned.
 
 1. Default instance credentials. When no environment variable is present, the
-   default service account credentials are used.
+default service account credentials are used.
 
 For more information on service accounts, please see the [Google Cloud Service
 Accounts documentation][service-accounts].
@@ -94,9 +94,9 @@ https://www.googleapis.com/auth/google-cloud-spanner.data
   that this is specified as a "path" including the project ID and instance, for
   example:
 
-  ```text
-  projects/my-project/instances/my-instance/databases/my-database
-  ```
+    ```text
+    projects/my-project/instances/my-instance/databases/my-database
+    ```
 
 - `table` `(string: "Vault")` - Specifies the name of the table where
   data will be stored and retrieved.

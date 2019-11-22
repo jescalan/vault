@@ -56,7 +56,6 @@ makes it much more likely that the request will succeed rather than somewhat
 confusingly failing due to a lack of permissions on `auth/token/renew`.
 
 ## `status` CLI Command
-
 The `status` CLI command now returns an exit code of `0` for an unsealed Vault
 (as before), `2` for a sealed Vault, and `1` for an error. This keeps error
 return codes consistent across commands.
@@ -90,7 +89,7 @@ times, except when specifically overridden by backend configuration or role
 parameters, or when doing so would not make sense (e.g. AWS STS tokens cannot
 have a lifetime of greater than 1 hour).
 
-This allows for a _much_ more uniform approach to managing leases on both the
+This allows for a *much* more uniform approach to managing leases on both the
 operational side and the user side, and removes much ambiguity and uncertainty
 resulting from backend-hardcoded limits.
 

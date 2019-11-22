@@ -17,7 +17,7 @@ similar to a session token on a website. By default, this token is cached on the
 local machine for future requests.
 
 The `-method` flag allows using other auth methods, such as userpass,
-github, or cert. For these, additional "K=V" pairs may be required. For more
+github, or cert. For these, additional "K=V" pairs may be required.  For more
 information about the list of configuration parameters available for a given
 auth method, use the "vault auth help TYPE". You can also use "vault
 auth list" to see the list of enabled auth methods.
@@ -29,11 +29,11 @@ enabled path.
 If the authentication is requested with response wrapping (via `-wrap-ttl`),
 the returned token is automatically unwrapped unless:
 
-- The `-token-only` flag is used, in which case this command will output
-  the wrapping token.
+  - The `-token-only` flag is used, in which case this command will output
+    the wrapping token.
 
-- The `-no-store` flag is used, in which case this command will output the
-  details of the wrapping token.
+  - The `-no-store` flag is used, in which case this command will output the
+    details of the wrapping token.
 
 ## Examples
 

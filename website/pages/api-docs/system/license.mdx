@@ -12,16 +12,16 @@ description: |-
 
 ~> **Enterprise Only** – These endpoints require Vault Enterprise.
 
-The `/sys/license` endpoint is used to view and update the license used in
+The `/sys/license` endpoint is used to view and update the license used in 
 Vault.
 
 ## Read License
 
 This endpoint returns information about the currently installed license.
 
-| Method | Path           |
-| :----- | :------------- |
-| `GET`  | `/sys/license` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/sys/license`                |
 
 ### Sample Request
 
@@ -37,11 +37,18 @@ $ curl \
 {
   "data": {
     "expiration_time": "2017-11-14T16:34:36.546753-05:00",
-    "features": ["UI", "HSM", "Performance Replication", "DR Replication"],
+    "features": [
+      "UI",
+      "HSM",
+      "Performance Replication",
+      "DR Replication"
+    ],
     "license_id": "temporary",
     "start_time": "2017-11-14T16:04:36.546753-05:00"
   },
-  "warnings": ["time left on license is 29m33s"]
+  "warnings": [
+    "time left on license is 29m33s"
+  ]
 }
 ```
 
@@ -49,17 +56,18 @@ $ curl \
 
 This endpoint is used to install a license into Vault.
 
-| Method | Path           |
-| :----- | :------------- |
-| `PUT`  | `/sys/license` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `PUT`    | `/sys/license`                |
 
 ### Parameters
 
 - `text` `(string: <required>)` – The text of the license.
 
-_DR Secondary Specific Parameters_
+*DR Secondary Specific Parameters*
 
-- `dr_operation_token` `(string: <required>)` - DR operation token used to authorize this request.
+  - `dr_operation_token` `(string: <required>)` - DR operation token used to authorize this request.
+
 
 ### Sample Payload
 

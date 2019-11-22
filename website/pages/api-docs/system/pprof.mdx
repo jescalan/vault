@@ -17,7 +17,7 @@ package.
 This endpoint returns an HTML page listing the available profiles.
 
 | Method | Path          |
-| :----- | :------------ |
+|:-------|:--------------|
 | `GET`  | `/sys/pprof/` |
 
 ### Sample Request
@@ -34,7 +34,7 @@ This endpoint returns the running program's command line, with arguments
 separated by NUL bytes.
 
 | Method | Path                 |
-| :----- | :------------------- |
+|:-------|:---------------------|
 | `GET`  | `/sys/pprof/cmdline` |
 
 ### Sample Request
@@ -50,7 +50,7 @@ $ curl \
 This endpoint returns stack traces of all current goroutines.
 
 | Method | Path                   |
-| :----- | :--------------------- |
+|:-------|:-----------------------|
 | `GET`  | `/sys/pprof/goroutine` |
 
 ### Sample Request
@@ -66,7 +66,7 @@ $ curl \
 This endpoint returns a sampling of memory allocations of live object.
 
 | Method | Path              |
-| :----- | :---------------- |
+|:-------|:------------------|
 | `GET`  | `/sys/pprof/heap` |
 
 ### Sample Request
@@ -84,12 +84,12 @@ lasts for duration specified in seconds GET parameter, or for 30 seconds
 if not specified.
 
 | Method | Path                 |
-| :----- | :------------------- |
+|:-------|:---------------------|
 | `GET`  | `/sys/pprof/profile` |
 
 ### Parameters
 
-- `seconds` `(int: 30)` - Specifies the duration to run the profiling
+- `seconds` `(int: 30)` - Specifies the duration to run the profiling 
   command. This value is specified as a query parameter.
 
 ### Sample Request
@@ -105,7 +105,7 @@ $ curl \
 This endpoint returns the program counters listed in the request.
 
 | Method | Path                |
-| :----- | :------------------ |
+|:-------|:--------------------|
 | `GET`  | `/sys/pprof/symbol` |
 
 ### Sample Request
@@ -116,6 +116,7 @@ $ curl \
     http://127.0.0.1:8200/v1/sys/pprof/symbol
 ```
 
+
 ## Trace
 
 This endpoint returns the execution trace in binary form. Tracing lasts
@@ -123,14 +124,14 @@ for duration specified in seconds GET parameter, or for 1 second if not
 specified.
 
 | Method | Path               |
-| :----- | :----------------- |
+|:-------|:-------------------|
 | `GET`  | `/sys/pprof/trace` |
 
 ### Parameters
 
-- `seconds` `(int: 1)` - Specifies the duration to run the tracing
+- `seconds` `(int: 1)` - Specifies the duration to run the tracing 
   command. This value is specified as a query parameter.
-
+  
 ### Sample Request
 
 ```

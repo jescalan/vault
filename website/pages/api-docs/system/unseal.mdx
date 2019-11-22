@@ -20,9 +20,9 @@ multiple times until that threshold is met.
 Either the `key` or `reset` parameter must be provided; if both are provided,
 `reset` takes precedence.
 
-| Method | Path          |
-| :----- | :------------ |
-| `PUT`  | `/sys/unseal` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `PUT`    | `/sys/unseal`                |
 
 ### Parameters
 
@@ -33,7 +33,7 @@ Either the `key` or `reset` parameter must be provided; if both are provided,
   discarded and the unseal process is reset.
 
 - `migrate` `(bool: false)` - Available in 1.0 - Used to migrate the seal
-  from shamir to autoseal or autoseal to shamir. Must be provided on all unseal
+  from shamir to autoseal or autoseal to shamir.  Must be provided on all unseal
   key calls.
 
 ### Sample Payload

@@ -18,9 +18,9 @@ This endpoint lists token accessor. This requires `sudo` capability, and access
 to it should be tightly controlled as the accessors can be used to revoke very
 large numbers of tokens and their associated leases at once.
 
-| Method | Path                    |
-| :----- | :---------------------- |
-| `LIST` | `/auth/token/accessors` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/token/accessors`      |
 
 ### Sample Request
 
@@ -59,16 +59,16 @@ token is not required to create an orphan token (otherwise set with the
 be created against the specified role name; this may override options set
 during this call.
 
-| Method | Path                            |
-| :----- | :------------------------------ |
-| `POST` | `/auth/token/create`            |
-| `POST` | `/auth/token/create-orphan`     |
-| `POST` | `/auth/token/create/:role_name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/token/create`         |
+| `POST`   | `/auth/token/create-orphan`  |
+| `POST`   | `/auth/token/create/:role_name`  |
 
 ### Parameters
 
 - `id` `(string: "")` – The ID of the client token. Can only be specified by a
-  root token. Otherwise, the token ID is a randomly generated value.
+  root token.  Otherwise, the token ID is a randomly generated value.
 - `role_name` `(string: "")` – The name of the token role.
 - `policies` `(array: "")` – A list of policies for the token. This must be a
   subset of the policies belonging to the token making the request, unless root.
@@ -80,7 +80,7 @@ during this call.
 - `no_default_policy` `(bool: false)` - If true the `default` policy will not be
   contained in this token's policy set.
 - `renewable` `(bool: true)` - Set to `false` to disable the ability of the token
-  to be renewed past its initial TTL. Setting the value to `true` will allow
+  to be renewed past its initial TTL.  Setting the value to `true` will allow
   the token to be renewable up to the system/mount maximum TTL.
 - `lease` `(string: "")` - DEPRECATED; use `ttl` instead
 - `ttl` `(string: "")` - The TTL period of the token, provided as "1h", where
@@ -90,7 +90,7 @@ during this call.
 - `type` `(string: "")` - The token type. Can be "batch" or "service". Defaults
   to the type specified by the role configuration named by `role_name`.
 - `explicit_max_ttl` `(string: "")` - If set, the token will have an explicit
-  max TTL set upon it. This maximum token TTL _cannot_ be changed later, and
+  max TTL set upon it. This maximum token TTL *cannot* be changed later, and
   unlike with normal tokens, updates to the system/mount max TTL value will
   have no effect at renewal time -- the token will never be able to be renewed
   or used past the value set at issue time.
@@ -101,16 +101,19 @@ during this call.
 - `period` `(string: "")` - If specified, the token will be periodic; it will have
   no maximum TTL (unless an "explicit-max-ttl" is also set) but every renewal
   will use the given period. Requires a root/sudo token to use.
-- `entity_alias` `(string: "")` - Name of the entity alias to associate with
-  during token creation. Only works in combination with `role_name` argument
-  and used entity alias must be listed in `allowed_entity_aliases`. If this has
-  been specified, the entity will not be inherited from the parent.
+- `entity_alias` `(string: "")` - Name of the entity alias to associate with 
+   during token creation. Only works in combination with `role_name` argument 
+   and used entity alias must be listed in `allowed_entity_aliases`. If this has 
+   been specified, the entity will not be inherited from the parent.
 
 ### Sample Payload
 
 ```json
 {
-  "policies": ["web", "stage"],
+  "policies": [
+    "web",
+    "stage"
+  ],
   "meta": {
     "user": "armon"
   },
@@ -146,8 +149,16 @@ $ curl \
   "auth": {
     "client_token": "s.wOrq9dO9kzOcuvB06CMviJhZ",
     "accessor": "B6oixijqmeR4bsLOJH88Ska9",
-    "policies": ["default", "stage", "web"],
-    "token_policies": ["default", "stage", "web"],
+    "policies": [
+      "default",
+      "stage",
+      "web"
+    ],
+    "token_policies": [
+      "default",
+      "stage",
+      "web"
+    ],
     "metadata": {
       "user": "armon"
     },
@@ -164,9 +175,9 @@ $ curl \
 
 Returns information about the client token.
 
-| Method | Path                 |
-| :----- | :------------------- |
-| `POST` | `/auth/token/lookup` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`  | `/auth/token/lookup`          |
 
 ### Parameters
 
@@ -203,7 +214,9 @@ $ curl \
     "expire_time": "2018-05-19T11:35:54.466476215-04:00",
     "explicit_max_ttl": 0,
     "id": "cf64a70f-3a12-3f6c-791d-6cef6d390eed",
-    "identity_policies": ["dev-group-policy"],
+    "identity_policies": [
+      "dev-group-policy"
+    ],
     "issue_time": "2018-04-17T11:35:54.466476078-04:00",
     "meta": {
       "username": "tesla"
@@ -211,7 +224,10 @@ $ curl \
     "num_uses": 0,
     "orphan": true,
     "path": "auth/ldap2/login/tesla",
-    "policies": ["default", "testgroup2-policy"],
+    "policies": [
+      "default",
+      "testgroup2-policy"
+    ],
     "renewable": true,
     "ttl": 2764790
   }
@@ -222,9 +238,9 @@ $ curl \
 
 Returns information about the current client token.
 
-| Method | Path                      |
-| :----- | :------------------------ |
-| `GET`  | `/auth/token/lookup-self` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`   | `/auth/token/lookup-self`     |
 
 ### Sample Request
 
@@ -247,7 +263,9 @@ $ curl \
     "expire_time": "2018-05-19T11:35:54.466476215-04:00",
     "explicit_max_ttl": 0,
     "id": "cf64a70f-3a12-3f6c-791d-6cef6d390eed",
-    "identity_policies": ["dev-group-policy"],
+    "identity_policies": [
+      "dev-group-policy"
+    ],
     "issue_time": "2018-04-17T11:35:54.466476078-04:00",
     "meta": {
       "username": "tesla"
@@ -255,20 +273,23 @@ $ curl \
     "num_uses": 0,
     "orphan": true,
     "path": "auth/ldap2/login/tesla",
-    "policies": ["default", "testgroup2-policy"],
+    "policies": [
+      "default",
+      "testgroup2-policy"
+    ],
     "renewable": true,
     "ttl": 2764790
   }
 }
 ```
 
-## Lookup a Token Accessor
+## Lookup a Token (Accessor)
 
 Returns information about the client token from the accessor.
 
-| Method | Path                          |
-| :----- | :---------------------------- |
-| `POST` | `/auth/token/lookup-accessor` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`  | `/auth/token/lookup-accessor`          |
 
 ### Parameters
 
@@ -305,7 +326,9 @@ $ curl \
     "expire_time": "2018-05-19T11:35:54.466476215-04:00",
     "explicit_max_ttl": 0,
     "id": "",
-    "identity_policies": ["dev-group-policy"],
+    "identity_policies": [
+      "dev-group-policy"
+    ],
     "issue_time": "2018-04-17T11:35:54.466476078-04:00",
     "meta": {
       "username": "tesla"
@@ -313,7 +336,10 @@ $ curl \
     "num_uses": 0,
     "orphan": true,
     "path": "auth/ldap2/login/tesla",
-    "policies": ["default", "testgroup2-policy"],
+    "policies": [
+      "default",
+      "testgroup2-policy"
+    ],
     "renewable": true,
     "ttl": 2763902
   }
@@ -326,9 +352,9 @@ Renews a lease associated with a token. This is used to prevent the expiration
 of a token, and the automatic revocation of it. Token renewal is possible only
 if there is a lease associated with it.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `POST` | `/auth/token/renew` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/token/renew`          |
 
 ### Parameters
 
@@ -361,7 +387,10 @@ $ curl \
 {
   "auth": {
     "client_token": "ABCD",
-    "policies": ["web", "stage"],
+    "policies": [
+      "web",
+      "stage"
+    ],
     "metadata": {
       "user": "armon"
     },
@@ -377,9 +406,9 @@ Renews a lease associated with the calling token. This is used to prevent the
 expiration of a token, and the automatic revocation of it. Token renewal is
 possible only if there is a lease associated with it.
 
-| Method | Path                     |
-| :----- | :----------------------- |
-| `POST` | `/auth/token/renew-self` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/token/renew-self`     |
 
 ### Parameters
 
@@ -410,7 +439,64 @@ $ curl \
 {
   "auth": {
     "client_token": "ABCD",
-    "policies": ["web", "stage"],
+    "policies": [
+      "web",
+      "stage"
+    ],
+    "metadata": {
+      "user": "armon"
+    },
+    "lease_duration": 3600,
+    "renewable": true
+  }
+}
+```
+
+## Renew a Token (Accessor)
+
+Renews a lease associated with a token using its accessor. This is used to
+prevent the expiration of a token, and the automatic revocation of it. Token
+renewal is possible only if there is a lease associated with it.
+
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/token/renew-accessor`          |
+
+### Parameters
+
+- `accessor` `(string: <required>)` - Accessor associated with the token to
+renew.
+- `increment` `(string: "")` - An optional requested lease increment can be
+provided. This increment may be ignored.
+
+### Sample Payload
+
+```json
+{
+  "accessor": "7JFKXuXKXa2D44YfDiovZ9aq"
+}
+```
+
+### Sample Request
+
+```
+$ curl \
+    --header "X-Vault-Token: ..." \
+    --request POST \
+    --data @payload.json \
+    http://127.0.0.1:8200/v1/auth/token/renew-accessor
+```
+
+### Sample Response
+
+```json
+{
+  "auth": {
+    "client_token": "",
+    "policies": [
+      "web",
+      "stage"
+    ],
     "metadata": {
       "user": "armon"
     },
@@ -425,9 +511,9 @@ $ curl \
 Revokes a token and all child tokens. When the token is revoked, all dynamic secrets
 generated with it are also revoked.
 
-| Method | Path                 |
-| :----- | :------------------- |
-| `POST` | `/auth/token/revoke` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/token/revoke`         |
 
 ### Parameters
 
@@ -456,9 +542,9 @@ $ curl \
 Revokes the token used to call it and all child tokens. When the token is
 revoked, all dynamic secrets generated with it are also revoked.
 
-| Method | Path                      |
-| :----- | :------------------------ |
-| `POST` | `/auth/token/revoke-self` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/token/revoke-self`     |
 
 ### Sample Request
 
@@ -471,13 +557,13 @@ $ curl \
 
 ## Revoke a Token Accessor
 
-Revoke the token associated with the accessor and all the child tokens. This is
+Revoke the token associated with the accessor and all the child tokens.  This is
 meant for purposes where there is no access to token ID but there is need to
 revoke a token and its children.
 
-| Method | Path                          |
-| :----- | :---------------------------- |
-| `POST` | `/auth/token/revoke-accessor` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/token/revoke-accessor` |
 
 ### Parameters
 
@@ -508,9 +594,9 @@ generated with it are also revoked. All child tokens are orphaned, but can be
 revoked sub-sequently using `/auth/token/revoke/`. This is a root-protected
 endpoint.
 
-| Method | Path                        |
-| :----- | :-------------------------- |
-| `POST` | `/auth/token/revoke-orphan` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/token/revoke-orphan`          |
 
 ### Parameters
 
@@ -539,9 +625,9 @@ $ curl \
 
 Fetches the named role configuration.
 
-| Method | Path                           |
-| :----- | :----------------------------- |
-| `GET`  | `/auth/token/roles/:role_name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`   | `/auth/token/roles/:role_name`|
 
 ### Parameters
 
@@ -587,9 +673,9 @@ $ curl \
 
 List available token roles.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `LIST` | `/auth/token/roles` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/token/roles`          |
 
 ### Sample Request
 
@@ -605,7 +691,10 @@ $ curl \
 ```json
 {
   "data": {
-    "keys": ["role1", "role2"]
+    "keys": [
+      "role1",
+      "role2"
+    ]
   }
 }
 ```
@@ -620,9 +709,9 @@ endpoints. The role name is also included in the token path, allowing all
 tokens created against a role to be revoked using the
 `/sys/leases/revoke-prefix` endpoint.
 
-| Method | Path                           |
-| :----- | :----------------------------- |
-| `POST` | `/auth/token/roles/:role_name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/token/roles/:role_name` |
 
 ### Parameters
 
@@ -643,7 +732,7 @@ tokens created against a role to be revoked using the
   be orphan tokens (they will have no parent). As such, they will not be
   automatically revoked by the revocation of any other token.
 - `renewable` `(bool: true)` - Set to `false` to disable the ability of the token
-  to be renewed past its initial TTL. Setting the value to `true` will allow
+  to be renewed past its initial TTL.  Setting the value to `true` will allow
   the token to be renewable up to the system/mount maximum TTL.
 - `path_suffix` `(string: "")` - If set, tokens created against this role will
   have the given suffix as part of their path in addition to the role name. This
@@ -652,9 +741,9 @@ tokens created against a role to be revoked using the
   The suffix can be changed, allowing new callers to have the new suffix as part
   of their path, and then tokens with the old suffix can be revoked via
   `/sys/leases/revoke-prefix`.
-- `allowed_entity_aliases` `(string: "", or list: [])` - String or JSON list
-  of allowed entity aliases. If set, specifies the entity aliases which are
-  allowed to be used during token generation. This field supports globbing.
+- `allowed_entity_aliases` `(string: "", or list: [])` - String or JSON list 
+  of allowed entity aliases. If set, specifies the entity aliases which are 
+  allowed to be used during token generation. This field supports globbing. 
 
 @include 'partials/tokenstorefields.mdx'
 
@@ -685,8 +774,8 @@ $ curl \
 
 This endpoint deletes the named token role.
 
-| Method   | Path                           |
-| :------- | :----------------------------- |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
 | `DELETE` | `/auth/token/roles/:role_name` |
 
 ### Parameters
@@ -709,9 +798,9 @@ in the token store. Generally, running this is not needed unless upgrade
 notes or support personnel suggest it. This may perform a lot of I/O to the
 storage method so should be used sparingly.
 
-| Method | Path               |
-| :----- | :----------------- |
-| `POST` | `/auth/token/tidy` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/token/tidy`           |
 
 ### Sample Request
 

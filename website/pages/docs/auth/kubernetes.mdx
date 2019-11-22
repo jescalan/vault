@@ -21,6 +21,7 @@ introduce a Vault token into a Kubernetes Pod.
 The default path is `/kubernetes`. If this auth method was enabled at a
 different path, specify `-path=/my-path` in the CLI.
 
+
 ```text
 $ vault write auth/kubernetes/login role=demo jwt=...
 ```
@@ -44,7 +45,9 @@ The response will contain a token at `auth.client_token`:
   "auth": {
     "client_token": "38fe9691-e623-7238-f618-c94d4e7bc674",
     "accessor": "78e87a38-84ed-2692-538f-ca8b9f400ab3",
-    "policies": ["default"],
+    "policies": [
+      "default"
+    ],
     "metadata": {
       "role": "demo",
       "service_account_name": "vault-auth",
@@ -64,45 +67,47 @@ Auth methods must be configured in advance before users or machines can
 authenticate. These steps are usually completed by an operator or configuration
 management tool.
 
-1.  Enable the Kubernetes auth method:
+
+1. Enable the Kubernetes auth method:
 
     ```text
     $ vault auth enable kubernetes
     ```
 
-1.  Use the `/config` endpoint to configure Vault to talk to Kubernetes. For the
-    list of available configuration options, please see the API documentation.
+1. Use the `/config` endpoint to configure Vault to talk to Kubernetes. For the
+list of available configuration options, please see the API documentation.
 
-        ```text
-        $ vault write auth/kubernetes/config \
-            token_reviewer_jwt="reviewer_service_account_jwt" \
-            kubernetes_host=https://192.168.99.100:8443 \
-            kubernetes_ca_cert=@ca.crt
-        ```
+    ```text
+    $ vault write auth/kubernetes/config \
+        token_reviewer_jwt="reviewer_service_account_jwt" \
+        kubernetes_host=https://192.168.99.100:8443 \
+        kubernetes_ca_cert=@ca.crt
+    ```
 
-        !> **NOTE:** The pattern Vault uses to authenticate Pods depends on sharing
-        the JWT token over the network. Given the [security model of
-        Vault](/docs/internals/security.html), this is allowable because Vault is
-        part of the trusted compute base. In general, Kubernetes applications should
-        **not** share this JWT with other applications, as it allows API calls to be
-        made on behalf of the Pod and can result in unintended access being granted
-        to 3rd parties.
+    !> **NOTE:** The pattern Vault uses to authenticate Pods depends on sharing
+    the JWT token over the network. Given the [security model of
+    Vault](/docs/internals/security.html), this is allowable because Vault is
+    part of the trusted compute base. In general, Kubernetes applications should
+    **not** share this JWT with other applications, as it allows API calls to be
+    made on behalf of the Pod and can result in unintended access being granted
+    to 3rd parties.
 
-1) Create a named role:
 
-   ```text
-   vault write auth/kubernetes/role/demo \
-       bound_service_account_names=vault-auth \
-       bound_service_account_namespaces=default \
-       policies=default \
-       ttl=1h
-   ```
+1. Create a named role:
 
-   This role authorizes the "vault-auth" service account in the default
-   namespace and it gives it the default policy.
+    ```text
+    vault write auth/kubernetes/role/demo \
+        bound_service_account_names=vault-auth \
+        bound_service_account_namespaces=default \
+        policies=default \
+        ttl=1h
+    ```
 
-   For the complete list of configuration options, please see the API
-   documentation.
+    This role authorizes the "vault-auth" service account in the default
+    namespace and it gives it the default policy.
+
+    For the complete list of configuration options, please see the API
+    documentation.
 
 ## Configuring Kubernetes
 
@@ -129,9 +134,9 @@ roleRef:
   kind: ClusterRole
   name: system:auth-delegator
 subjects:
-  - kind: ServiceAccount
-    name: vault-auth
-    namespace: default
+- kind: ServiceAccount
+  name: vault-auth
+  namespace: default
 ```
 
 ## API

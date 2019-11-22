@@ -1,4 +1,5 @@
 ---
+layout: intro
 page_title: Deploy Vault - Getting Started
 sidebar_title: Deploy Vault
 sidebar_current: gettingstarted-deploy
@@ -74,8 +75,8 @@ $ vault server -config=config.hcl
 ```
 
 -> If you get a warning message about mlock not being supported, that is okay.
-However, you should run Vault on a system that supports mlock for maximum
-security.
+ However, you should run Vault on a system that supports mlock for maximum
+ security.
 
 Vault outputs some information about its configuration, and then blocks.
 This process should be run using a resource manager such as systemd or
@@ -111,7 +112,8 @@ before. When running in HA mode, this happens once _per cluster_, not _per
 server_.
 
 During initialization, the encryption keys are generated, unseal keys are
-created, and the initial root token is setup. To initialize Vault use `vault operator init`. This is an _unauthenticated_ request, but it only works on brand new
+created, and the initial root token is setup. To initialize Vault use `vault
+operator init`. This is an _unauthenticated_ request, but it only works on brand new
 Vaults with no data:
 
 ```text

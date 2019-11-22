@@ -14,9 +14,9 @@ The `/sys/mounts` endpoint is used manage secrets engines in Vault.
 
 This endpoints lists all the mounted secrets engines.
 
-| Method | Path          |
-| :----- | :------------ |
-| `GET`  | `/sys/mounts` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/sys/mounts`                |
 
 ### Sample Request
 
@@ -27,7 +27,6 @@ $ curl \
 ```
 
 ### Sample Response
-
 ```json
 {
   "aws/": {
@@ -70,7 +69,7 @@ $ curl \
         "force_no_cache": false,
         "seal_wrap": false
       }
-    }
+    },
   }
 }
 ```
@@ -82,16 +81,16 @@ are used by this backend.
 
 This endpoint enables a new secrets engine at the given path.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `POST` | `/sys/mounts/:path` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/mounts/:path`          |
 
 ### Parameters
 
 - `path` `(string: <required>)` – Specifies the path where the secrets engine
   will be mounted. This is specified as part of the URL.
 
-  !> **NOTE:** Use ASCII printable characters to specify the desired path.
+    !> **NOTE:** Use ASCII printable characters to specify the desired path.
 
 - `type` `(string: <required>)` – Specifies the type of the backend, such as
   "aws".
@@ -119,7 +118,7 @@ This endpoint enables a new secrets engine at the given path.
 
   - `listing_visibility` `(string: "")` - Specifies whether to show this mount
     in the UI-specific listing endpoint. Valid values are `"unauth"` or
-    `"hidden"`. If not set, behaves like `"hidden"`.
+    `"hidden"`.  If not set, behaves like `"hidden"`.
 
   - `passthrough_request_headers` `(array: [])` - Comma-separated list of headers
     to whitelist and pass from the request to the plugin.
@@ -130,8 +129,7 @@ This endpoint enables a new secrets engine at the given path.
 - `options` `(map<string|string>: nil)` - Specifies mount type specific options
   that are passed to the backend.
 
-  _Key/Value (KV)_
-
+  *Key/Value (KV)*
   - `version` `(string: "1")` - The version of the KV to mount. Set to "2" for mount
     KV v2.
 
@@ -144,6 +142,9 @@ relevant functionality is only supported in Vault Enterprise:
 
 - `seal_wrap` `(bool: false)` - Enable seal wrapping for the mount, causing
   values stored by the mount to be wrapped by the seal's encryption capability.
+  
+- `external_entropy_access` `(bool: false)` - Enable the secrets engine to access
+  Vault's external entropy source.
 
 ### Sample Payload
 
@@ -170,9 +171,9 @@ $ curl \
 
 This endpoint disables the mount point specified in the URL.
 
-| Method   | Path                |
-| :------- | :------------------ |
-| `DELETE` | `/sys/mounts/:path` | `204 (empty body)` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `DELETE` | `/sys/mounts/:path`          | `204 (empty body)    ` |
 
 ### Sample Request
 
@@ -189,9 +190,9 @@ This endpoint reads the given mount's configuration. Unlike the `mounts`
 endpoint, this will return the current time in seconds for each TTL, which may
 be the system default or a mount-specific value.
 
-| Method | Path                     |
-| :----- | :----------------------- |
-| `GET`  | `/sys/mounts/:path/tune` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`   | `/sys/mounts/:path/tune`      |
 
 ### Sample Request
 
@@ -215,9 +216,9 @@ $ curl \
 
 This endpoint tunes configuration parameters for a given mount point.
 
-| Method | Path                     |
-| :----- | :----------------------- |
-| `POST` | `/sys/mounts/:path/tune` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/mounts/:path/tune`     |
 
 ### Parameters
 

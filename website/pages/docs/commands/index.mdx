@@ -85,11 +85,11 @@ and the args always follow the path to set API parameter values.
 The Vault CLI aims to be consistent and well-behaved unless documented
 otherwise.
 
-- Local errors such as incorrect flags, failed validations, or wrong numbers
-  of arguments return an exit code of 1.
+  - Local errors such as incorrect flags, failed validations, or wrong numbers
+    of arguments return an exit code of 1.
 
-- Any remote errors such as API failures, bad TLS, or incorrect API parameters
-  return an exit status of 2
+  - Any remote errors such as API failures, bad TLS, or incorrect API parameters
+    return an exit status of 2
 
 Some commands override this default where it makes sense. These commands
 document this anomaly.
@@ -129,6 +129,7 @@ and `kv put`, respectively.
 ~> The original version of K/V used the common `read` and `write` operations.
 A more advanced K/V Version 2 engine was released in Vault 0.10 and introduced
 the `kv get` and `kv put` commands.
+
 
 ### Writing Data
 
@@ -276,10 +277,10 @@ sends requests to Vault.
 This environment variable has the format `rate[:burst]` (where items in `[]` are
 optional). If not specified, the burst value defaults to rate. Both rate and
 burst are specified in "operations per second". If the environment variable is
-not specified, then the rate and burst will be unlimited _i.e._ rate
+not specified, then the rate and burst will be unlimited *i.e.* rate
 limiting is off by default.
 
-_Note:_ The rate is limited for each invocation of the `vault` CLI. Since
+*Note:* The rate is limited for each invocation of the `vault` CLI. Since
 each invocation of the `vault` CLI typically only makes a few requests,
 this environment variable is most useful when using the Go
 [Vault client API](https://www.vaultproject.io/api/libraries.html#go).

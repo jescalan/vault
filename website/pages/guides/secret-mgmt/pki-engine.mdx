@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Build Your Own Certificate Authority - Guides
 sidebar_title: Build Your Own CA
 sidebar_current: guides-secret-mgmt-pki
@@ -19,22 +20,26 @@ usual manual process of generating a private key and Certificates Signing
 Request (CSR), submitting to a CA, and then wait for the verification and
 signing process to complete.
 
+
 ## Reference Material
 
 - [PKI (Certificates) Secrets Engine](/docs/secrets/pki/index.html)
 - [PKI Secrets Engine (API)](/api/secret/pki/index.html)
 - [RFC 5280 Internet X.509 Public Key Infrastructure Certificate and Certificate
-  Revocation List (CRL) Profile](https://tools.ietf.org/html/rfc5280)
+Revocation List (CRL) Profile](https://tools.ietf.org/html/rfc5280)
 - [OpenSSL x509 Man Pages](https://www.openssl.org/docs/man1.1.0/apps/x509.html)
+
 
 ## Estimated Time to Complete
 
 15 minutes
 
+
 ## Personas
 
 The steps described in this guide are typically performed by **security
 engineer**.
+
 
 ## Challenge
 
@@ -42,19 +47,20 @@ Organizations should protect their website; however, the Traditional PKI process
 workflow takes a long time which motivates organizations to create certificates
 which do not expire for a year or more.
 
+
 ## Solution
 
 Use Vault to create X509 certificates for usage in MTLS or other arbitrary PKI
-encryption. While this can be used to create web server certificates. If
+encryption.   While this can be used to create web server certificates.  If
 users do not import the CA chains, the browser will complain about self-signed
 certificates.
 
 Creating PKI certificates is generally a cumbersome process using traditional
-tools like `openssl` or even more advanced frameworks like CFSSL. These tools
+tools like `openssl` or even more advanced frameworks like CFSSL.   These tools
 also require a human component to verify certificate distribution meets
-organizational security policies.
+organizational security policies.   
 
-Vault PKI secrets engine makes this a lot simpler. The PKI secrets engine can
+Vault PKI secrets engine makes this a lot simpler.  The PKI secrets engine can
 be an Intermediate-Only certificate authority which potentially allows for
 higher levels of security.
 
@@ -63,15 +69,17 @@ higher levels of security.
 1. Sign CSR outside Vault and import intermediate
 1. Issue leaf certificates from the Intermediate CA
 
+
 ## Prerequisites
 
 To perform the tasks described in this guide, you need to have a Vault
-environment. Refer to the [Getting
+environment.  Refer to the [Getting
 Started](/intro/getting-started/install.html) guide to install Vault.
 
 Alternatively, you can use the [Vault
 Playground](https://www.katacoda.com/hashicorp/scenarios/vault-playground)
 environment.
+
 
 ### <a name="policy"></a>Policy requirements
 
@@ -103,6 +111,7 @@ path "pki*" {
 If you are not familiar with policies, complete the
 [policies](/guides/identity/policies.html) guide.
 
+
 ## Steps
 
 In this guide, you are going to first generate a self-signed root certificate.
@@ -121,6 +130,8 @@ In this guide, you perform the following:
 1. [Revoke Certificates](#step5)
 1. [Remove Expired Certificates](#step6)
 
+
+
 ### <a name="step1"></a>Step 1: Generate Root CA
 
 In this step, you are going to generate a self-signed root certificate using
@@ -130,39 +141,39 @@ PKI secrets engine.
 
 1. First, enable the `pki` secrets engine at `pki` path:
 
-   ```plaintext
-   $ vault secrets enable pki
-   ```
+    ```plaintext
+    $ vault secrets enable pki
+    ```
 
 1. Tune the `pki` secrets engine to issue certificates with a maximum time-to-live (TTL) of 87600 hours.
 
-   ```plaintext
-   $ vault secrets tune -max-lease-ttl=87600h pki
-   ```
+    ```plaintext
+    $ vault secrets tune -max-lease-ttl=87600h pki
+    ```
 
-1. Generate the **_root_** certificate and save the certificate in `CA_cert.crt`.
+1. Generate the ***root*** certificate and save the certificate in `CA_cert.crt`.
 
-   ```plaintext
-   $ vault write -field=certificate pki/root/generate/internal common_name="example.com" \
-           ttl=87600h > CA_cert.crt
-   ```
+    ```plaintext
+    $ vault write -field=certificate pki/root/generate/internal common_name="example.com" \
+            ttl=87600h > CA_cert.crt
+    ```
 
-   This generates a new self-signed CA certificate and private key. Vault will
-   _automatically_ revoke the generated root at the end of its lease period
-   (TTL); the CA certificate will sign its own Certificate Revocation List
-   (CRL).
+    This generates a new self-signed CA certificate and private key. Vault will
+    _automatically_ revoke the generated root at the end of its lease period
+    (TTL); the CA certificate will sign its own Certificate Revocation List
+    (CRL).
 
 1. Configure the CA and CRL URLs:
 
-   ```plaintext
-   $ vault write pki/config/urls \
-           issuing_certificates="http://127.0.0.1:8200/v1/pki/ca" \
-           crl_distribution_points="http://127.0.0.1:8200/v1/pki/crl"
-   ```
+    ```plaintext
+    $ vault write pki/config/urls \
+            issuing_certificates="http://127.0.0.1:8200/v1/pki/ca" \
+            crl_distribution_points="http://127.0.0.1:8200/v1/pki/crl"
+    ```
 
 #### API call using cURL
 
-1.  First, enable the `pki` secrets engine at `pki` path using `/sys/mounts` endpoint:
+1. First, enable the `pki` secrets engine at `pki` path using `/sys/mounts` endpoint:
 
     ```plaintext
     $ curl --header "X-Vault-Token: <TOKEN>" \
@@ -185,44 +196,44 @@ PKI secrets engine.
            https://127.0.0.1:8200/v1/sys/mounts/pki
     ```
 
-1.  Tune the `pki` secrets engine to issue certificates with a maximum
-    time-to-live (TTL) of 87600 hours.
+1. Tune the `pki` secrets engine to issue certificates with a maximum
+time-to-live (TTL) of 87600 hours.
 
-        ```plaintext
-        $ curl --header "X-Vault-Token: ..." \
-               --request POST \
-               --data '{"max_lease_ttl":"87600h"}' \
-               https://127.0.0.1:8200/v1/sys/mounts/pki/tune
-        ```
+    ```plaintext
+    $ curl --header "X-Vault-Token: ..." \
+           --request POST \
+           --data '{"max_lease_ttl":"87600h"}' \
+           https://127.0.0.1:8200/v1/sys/mounts/pki/tune
+    ```
 
-1.  Generate the **_root_** certificate and extract the CA certificate and save
-    it as `CA_cert.crt`.
+1. Generate the ***root*** certificate and extract the CA certificate and save
+it as `CA_cert.crt`.
 
-        > **NOTE:** The following command uses `jq` tool to parse the output JSON.
-        You can install [`jq`](https://stedolan.github.io/jq/download/) or manually
-        copy and paste the certificate in a file, `CA_cert.crt`.
+    > **NOTE:** The following command uses `jq` tool to parse the output JSON.
+    You can install [`jq`](https://stedolan.github.io/jq/download/) or manually
+    copy and paste the certificate in a file, `CA_cert.crt`.
 
-        ```plaintext
-        $ tee payload.json <<EOF
-        {
-          "common_name": "example.com",
-          "ttl": "87600h"
-        }
-        EOF
+    ```plaintext
+    $ tee payload.json <<EOF
+    {
+      "common_name": "example.com",
+      "ttl": "87600h"
+    }
+    EOF
 
-        $ curl --header "X-Vault-Token: ..." \
-               --request POST \
-               --data @payload.json \
-               https://127.0.0.1:8200/v1/pki/root/generate/internal \
-               | jq -r ".data.certificate" > CA_cert.crt
-        ```
+    $ curl --header "X-Vault-Token: ..." \
+           --request POST \
+           --data @payload.json \
+           https://127.0.0.1:8200/v1/pki/root/generate/internal \
+           | jq -r ".data.certificate" > CA_cert.crt
+    ```
 
-        This generates a new self-signed CA certificate and private key. Vault will
-        _automatically_ revoke the generated root at the end of its lease period
-        (TTL); the CA certificate will sign its own Certificate Revocation List
-        (CRL).
+    This generates a new self-signed CA certificate and private key. Vault will
+    _automatically_ revoke the generated root at the end of its lease period
+    (TTL); the CA certificate will sign its own Certificate Revocation List
+    (CRL).
 
-1.  Configure the CA and CRL URLs:
+1. Configure the CA and CRL URLs:
 
     ```plaintext
     $ tee payload-url.json <<EOF
@@ -238,6 +249,7 @@ PKI secrets engine.
            https://127.0.0.1:8200/v1/pki/config/urls
     ```
 
+
 #### Web UI
 
 Open a web browser and launch the Vault UI (e.g. http://127.0.0.1:8200/ui) and
@@ -249,15 +261,15 @@ then login.
 1. Click **Enable Engine**.
 1. Select **Configure**.
 1. Click **Configure CA**.
-1. Leave **CA Type** as **root**, and **Type** to be **internal**. Enter
-   **`example.com`** in the **Common Name** field.
+1. Leave **CA Type** as **root**, and **Type** to be **internal**.  Enter
+**`example.com`** in the **Common Name** field.
 1. Select **Options** and then set **TTL** field to be **87600 hours**.
 1. Click **Save**.
 1. Click **Copy Certificate** and save it in a file named, **`CA_cert.crt`**.
 1. Click the **URLs** tab, and then set:
-   - Issuing certificates: `http://127.0.0.1:8200/v1/pki/ca`
-   - CRL Distribution Points: `http://127.0.0.1:8200/v1/pki/crl`
-     ![Configure URL](/img/vault-pki-1.png)
+    - Issuing certificates: `http://127.0.0.1:8200/v1/pki/ca`
+    - CRL Distribution Points: `http://127.0.0.1:8200/v1/pki/crl`
+    ![Configure URL](/img/vault-pki-1.png)
 1. Click **Save**.
 
 <br />
@@ -265,13 +277,14 @@ then login.
 -> **NOTE:** To examine the generated root certificate, you can use
 [OpenSSL](https://www.openssl.org/source/).
 
-```shell
-# Print the certificate in text form
-$ openssl x509 -in CA_cert.crt -text
+  ```shell
+  # Print the certificate in text form
+  $ openssl x509 -in CA_cert.crt -text
 
-# Print the validity dates
-$ openssl x509 -in CA_cert.crt -noout -dates
-```
+  # Print the validity dates
+  $ openssl x509 -in CA_cert.crt -noout -dates
+  ```
+
 
 ### <a name="step2"></a>Step 2: Generate Intermediate CA
 
@@ -280,47 +293,49 @@ in the previous step.
 
 #### CLI Command
 
-1.  First, enable the `pki` secrets engine at **`pki_int`** path:
+1. First, enable the `pki` secrets engine at **`pki_int`** path:
 
     ```plaintext
     $ vault secrets enable -path=pki_int pki
     ```
 
-1.  Tune the `pki_int` secrets engine to issue certificates with a maximum
-    time-to-live (TTL) of 43800 hours.
+1. Tune the `pki_int` secrets engine to issue certificates with a maximum
+time-to-live (TTL) of 43800 hours.
 
-        ```plaintext
-        $ vault secrets tune -max-lease-ttl=43800h pki_int
-        ```
+    ```plaintext
+    $ vault secrets tune -max-lease-ttl=43800h pki_int
+    ```
 
-1.  Execute the following command to generate an intermediate and save the CSR as
-    `pki_intermediate.csr`:
+1. Execute the following command to generate an intermediate and save the CSR as
+`pki_intermediate.csr`:
 
-        ```plaintext
-        $ vault write -format=json pki_int/intermediate/generate/internal \
-                common_name="example.com Intermediate Authority" ttl="43800h" \
-                | jq -r '.data.csr' > pki_intermediate.csr
-        ```
+    ```plaintext
+    $ vault write -format=json pki_int/intermediate/generate/internal \
+            common_name="example.com Intermediate Authority" ttl="43800h" \
+            | jq -r '.data.csr' > pki_intermediate.csr
+    ```
 
-1.  Sign the intermediate certificate with the root certificate and save the
-    generated certificate as `intermediate.cert.pem`:
+1. Sign the intermediate certificate with the root certificate and save the
+generated certificate as `intermediate.cert.pem`:
 
-        ```plaintext
-        $ vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \
-                format=pem_bundle ttl="43800h" \
-                | jq -r '.data.certificate' > intermediate.cert.pem
-        ```
+    ```plaintext
+    $ vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \
+            format=pem_bundle ttl="43800h" \
+            | jq -r '.data.certificate' > intermediate.cert.pem
+    ```
 
-1.  Once the CSR is signed and the root CA returns a certificate, it can be
-    imported back into Vault:
+1. Once the CSR is signed and the root CA returns a certificate, it can be
+  imported back into Vault:
 
     ```plaintext
     $ vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem
     ```
 
+
 #### API call using cURL
 
-1.  First, enable the `pki` secrets engine at **`pki_int`** path:
+
+1. First, enable the `pki` secrets engine at **`pki_int`** path:
 
     **Example:**
 
@@ -331,90 +346,92 @@ in the previous step.
            https://127.0.0.1:8200/v1/sys/mounts/pki_int
     ```
 
-1.  Tune the `pki_int` secrets engine to issue certificates with a maximum
-    time-to-live (TTL) of 43800 hours.
+1. Tune the `pki_int` secrets engine to issue certificates with a maximum
+time-to-live (TTL) of 43800 hours.
 
-        ```plaintext
-        $ curl --header "X-Vault-Token: ..." \
-               --request POST \
-               --data '{"max_lease_ttl":"43800h"}' \
-               https://127.0.0.1:8200/v1/sys/mounts/pki_int/tune
-        ```
+    ```plaintext
+    $ curl --header "X-Vault-Token: ..." \
+           --request POST \
+           --data '{"max_lease_ttl":"43800h"}' \
+           https://127.0.0.1:8200/v1/sys/mounts/pki_int/tune
+    ```
 
-1.  Generate an intermediate using the `/pki_int/intermediate/generate/internal`
-    endpoint.
+1. Generate an intermediate using the `/pki_int/intermediate/generate/internal`
+endpoint.
 
-        ```plaintext
-        $ tee payload-int.json <<EOF
-        {
-          "common_name": "example.com Intermediate Authority",
-          "ttl": "43800h"
-        }
-        EOF
+    ```plaintext
+    $ tee payload-int.json <<EOF
+    {
+      "common_name": "example.com Intermediate Authority",
+      "ttl": "43800h"
+    }
+    EOF
 
-        $ curl --header "X-Vault-Token: ..." \
-               --request POST \
-               --data @payload-int.json \
-               https://127.0.0.1:8200/v1/pki_int/intermediate/generate/internal | jq
-        ```
+    $ curl --header "X-Vault-Token: ..." \
+           --request POST \
+           --data @payload-int.json \
+           https://127.0.0.1:8200/v1/pki_int/intermediate/generate/internal | jq
+    ```
 
-        Copy the generated CSR.
+    Copy the generated CSR.
 
-1.  Sign the intermediate certificate with the root certificate and save the
-    certificate as `intermediate.cert.pem`.
+1. Sign the intermediate certificate with the root certificate and save the
+certificate as `intermediate.cert.pem`.  
 
-        -> **NOTE:** The API request payload should contain the CSR you obtained.
+    -> **NOTE:** The API request payload should contain the CSR you obtained.
 
-        ```plaintext
-        $ tee payload-int-cert.json <<EOF
-        {
-          "csr": "...",
-          "format": "pem_bundle",
-          "ttl": "43800h"
-        }
-        EOF
+    ```plaintext
+    $ tee payload-int-cert.json <<EOF
+    {
+      "csr": "...",
+      "format": "pem_bundle",
+      "ttl": "43800h"
+    }
+    EOF
 
-        $ curl --header "X-Vault-Token: ..." \
-               --request POST \
-               --data @payload-int-cert.json \
-               https://127.0.0.1:8200/v1/pki/root/sign-intermediate | jq
-        ```
+    $ curl --header "X-Vault-Token: ..." \
+           --request POST \
+           --data @payload-int-cert.json \
+           https://127.0.0.1:8200/v1/pki/root/sign-intermediate | jq
+    ```
 
-        > **NOTE:** The **`format`** in the payload specifies the format of the
-        returned data.  When `pem_bundle`, the certificate field will contain the
-        certificate.
+    > **NOTE:** The **`format`** in the payload specifies the format of the
+    returned data.  When `pem_bundle`, the certificate field will contain the
+    certificate.
 
-        Copy the generated certificate.
+    Copy the generated certificate.
 
-1.  Once the CSR is signed and the root CA returns a certificate, it can be
-    imported back into Vault using the `/pki_int/intermediate/set-signed` endpoint.
+1. Once the CSR is signed and the root CA returns a certificate, it can be
+imported back into Vault using the `/pki_int/intermediate/set-signed` endpoint.
 
-        -> **NOTE:** The API request payload should contain the certificate you
-        obtained.
+    -> **NOTE:** The API request payload should contain the certificate you
+    obtained.
 
-        ```plaintext
-        $ tee payload-signed.json <<EOF
-        {
-          "certificate": "..."
-        }
-        EOF
+    ```plaintext
+    $ tee payload-signed.json <<EOF
+    {
+      "certificate": "..."
+    }
+    EOF
 
-        $ curl --header "X-Vault-Token: ..." \
-               --request POST \
-               --data @payload-signed.json \
-               https://127.0.0.1:8200/v1/pki_int/intermediate/set-signed
-        ```
+    $ curl --header "X-Vault-Token: ..." \
+           --request POST \
+           --data @payload-signed.json \
+           https://127.0.0.1:8200/v1/pki_int/intermediate/set-signed
+    ```
+
 
 #### Web UI
 
 1. Select **Enable new engine** in the **Secrets** tab.
 1. Select **PKI** from the **Secrets engine type** drop-down list.
 1. Enter **`pki_int`** in the **Path** field.
-1. Click **More options** to expand and set the **Maximum lease TTL** to **`43800 hours`**.
+1. Click **More options** to expand and set the **Maximum lease TTL** to **`43800
+hours`**.
 1. Click **Enable Engine**.
 1. Select **Configure**.
 1. Click **Configure CA**.
-1. Select **intermediate** from **CA Type** drop-down list.
+1. Select **intermediate** from **CA Type** drop-down list.  
 1. Enter **`example.com Intermediate Authority`** in the **Common Name** field.
 1. Enter **`43800`** in the **TTL** field, choose **`hours`** and then click **Save**.
 1. Click **Copy CSR** and save it in a file, `pki_intermediate.csr`.
@@ -423,12 +440,14 @@ in the previous step.
 1. Paste in the CSR in the **Certificate Signing Request (CSR)** field.
 1. Enter **`example.com`** in the **Common Name**.
 1. Select **pem_bundle** from the **Format** drop-down list, and then click
-   **Save**.
+**Save**.
 1. Click **Copy Certificate** and save the generated certificate in a file, `intermediate.cert.pem`.
 1. Select **pki_int** from the **Secrets** tab to return to the intermediate CA.
 1. Select **Configure** and then click **Set signed intermediate**.
 1. Paste in the certificate in the **Signed Intermediate Certificate** field and
-   then click **Save**.
+then click **Save**.
+
+
 
 ### <a name="step3"></a>Step 3: Create a Role
 
@@ -443,12 +462,12 @@ Calling out some of the parameters:
 - **`allowed_domains`** - specifies the domains of the role (used with
   `allow_bare_domains` and `allow-subdomains` options)
 - **`allow_bare_domains`** - specifies if clients can request certificates
-  matching the value of the actual domains themselves
+matching the value of the actual domains themselves
 - **`allow_subdomains`** - specifies if clients can request certificates with
-  CNs that are subdomains of the CNs allowed by the other role options (NOTE: This
+CNs that are subdomains of the CNs allowed by the other role options (NOTE: This
   includes wildcard subdomains.)
 - **`allow_glob_domains`** - allows names specified in allowed_domains to
-  contain glob patterns (e.g. ftp\*.example.com)
+contain glob patterns (e.g. ftp*.example.com)
 
 In this step, you are going to create a role named, **`example-dot-com`**.
 
@@ -487,12 +506,14 @@ Create a role named **`example-dot-com`** which allows subdomains.
 
 1. Click **pki_int** and then select **Create role**.
 1. Enter **`example-dot-com`** in the **Role name** field.
-1. Select **Options** to expand, and then set the **Max TTL** to **`43800 hours`**. Select **Hide Options**.
+1. Select **Options** to expand, and then set the **Max TTL** to **`43800
+hours`**.   Select **Hide Options**.
 1. Select **Domain Handling** to expand, and then select the **Allow
-   subdomains** check-box. Enter **`example.com`** in the **Allowed domains**
-   field.
-   ![Create Role](/img/vault-pki-2.png)
+subdomains** check-box. Enter **`example.com`** in the **Allowed domains**
+field.
+    ![Create Role](/img/vault-pki-2.png)
 1. Click **Create role**.
+
 
 ### <a name="step4"></a>Step 4: Request Certificates
 
@@ -533,6 +554,8 @@ serial_number       4d:00:01:30:20:2c:5e:31:ba:13:11:53:5f:cd:b4:d7:12:95:1f:82
 The response contains the PEM-encoded private key, key type and certificate
 serial number.
 
+
+
 #### API call using cURL
 
 Invoke the **`/pki_int/issue/<role_name>`** endpoint to request a new certificate.
@@ -568,18 +591,19 @@ $ curl --header "X-Vault-Token: ..." \
 The response contains the PEM-encoded private key, key type and certificate
 serial number.
 
+
 #### Web UI
 
 1. Select **Secrets**.
 1. Select **pki_int** from the **Secrets Engines** list.
 1. Select **example-dot-com** under **Roles**.
 1. Enter **`test.example.com`** in the **Common Name** field.
-1. Select **Options** to expand, and then set the **TTL** to **`24 hours`**.
+1. Select **Options** to expand, and then set the **TTL** to **`24 hours`**.  
 1. Select **Hide Options** and then click **Generate**.
-   ![Issue Certificate](/img/vault-pki-3.png)
+    ![Issue Certificate](/img/vault-pki-3.png)
 
-   > The response contains the PEM-encoded private key, key type and certificate
-   > serial number.
+    > The response contains the PEM-encoded private key, key type and certificate
+    serial number.
 
 1. Click **Copy credentials** and save it in a file.
 
@@ -588,11 +612,13 @@ serial number.
 -> **NOTE:** A certificate can be rotated at any time by simply issuing a new
 certificate with the same CN.
 
+
 ### <a name="step5"></a>Step 5: Revoke Certificates
 
 If a certificate must be revoked, you can easily perform the revocation action
 which will cause the CRL to be regenerated. When the CRL is regenerated, any
 expired certificates are removed from the CRL.
+
 
 #### CLI Command
 
@@ -614,6 +640,7 @@ revocation_time            1532539632
 revocation_time_rfc3339    2018-07-25T17:27:12.165206399Z
 ```
 
+
 #### API call using cURL
 
 Invoke the **`/pki_int/revoke`** endpoint to invoke a certificate using its
@@ -634,7 +661,8 @@ $ curl --header "X-Vault-Token: ..." \
 1. Select **pki_int** from the **Secrets Engines** list.
 1. Select the **eCertificates** tab.
 1. Select the serial number for the certificate you wish to revoke.
-1. Click **Revoke**. At the confirmation, click **Revoke** again.
+1. Click **Revoke**.  At the confirmation, click **Revoke** again.
+
 
 ### <a name="step6"></a>Step 6: Remove Expired Certificates
 
@@ -671,6 +699,7 @@ $ curl --header "X-Vault-Token: ..." \
 1. Select the **Tidy** tab.
 1. Select the check-box for **Tidy the Certificate Store** and **Tidy the Revocation List (CRL)**.
 1. Click **Save**.
+
 
 ## Next steps
 

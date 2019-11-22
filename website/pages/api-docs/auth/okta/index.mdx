@@ -21,9 +21,9 @@ please update your API calls accordingly.
 Configures the connection parameters for Okta. This path honors the
 distinction between the `create` and `update` capabilities inside ACL policies.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `POST` | `/auth/okta/config` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/okta/config`          |
 
 ### Parameters
 
@@ -32,8 +32,8 @@ distinction between the `create` and `update` capabilities inside ACL policies.
 - `api_token` `(string: "")` - Okta API token. This is required to query Okta
   for user group membership. If this is not supplied only locally configured
   groups will be enabled.
-- `base_url` `(string: "")` - If set, will be used as the base domain
-  for API requests. Examples are okta.com, oktapreview.com, and okta-emea.com.
+- `base_url` `(string: "")` -  If set, will be used as the base domain
+  for API requests.  Examples are okta.com, oktapreview.com, and okta-emea.com.
 - `bypass_okta_mfa` `(bool: false)` - Whether to bypass an Okta MFA request.
   Useful if using one of Vault's built-in MFA mechanisms, but this will also
   cause certain other statuses to be ignored, such as `PASSWORD_EXPIRED`.
@@ -63,9 +63,9 @@ $ curl \
 
 Reads the Okta configuration.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `GET`  | `/auth/okta/config` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/auth/okta/config`          |
 
 ### Sample Request
 
@@ -98,9 +98,9 @@ $ curl \
 
 List the users configured in the Okta method.
 
-| Method | Path               |
-| :----- | :----------------- |
-| `LIST` | `/auth/okta/users` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/okta/users`           |
 
 ### Sample Request
 
@@ -119,7 +119,10 @@ $ curl \
   "warnings": null,
   "wrap_info": null,
   "data": {
-    "keys": ["fred", "jane"]
+    "keys": [
+      "fred",
+	    "jane"
+    ]
   },
   "lease_duration": 0,
   "renewable": false,
@@ -129,11 +132,11 @@ $ curl \
 
 ## Register User
 
-Registers a new user and maps a set of policies to it.
+Registers a new user and maps a set of policies to it.  
 
-| Method | Path                         |
-| :----- | :--------------------------- |
-| `POST` | `/auth/okta/users/:username` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/okta/users/:username` |
 
 ### Parameters
 
@@ -143,7 +146,10 @@ Registers a new user and maps a set of policies to it.
 
 ```json
 {
-  "policies": ["dev", "prod"]
+  "policies": [
+    "dev",
+    "prod"
+  ]
 }
 ```
 
@@ -161,9 +167,9 @@ $ curl \
 
 Reads the properties of an existing username.
 
-| Method | Path                         |
-| :----- | :--------------------------- |
-| `GET`  | `/auth/okta/users/:username` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`   | `/auth/okta/users/:username` |
 
 ### Parameters
 
@@ -186,7 +192,10 @@ $ curl \
   "lease_duration": 0,
   "renewable": false,
   "data": {
-    "policies": ["default", "dev"],
+    "policies": [
+      "default",
+      "dev",
+    ],
     "groups": []
   },
   "warnings": null
@@ -198,8 +207,8 @@ $ curl \
 Deletes an existing username from the method.
 
 | Method   | Path                         |
-| :------- | :--------------------------- |
-| `DELETE` | `/auth/okta/users/:username` |
+| :--------------------------- | :--------------------- |
+| `DELETE`   | `/auth/okta/users/:username` |
 
 ### Parameters
 
@@ -218,9 +227,9 @@ $ curl \
 
 List the groups configured in the Okta method.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `LIST` | `/auth/okta/groups` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/okta/groups`           |
 
 ### Sample Request
 
@@ -239,7 +248,10 @@ $ curl \
   "warnings": null,
   "wrap_info": null,
   "data": {
-    "keys": ["admins", "dev-users"]
+    "keys": [
+      "admins",
+      "dev-users"
+    ]
   },
   "lease_duration": 0,
   "renewable": false,
@@ -249,11 +261,11 @@ $ curl \
 
 ## Register Group
 
-Registers a new group and maps a set of policies to it.
+Registers a new group and maps a set of policies to it.  
 
-| Method | Path                      |
-| :----- | :------------------------ |
-| `POST` | `/auth/okta/groups/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/okta/groups/:name` |
 
 ### Parameters
 
@@ -262,7 +274,10 @@ Registers a new group and maps a set of policies to it.
 
 ```json
 {
-  "policies": ["dev", "prod"]
+  "policies": [
+    "dev",
+    "prod"
+  ]
 }
 ```
 
@@ -280,9 +295,9 @@ $ curl \
 
 Reads the properties of an existing group.
 
-| Method | Path                      |
-| :----- | :------------------------ |
-| `GET`  | `/auth/okta/groups/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`   | `/auth/okta/groups/:name`     |
 
 ### Parameters
 
@@ -305,7 +320,10 @@ $ curl \
   "lease_duration": 0,
   "renewable": false,
   "data": {
-    "policies": ["default", "admin"]
+    "policies": [
+      "default",
+      "admin"
+    ]
   },
   "warnings": null
 }
@@ -315,9 +333,9 @@ $ curl \
 
 Deletes an existing group from the method.
 
-| Method   | Path                      |
-| :------- | :------------------------ |
-| `DELETE` | `/auth/okta/groups/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `DELETE`   | `/auth/okta/groups/:name` |
 
 ### Parameters
 
@@ -336,9 +354,9 @@ $ curl \
 
 Login with the username and password.
 
-| Method | Path                         |
-| :----- | :--------------------------- |
-| `POST` | `/auth/okta/login/:username` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/okta/login/:username` |
 
 ### Parameters
 
@@ -383,4 +401,4 @@ $ curl \
   "lease_duration": 7200,
   "renewable": true
 }
-```
+ ```

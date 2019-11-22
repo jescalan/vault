@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Secure Introduction of Vault Clients - Guides
 sidebar_title: Secure Introduction of Vault Clients
 sidebar_current: guides-identity-secure-intro
@@ -12,14 +13,14 @@ description: |-
 
 A _secret_ is something that will elevate the risk if exposed to unauthorized
 entities and results in undesired consequences (e.g. unauthorized data access);
-therefore, only the **_trusted entities_** should have an access to your
+therefore, only the ***trusted entities*** should have an access to your
 secrets.
 
 If you can securely get the first secret from an originator to a consumer, all
 subsequent secrets transmitted between this originator and consumer can be
 authenticated with the trust established by the successful distribution and user
-of that first secret. Getting the first secret to the consumer, is the **_secure
-introduction_** challenge.
+of that first secret. Getting the first secret to the consumer, is the ***secure
+introduction*** challenge.
 
 ![Secure Introduction](/img/vault-secure-intro-1.png)
 
@@ -29,13 +30,14 @@ then generate a **token** to associate with that identity.
 within Vault which means that the secret consumer must first acquire a valid
 token.
 
+
 ## Challenge
 
 How does a secret consumer (an application or machine) prove that it is the
 legitimate recipient for a secret so that it can acquire a token?
 
 How can you avoid persisting raw token values during our secure
-introduction?
+introduction?  
 
 ## Secure Introduction Approach
 
@@ -49,6 +51,7 @@ There are three basic approaches to securely authenticate a secret consumer:
 - [Platform Integration](#platform-integration)
 - [Trusted Orchestrator](#trusted-orchestrator)
 - [Vault Agent](#vault-agent)
+
 
 ## Platform Integration
 
@@ -81,6 +84,7 @@ secrets.
 
 ![Vault AWS EC2 Authentication Flow](/img/vault-aws-ec2-auth-flow.png)
 
+
 ### Use Case
 
 When the client app is running on a VM hosted on a supported cloud platform, you
@@ -91,6 +95,7 @@ can leverage the corresponding auth method to authenticate with Vault.
 - [AWS Auth Method](/docs/auth/aws.html)
 - [Azure Auth Method](/docs/auth/azure.html)
 - [GCP Auth Method](/docs/auth/gcp.html)
+
 
 ## Trusted Orchestrator
 
@@ -116,6 +121,7 @@ authenticate against Vault.
 
 ![AppRole auth method workflow](/img/vault-secure-intro-4.png)
 
+
 ### Use Case
 
 When you are using an orchestrator tool such as Chef to launch applications,
@@ -130,6 +136,7 @@ this model can be applied regardless of where the applications are running.
 - [Token Auth Method](/docs/auth/token.html)
   - [Cubbyhole Response Wrapping](/guides/secret-mgmt/cubbyhole.html)
 
+
 ## Vault Agent
 
 Vault agent is a client daemon which automates the workflow of client login and
@@ -140,19 +147,20 @@ orchestrator](#trusted-orchestrator) approaches.
 #### Vault agent auto-auth:
 
 - Automatically authenticates to Vault for those [supported auth
-  methods](/docs/agent/autoauth/methods/index.html)
+methods](/docs/agent/autoauth/methods/index.html)
 - Keeps token renewed (re-authenticates as needed) until the renewal is no
-  longer allowed
+longer allowed
 - Designed with robustness and fault tolerance
 
 ![Vault Agent](/img/vault-secure-intro-5.png)
 
-To leverage this feature, run the vault binary in agent mode (`vault agent -config=<config_file>`) on the client. The agent configuration file must specify
+To leverage this feature, run the vault binary in agent mode (`vault agent
+-config=<config_file>`) on the client. The agent configuration file must specify
 the auth method and [sink](/docs/agent/autoauth/sinks/index.html) locations
 where the token to be written.
 
 When the agent is started, it will attempt to acquire a Vault token using the
-auth method specified in the agent configuration file. On successful
+auth method specified in the agent configuration file.  On successful
 authentication, the resulting token is written to the sink locations.
 Optionally, this token can be response-wrapped or encrypted. Whenever the
 current token value changes, the agent writes to the sinks. If authentication
@@ -167,6 +175,7 @@ handles the login and token refresh logic.
 - [Streamline Secrets Management with Vault Agent and Vault 0.11](https://youtu.be/zDnIqSB4tyA)
 - [Vault Agent documentation](/docs/agent/index.html)
 - [Auto-Auth documentation](/docs/agent/autoauth/index.html)
+
 
 ## Next steps
 

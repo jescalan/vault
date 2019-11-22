@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Policies - Guides
 sidebar_title: Policies
 sidebar_current: guides-identity-policies
@@ -26,12 +27,13 @@ access to certain paths and operations in Vault. Vault operates on a **secure by
 default** standard, and as such, an empty policy grants **no permissions** in the
 system.
 
+
 ### HashiCorp Configuration Language (HCL)
 
 Policies written in [HCL](https://github.com/hashicorp/hcl) format are often
 referred as **_ACL Policies_**. [Sentinel](https://www.hashicorp.com/sentinel) is
 another framework for policy which is available in [Vault
-Enterprise](/docs/enterprise/index.html). Since Sentinel is an enterprise-only
+Enterprise](/docs/enterprise/index.html).  Since Sentinel is an enterprise-only
 feature, this guide focuses on writing ACL policies as a foundation.
 
 **NOTE:** HCL is JSON compatible; therefore, JSON can be used as completely
@@ -48,6 +50,7 @@ tutorial](https://www.katacoda.com/hashicorp/scenarios/vault-policies) is
 also available if you do not have a Vault environment to perform the steps
 described in this guide.
 
+
 ## Estimated Time to Complete
 
 10 minutes
@@ -58,15 +61,17 @@ The scenario described in this guide introduces the following personas:
 
 - **`root`** sets up initial policies for `admin`
 - **`admin`** is empowered with managing a Vault infrastructure for a team or
-  organizations
+organizations
 - **`provisioner`** configures secret engines and creates policies for
-  client apps
+client apps
+
 
 ## Challenge
 
 Since Vault centrally secures, stores, and controls access to secrets across
 distributed infrastructure and applications, it is critical to control
 permissions before any user or machine can gain access.
+
 
 ## Solution
 
@@ -77,10 +82,11 @@ write policy grants to `read` from AWS secret engine but not to `delete`, etc.
 Policies are attached to tokens and roles to enforce client permissions on
 Vault.
 
+
 ## Prerequisites
 
 To perform the tasks described in this guide, you need to have a Vault
-environment. Refer to the [Getting
+environment.  Refer to the [Getting
 Started](/intro/getting-started/install.html) guide to install Vault. Make sure
 that your Vault server has been [initialized and
 unsealed](/intro/getting-started/deploy.html).
@@ -165,6 +171,7 @@ path "sys/health"
 }
 ```
 
+
 ## Steps
 
 The basic workflow of creating policies is:
@@ -177,6 +184,7 @@ This guide demonstrates basic policy authoring and management tasks.
 1. [Create policies](#step2)
 1. [View existing policies](#step3)
 1. [Check capabilities of a token](#step4)
+
 
 ### <a name="step1"></a>Step 1: Write ACL policies in HCL format
 
@@ -196,13 +204,14 @@ path starting with "`secret/training_`" (e.g. `secret/training_vault`).
 Define one or more [capabilities](/docs/concepts/policies.html#capabilities) on each path to control operations that are
 permitted.
 
-| Capability | Associated HTTP verbs |
-| ---------- | --------------------- |
-| create     | POST/PUT              |
-| read       | GET                   |
-| update     | POST/PUT              |
-| delete     | DELETE                |
-| list       | LIST                  |
+| Capability      | Associated HTTP verbs  |
+| --------------- |------------------------|
+| create          | POST/PUT               |
+| read            | GET                    |
+| update          | POST/PUT               |
+| delete          | DELETE                 |
+| list            | LIST
+
 
 #### Policy requirements
 
@@ -231,6 +240,7 @@ secret engine for a new Vault user to access and write secrets.
 - Enable and manage auth methods
 - Manage the key/value secret engines at `secret/` path
 - Create and manage ACL policies
+
 
 Now, you are ready to author policies to fulfill these requirements.
 
@@ -424,6 +434,7 @@ $ curl --header "X-Vault-Token: ..." \
 
 **NOTE:** To update an existing policy, simply re-run the same command by
 passing your modified policy in the request payload (`*.json`).
+
 
 ### <a name="step3"></a>Step 3: View existing policies
 
@@ -635,6 +646,7 @@ $ curl --request POST --header "X-Vault-Token: ..." \
        --data '{"path":"sys/auth/approle"}' \
        http://127.0.0.1:8200/v1/sys/capabilities-self
 ```
+
 
 ## Next steps
 

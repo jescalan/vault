@@ -22,6 +22,7 @@ path, the calling token must have an ACL policy granting the "create"
 capability. If the value already exists, the calling token must have an ACL
 policy granting the "update" capability.
 
+
 ## Examples
 
 Writes the data to the key "creds":
@@ -62,7 +63,7 @@ included on all commands.
 ### Command Options
 
 - `-cas` `(int: 0)` - Specifies to use a Check-And-Set operation. If not set the
-  write will be allowed. If set to 0 a write will only be allowed if the key
-  doesn’t exist. If the index is non-zero the write will only be allowed if the
-  key’s current version matches the version specified in the cas parameter. The
-  default is -1.
+ write will be allowed. If set to 0 a write will only be allowed if the key
+ doesn’t exist. If the index is non-zero the write will only be allowed if the
+ key’s current version matches the version specified in the cas parameter. The
+ default is -1.

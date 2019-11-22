@@ -19,9 +19,9 @@ sync progress, etc).
 
 This is an authenticated endpoint.
 
-| Method | Path                                  |
-| :----- | :------------------------------------ |
-| `GET`  | `/sys/replication/performance/status` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/sys/replication/performance/status`    |
 
 ### Sample Request
 
@@ -39,11 +39,13 @@ primary, it will look something like:
 {
   "data": {
     "cluster_id": "d4095d41-3aee-8791-c421-9bc7f88f7c3e",
-    "known_secondaries": ["2"],
+    "known_secondaries": [
+      "2"
+    ],
     "last_wal": 87,
     "merkle_root": "c31e40f6ff02f32c37b70e6a4d58732ac812abf0",
     "mode": "primary"
-  }
+  },
 }
 ```
 
@@ -56,14 +58,16 @@ secondary, it will look something like:
 {
   "data": {
     "cluster_id": "d4095d41-3aee-8791-c421-9bc7f88f7c3e",
-    "known_primary_cluster_addrs": ["https://127.0.0.1:8201"],
+    "known_primary_cluster_addrs": [
+      "https://127.0.0.1:8201"
+    ],
     "last_remote_wal": 87,
     "merkle_root": "c31e40f6ff02f32c37b70e6a4d58732ac812abf0",
     "mode": "secondary",
     "primary_cluster_addr": "https://127.0.0.1:8201",
     "secondary_id": "2",
     "state": "stream-wals"
-  }
+  },
 }
 ```
 
@@ -76,9 +80,9 @@ must be promoted).
 !> Only one primary should be active at a given time. Multiple primaries may
 result in data loss!
 
-| Method | Path                                          |
-| :----- | :-------------------------------------------- |
-| `POST` | `/sys/replication/performance/primary/enable` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/primary/enable` |
 
 ### Parameters
 
@@ -111,9 +115,9 @@ This secondary cluster will not attempt to connect to a primary (see the update-
 but will maintain knowledge of its cluster ID and can be reconnected to the same
 replication set without wiping local storage.
 
-| Method | Path                                          |
-| :----- | :-------------------------------------------- |
-| `POST` | `/sys/replication/performance/primary/demote` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/primary/demote` |
 
 ### Sample Request
 
@@ -133,9 +137,10 @@ case this means a wipe of the underlying storage when connected to a primary,
 and in the primary case, secondaries connecting back to the cluster (even if
 they have connected before) will require a wipe of the underlying storage.
 
-| Method | Path                                           |
-| :----- | :--------------------------------------------- |
-| `POST` | `/sys/replication/performance/primary/disable` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/primary/disable` |
+
 
 ### Sample Request
 
@@ -154,9 +159,9 @@ identifier can later be used to revoke a secondary's access.
 
 **This endpoint requires 'sudo' capability.**
 
-| Method | Path                                                   |
-| :----- | :----------------------------------------------------- |
-| `POST` | `/sys/replication/performance/primary/secondary-token` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`    | `/sys/replication/performance/primary/secondary-token` |
 
 ### Parameters
 
@@ -164,6 +169,10 @@ identifier can later be used to revoke a secondary's access.
 
 - `ttl` `(string: "30m")` – Specifies the TTL for the secondary activation
   token.
+
+- `secondary_public_key` `(string: "")` – Specifies the secondary's generated
+  public key, if using encryption rather than response wrapping to protect the
+  secondary credentials. (Vault 1.3+)
 
 ### Sample Payload
 
@@ -208,9 +217,9 @@ This endpoint revokes a performance secondary's ability to connect to the
 performance primary cluster; the secondary will immediately be disconnected and
 will not be allowed to connect again unless given a new activation token.
 
-| Method | Path                                                    |
-| :----- | :------------------------------------------------------ |
-| `POST` | `/sys/replication/performance/primary/revoke-secondary` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/primary/revoke-secondary` |
 
 ### Parameters
 
@@ -234,22 +243,175 @@ $ curl \
     http://127.0.0.1:8200/v1/sys/replication/performance/primary/revoke-secondary
 ```
 
-## Create Mounts Filter
+## Create Paths Filter 
+
+This endpoint is used to modify the mounts and namespaces that are filtered to a secondary.
+Filtering can be specified in allow mode or deny mode.  In allow
+mode the secret and auth mounts that are specified are included to the
+selected secondary.  In deny mode, the mount and namespace paths are excluded.
+
+| Method   | Path                                                     |
+| :------------------------------------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/primary/paths-filter/:id` |
+
+### Parameters
+
+- `id` `(string: <required>)` – Specifies the unique performance secondary identifier.
+
+- `mode` `(string: "allow")` – Specifies the filtering mode.  Available values
+  are "allow" and "deny".
+
+- `paths` `(array: [])` – The list of mount and namespace paths that are filtered.
+
+### Sample Payload
+
+```json
+{
+  "mode": "allow",
+  "paths": ["secret/", "ns1/"]
+}
+```
+
+### Sample Request
+
+```
+$ curl \
+    --header "X-Vault-Token: ..." \
+    --request POST \
+    --data @payload.json \
+    http://127.0.0.1:8200/v1/sys/replication/performance/primary/paths-filter/mySecondaryID
+```
+
+## Read Paths Filter
+
+This endpoint is used to read the mode and the mount/namespace paths that are filtered
+for a secondary.
+
+| Method   | Path                                                     |
+| :------------------------------------------------------- | :--------------------- |
+| `GET`    | `/sys/replication/performance/primary/paths-filter/:id`  | `200 (empty body)` |
+
+### Parameters
+
+- `id` `(string: <required>)` – Specifies the unique performance secondary identifier.
+
+### Sample Request
+
+```
+$ curl \
+    --header "X-Vault-Token: ..." \
+    http://127.0.0.1:8200/v1/sys/replication/performance/primary/paths-filter/mySecondaryID
+```
+
+### Sample Response
+
+```json
+{
+  "mode": "allow",
+  "paths": ["secret/", "ns1/"]
+}
+```
+
+## Delete Paths Filter
+
+This endpoint is used to delete the mount and namespace filters for a secondary.
+
+| Method   | Path                                                     |
+| :------------------------------------------------------- | :--------------------- |
+| `DELETE` | `/sys/replication/performance/primary/paths-filter/:id`  |
+
+### Parameters
+
+- `id` `(string: <required>)` – Specifies the unique performance secondary identifier.
+
+### Sample Request
+
+```
+$ curl \
+    --header "X-Vault-Token: ..." \
+    --request DELETE \
+    http://127.0.0.1:8200/v1/sys/replication/performance/primary/paths-filter/mySecondaryID
+```
+
+## Read Dynamically Generated Filter (PRIMARY)
+
+This endpoint is used to read the namespace and the mount paths that are dynamically
+filtered for a secondary on the primary.
+
+| Method   | Path                                                     |
+| :------------------------------------------------------- | :--------------------- |
+| `GET`    | `/sys/replication/performance/primary/dynamic-filter/:id`  | `200 (empty body)` |
+
+### Parameters
+
+- `id` `(string: <required>)` – Specifies the unique performance secondary identifier.
+
+### Sample Request
+
+```
+$ curl \
+    --header "X-Vault-Token: ..." \
+    http://127.0.0.1:8200/v1/sys/replication/performance/primary/dynamic-filter/mySecondaryID
+```
+
+### Sample Response
+
+```json
+{
+  "dynamic_filtered_mounts": ["ns1/ns2/secret/", "ns1/kv/"],
+  "dynamic_filtered_namespaces": ["ns1/", "ns1/ns2/"]
+}
+```
+
+## Read Dynamically Generated Filter (SECONDARY)
+
+This endpoint is used to read the namespace and the mount paths that are dynamically
+filtered for a secondary on the secondary.
+
+| Method   | Path                                                     |
+| :------------------------------------------------------- | :--------------------- |
+| `GET`    | `/sys/replication/performance/secondary/dynamic-filter/:id`  | `200 (empty body)` |
+
+### Parameters
+
+- `id` `(string: <required>)` – Specifies the unique performance secondary identifier.
+
+### Sample Request
+
+```
+$ curl \
+    --header "X-Vault-Token: ..." \
+    http://127.0.0.1:8200/v1/sys/replication/performance/secondary/dynamic-filter/mySecondaryID
+```
+
+### Sample Response
+
+```json
+{
+  "dynamic_filtered_mounts": ["ns1/ns2/secret/", "ns1/kv/"],
+  "dynamic_filtered_namespaces": ["ns1/", "ns1/ns2/"]
+}
+```
+
+## Create Mounts Filter (DEPRECATED)
+
+~> This API is deprecated and will be removed in a future version of Vault.
+Please use Paths Filter instead.
 
 This endpoint is used to modify the mounts that are filtered to a secondary.
-Filtering can be specified in whitelist mode or blacklist mode. In whitelist
+Filtering can be specified in whitelist mode or blacklist mode.  In whitelist
 mode the secret and auth mounts that are specified are included to the
-selected secondary. In blacklist mode, the mount paths are excluded.
+selected secondary.  In blacklist mode, the mount paths are excluded.
 
-| Method | Path                                                    |
-| :----- | :------------------------------------------------------ |
-| `POST` | `/sys/replication/performance/primary/mount-filter/:id` |
+| Method   | Path                                                     |
+| :------------------------------------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/primary/mount-filter/:id` |
 
 ### Parameters
 
 - `id` `(string: <required>)` – Specifies an opaque identifier, e.g. 'us-east'
 
-- `mode` `(string: "whitelist")` – Specifies the filtering mode. Available values
+- `mode` `(string: "whitelist")` – Specifies the filtering mode.  Available values
   are "whitelist" and blacklist".
 
 - `paths` `(array: [])` – The list of mount paths that are filtered.
@@ -273,14 +435,17 @@ $ curl \
     http://127.0.0.1:8200/v1/sys/replication/performance/primary/mount-filter/us-east-1
 ```
 
-## Read Mounts Filter
+## Read Mounts Filter (DEPRECATED)
+
+~> This API is deprecated and will be removed in a future version of Vault.
+Please use Paths Filter instead.
 
 This endpoint is used to read the mode and the mount paths that are filtered
 for a secondary.
 
-| Method | Path                                                    |
-| :----- | :------------------------------------------------------ |
-| `GET`  | `/sys/replication/performance/primary/mount-filter/:id` | `200 (empty body)` |
+| Method   | Path                                                     |
+| :------------------------------------------------------- | :--------------------- |
+| `GET`    | `/sys/replication/performance/primary/mount-filter/:id`  | `200 (empty body)` |
 
 ### Parameters
 
@@ -303,13 +468,16 @@ $ curl \
 }
 ```
 
-## Delete Mounts Filter
+## Delete Mounts Filter (DEPRECATED)
+
+~> This API is deprecated and will be removed in a future version of Vault.
+Please use Paths Filter instead.
 
 This endpoint is used to delete the mount filters for a secondary.
 
-| Method   | Path                                                    |
-| :------- | :------------------------------------------------------ |
-| `DELETE` | `/sys/replication/performance/primary/mount-filter/:id` |
+| Method   | Path                                                     |
+| :------------------------------------------------------- | :--------------------- |
+| `DELETE` | `/sys/replication/performance/primary/mount-filter/:id`  |
 
 ### Parameters
 
@@ -324,6 +492,27 @@ $ curl \
     http://127.0.0.1:8200/v1/sys/replication/performance/primary/mount-filter/us-east-1
 ```
 
+## Fetch Performance Secondary Public Key
+
+(Vault 1.3+)
+
+This endpoint allows fetching a public key that is used to encrypt the returned
+credential information (instead of using a response wrapped token). This avoids
+needing to make an API call to the primary during activation.
+
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/secondary/generate-public-key` |
+
+### Sample Request
+
+```
+$ curl \
+    --header "X-Vault-Token: ..." \
+    --request POST \
+    http://127.0.0.1:8200/v1/sys/replication/performance/secondary/generate-public-key
+```
+
 ## Enable Performance Secondary
 
 This endpoint enables performance replication on a secondary using a secondary activation
@@ -331,13 +520,14 @@ token.
 
 !> This will immediately clear all data in the secondary cluster!
 
-| Method | Path                                            |
-| :----- | :---------------------------------------------- |
-| `POST` | `/sys/replication/performance/secondary/enable` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/secondary/enable` |
 
 ### Parameters
 
-- `token` `(string: <required>)` – Specifies the secondary activation token fetched from the primary.
+- `token` `(string: <required>)` – Specifies the secondary activation token
+  fetched from the primary.
 
 - `primary_api_addr` `(string: "")` – Set this to the API address (normal Vault
   address) to override the value embedded in the token. This can be useful if
@@ -348,7 +538,7 @@ token.
   that the secondary can use when unwrapping the token from the primary. If this
   and ca_path are not given, defaults to system CA roots.
 
-- `ca_path` `(string: "")` – Specifies the path to a CA root directory
+- `ca_path` `(string: "")` – Specifies  the path to a CA root directory
   containing PEM-format files that the secondary can use when unwrapping the
   token from the primary. If this and ca_file are not given, defaults to system
   CA roots.
@@ -378,9 +568,9 @@ For data safety and security reasons, new secondary tokens will need to be
 issued to other secondaries, and there should never be more than one performance
 primary at a time.
 
-| Method | Path                                             |
-| :----- | :----------------------------------------------- |
-| `POST` | `/sys/replication/performance/secondary/promote` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/secondary/promote` |
 
 ### Parameters
 
@@ -388,8 +578,8 @@ primary at a time.
   primary gives to secondary nodes. Useful if the primary's cluster address is
   not directly accessible and must be accessed via an alternate path/address
   (e.g. through a load balancer).
-- `force` `(bool: false)` - If true the cluster will be promoted even if it fails
-  certain safety checks. Caution: Forcing promotion could result in data loss if
+- `force` `(bool: false)` - If true the cluster will be promoted even if it fails 
+  certain safety checks. Caution: Forcing promotion could result in data loss if 
   data isn't fully replicated.
 
 ### Sample Payload
@@ -419,9 +609,10 @@ to a primary, and in the primary case, secondaries connecting back to the
 cluster (even if they have connected before) will require a wipe of the
 underlying storage.
 
-| Method | Path                                             |
-| :----- | :----------------------------------------------- |
-| `POST` | `/sys/replication/performance/secondary/disable` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/secondary/disable` |
+
 
 ### Sample Request
 
@@ -437,9 +628,9 @@ $ curl \
 This endpoint changes a performance secondary cluster's assigned primary cluster using a
 secondary activation token. This does not wipe all data in the cluster.
 
-| Method | Path                                                    |
-| :----- | :------------------------------------------------------ |
-| `POST` | `/sys/replication/performance/secondary/update-primary` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/replication/performance/secondary/update-primary` |
 
 ### Parameters
 

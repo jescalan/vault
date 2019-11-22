@@ -7,14 +7,12 @@ description: Learn about Vault's plugin system.
 ---
 
 # Plugin System
-
 All Vault auth and secret backends are considered plugins. This simple concept
 allows both built-in and external plugins to be treated like Legos. Any plugin
 can exist at multiple different locations. Different versions of a plugin may
 be at each one, with each version differing from Vault's version.
 
 ## Built-In Plugins
-
 Built-in plugins are shipped with Vault, often for commonly used implementations,
 and require no additional operator intervention to run. Built-in plugins are
 just like any other backend code inside Vault.
@@ -28,7 +26,6 @@ you would run `$ go build` to obtain a new binary for the AppRole plugin. Then
 you would add it to the plugin catalog as per normal, and enable it.
 
 # Plugin Architecture
-
 Vault's plugins are completely separate, standalone applications that Vault
 executes and communicates with over RPC. This means the plugin process does not
 share the same memory space as Vault and therefore can only access the
@@ -40,7 +37,6 @@ built-in plugin. In such a situation, Vault will always choose the custom plugin
 when enabling it.
 
 ## Plugin Communication
-
 Vault creates a mutually authenticated TLS connection for communication with the
 plugin's RPC server. While invoking the plugin process, Vault passes a [wrapping
 token](https://www.vaultproject.io/docs/concepts/response-wrapping.html) to the
@@ -57,14 +53,12 @@ Vault will automatically attempt to determine the `api_addr` as well.
 in plugins.
 
 ## Plugin Registration
-
 An important consideration of Vault's plugin system is to ensure the plugin
 invoked by Vault is authentic and maintains integrity. There are two components
 that a Vault operator needs to configure before external plugins can be run, the
 plugin directory and the plugin catalog entry.
 
 ### Plugin Directory
-
 The plugin directory is a configuration option of Vault, and can be specified in
 the [configuration file](https://www.vaultproject.io/docs/configuration/index.html).
 This setting specifies a directory in which all plugin binaries must live;
@@ -78,7 +72,6 @@ this directory to ensure a plugin can not be modified by an unauthorized user
 between the time of the SHA check and the time of plugin execution.
 
 ### Plugin Catalog
-
 The plugin catalog is Vault's list of approved plugins. The catalog is stored in
 Vault's barrier and can only be updated by a Vault user with sudo permissions.
 Upon adding a new plugin, the plugin name, SHA256 sum of the executable, and the
@@ -99,7 +92,6 @@ Success! Data written to: sys/plugins/catalog/database/myplugin-database-plugin
 ```
 
 ### Plugin Execution
-
 When a backend wants to run a plugin, it first looks up the plugin, by name, in
 the catalog. It then checks the executable's SHA256 sum against the one
 configured in the plugin catalog. Finally Vault runs the command configured in

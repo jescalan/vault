@@ -15,13 +15,13 @@ for Vault 0.7.0 compared to the most recent release. Please read it carefully.
 
 ## List Operations Always Use Trailing Slash
 
-Any list operation, whether via the `GET` or `LIST` HTTP verb, will now
-internally canonicalize the path to have a trailing slash. This makes policy
-writing more predictable, as it means clients will no longer work or fail
-based on which client they're using or which HTTP verb they're using. However,
-it also means that policies allowing `list` capability must be carefully
-checked to ensure that they contain a trailing slash; some policies may need
-to be split into multiple stanzas to accommodate.
+ Any list operation, whether via the `GET` or `LIST` HTTP verb, will now
+ internally canonicalize the path to have a trailing slash. This makes policy
+ writing more predictable, as it means clients will no longer work or fail
+ based on which client they're using or which HTTP verb they're using. However,
+ it also means that policies allowing `list` capability must be carefully
+ checked to ensure that they contain a trailing slash; some policies may need
+ to be split into multiple stanzas to accommodate.
 
 ## PKI Defaults to Unleased Certificates
 

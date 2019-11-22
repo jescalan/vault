@@ -61,8 +61,8 @@ There are two ways that tokens can be response-wrapped by the agent:
 
 ### Encrypting Tokens
 
-~> This is experimental; if input/output formats change we will make every
-effort to provide backwards compatibility.
+ ~> This is experimental; if input/output formats change we will make every
+ effort to provide backwards compatibility.
 
 Tokens can be encrypted, using a Diffie-Hellman exchange to generate an
 ephemeral key. In this mechanism, the client receiving the token writes a
@@ -111,14 +111,14 @@ The top level `auto_auth` block has two configuration entries:
 These are common configuration values that live within the `method` block:
 
 - `type` `(string: required)` - The type of the method to use, e.g. `aws`,
-  `gcp`, `azure`, etc. _Note_: when using HCL this can be used as the key for
+  `gcp`, `azure`, etc. *Note*: when using HCL this can be used as the key for
   the block, e.g. `method "aws" {...}`.
 
 - `mount_path` `(string: optional)` - The mount path of the method. If not
   specified, defaults to a value of `auth/<method type>`.
-
+  
 - `namespace` `(string: optional)` - The default namespace path for the mount.
-  If not specified, defaults to the root namespace.
+  If not specified, defaults to the root namespace. 
 
 - `wrap_ttl` `(string or integer: optional)` - If specified, the written token
   will be response-wrapped by the agent. This is more secure than wrapping by
@@ -137,7 +137,8 @@ These are common configuration values that live within the `method` block:
 These configuration values are common to all Sinks:
 
 - `type` `(string: required)` - The type of the method to use, e.g. `file`.
-  _Note_: when using HCL this can be used as the key for the block, e.g. `sink "file" {...}`.
+  *Note*: when using HCL this can be used as the key for the block, e.g. `sink
+  "file" {...}`.
 
 - `wrap_ttl` `(string or integer: optional)` - If specified, the written token
   will be response-wrapped by the sink. This is less secure than wrapping by

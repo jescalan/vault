@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Vault Reference Architecture - Guides
 sidebar_title: Reference Architecture
 sidebar_current: guides-operations-reference-architecture
@@ -17,13 +18,13 @@ that should be adapted to accommodate the specific needs of each implementation.
 The following topics are addressed in this guide:
 
 - [Deployment Topology within One Datacenter](#one-dc)
-  - [Network Connectivity](#network-connectivity-details)
-  - [Deployment System Requirements](#deployment-system-requirements)
-  - [Hardware Considerations](#hardware-considerations)
-  - [Load Balancing](#load-balancing)
-  - [High Availability](#high-availability)
+    - [Network Connectivity](#network-connectivity-details)
+    - [Deployment System Requirements](#deployment-system-requirements)
+    - [Hardware Considerations](#hardware-considerations)
+    - [Load Balancing](#load-balancing)
+    - [High Availability](#high-availability)
 - [Deployment Topology for Multiple Datacenters](#multi-dc)
-  - [Vault Replication](#vault-replication)
+    - [Vault Replication](#vault-replication)
 - [Additional References](#additional-references)
 
 -> This document assumes Vault uses Consul as the [storage
@@ -48,7 +49,7 @@ provides flexibility and resilience. Consul servers are separate
 from the Vault servers so that software upgrades are easier to perform. Additionally,
 separate Consul and Vault servers allows for separate sizing for each.
 Vault to Consul backend connectivity is over HTTP and should be
-secured with TLS as well as a Consul token to provide encryption of all traffic.
+secured with TLS as well as a Consul token to provide encryption of all traffic.  
 
 -> Refer to the online documentation to learn more about running [Consul in encrypted mode](https://www.consul.io/docs/agent/options.html#encrypt).
 
@@ -58,11 +59,12 @@ Typical distribution in a cloud environment is to spread Consul/Vault nodes into
 separate Availability Zones (AZs) within a high bandwidth, low latency network,
 such as an AWS Region. The diagram below shows Vault and Consul spread between
 AZs, with Consul servers in Redundancy Zone configurations, promoting a single
-voting member per AZ, providing both Zone and Node level failure protection.
+voting member per AZ, providing both Zone and Node level failure protection.  
 
 -> Refer to the online documentation to learn more about the [Consul leader election process](https://www.consul.io/docs/guides/leader-election.html).
 
 ![Failure tolerance|40%](/img/vault-ref-arch-3.png)
+
 
 ### Network Connectivity Details
 
@@ -76,40 +78,40 @@ CPU" in AWS terms, such as T-series instances.
 
 #### Sizing for Vault Servers
 
-| Size  | CPU      | Memory       | Disk  | Typical Cloud Instance Types              |
-| ----- | -------- | ------------ | ----- | ----------------------------------------- |
-| Small | 2 core   | 4-8 GB RAM   | 25 GB | **AWS:** m5.large                         |
-|       |          |              |       | **Azure:** Standard_D2_v3                 |
-|       |          |              |       | **GCE:** n1-standard-2, n1-standard-4     |
-| Large | 4-8 core | 16-32 GB RAM | 50 GB | **AWS:** m5.xlarge, m5.2xlarge            |
-|       |          |              |       | **Azure:** Standard_D4_v3, Standard_D8_v3 |
-|       |          |              |       | **GCE:** n1-standard-8, n1-standard-16    |
+| Size  | CPU      | Memory          | Disk      | Typical Cloud Instance Types               |
+|-------|----------|-----------------|-----------|--------------------------------------------|
+| Small | 2 core   | 4-8 GB RAM      | 25 GB     | **AWS:** m5.large                          |
+|       |          |                 |           | **Azure:** Standard_D2_v3                  |
+|       |          |                 |           | **GCE:** n1-standard-2, n1-standard-4      |
+| Large | 4-8 core | 16-32 GB RAM    | 50 GB     | **AWS:** m5.xlarge, m5.2xlarge             |
+|       |          |                 |           | **Azure:** Standard_D4_v3, Standard_D8_v3  |
+|       |          |                 |           | **GCE:** n1-standard-8, n1-standard-16     |
 
 #### Sizing for Consul Servers
 
-| Size  | CPU      | Memory        | Disk   | Typical Cloud Instance Types              |
-| ----- | -------- | ------------- | ------ | ----------------------------------------- |
-| Small | 2 core   | 8-16 GB RAM   | 50 GB  | **AWS:** m5.large, m5.xlarge              |
-|       |          |               |        | **Azure:** Standard_D2_v3, Standard_D4_v3 |
-|       |          |               |        | **GCE:** n1-standard-4, n1-standard-8     |
-| Large | 4-8 core | 32-64+ GB RAM | 100 GB | **AWS:** m5.2xlarge, m5.4xlarge           |
-|       |          |               |        | **Azure:** Standard_D4_v3, Standard_D8_v3 |
-|       |          |               |        | **GCE:** n1-standard-16, n1-standard-32   |
+| Size  | CPU      | Memory          | Disk      | Typical Cloud Instance Types               |
+|-------|----------|-----------------|-----------|--------------------------------------------|
+| Small | 2 core   | 8-16 GB RAM     | 50 GB     | **AWS:** m5.large, m5.xlarge               |
+|       |          |                 |           | **Azure:** Standard_D2_v3, Standard_D4_v3  |
+|       |          |                 |           | **GCE:** n1-standard-4, n1-standard-8      |
+| Large | 4-8 core | 32-64+ GB RAM   | 100 GB    | **AWS:** m5.2xlarge, m5.4xlarge            |
+|       |          |                 |           | **Azure:** Standard_D4_v3, Standard_D8_v3  |
+|       |          |                 |           | **GCE:** n1-standard-16, n1-standard-32    |
 
 ### Hardware Considerations
 
 The small size category would be appropriate for most initial production
-deployments, or for development/testing environments.
+deployments, or for development/testing environments.  
 
 The large size is for production environments where there is a consistent high
 workload. That might be a large number of transactions, a large number of
 secrets, or a combination of the two.
 
 In general, processing requirements will be dependent on encryption workload and
-messaging workload (operations per second, and types of operations). Memory
+messaging workload (operations per second, and types of operations).  Memory
 requirements will be dependent on the total size of secrets/keys stored in
 memory and should be sized according to that data (as should the hard drive
-storage). Vault itself has minimal storage requirements, but the underlying
+storage).  Vault itself has minimal storage requirements, but the underlying
 storage backend should have a relatively high-performance hard disk subsystem.
 If many secrets are being generated/rotated frequently, this information will
 need to flush to disk often and can impact performance if slower hard drives are
@@ -136,7 +138,7 @@ consume network bandwidth.
 Due to network performance considerations in Consul cluster operations,
 replication of Vault datasets across network boundaries should be achieved
 through Performance or DR Replication, rather than spreading the Consul cluster
-across network and physical boundaries. If a single consul cluster is spread
+across network and physical boundaries.  If a single consul cluster is spread
 across network segments that are distant or inter-regional, this can cause
 synchronization issues within the cluster or additional data transfer charges
 in some cloud providers.
@@ -201,7 +203,7 @@ listen vault
 There are two supported methods for handling client IP addressing behind a proxy
 or load balancer;
 [X-Forwarded-For Headers](https://www.vaultproject.io/docs/configuration/listener/tcp.html#x_forwarded_for_authorized_addrs)
-and [PROXY v1](https://www.vaultproject.io/docs/configuration/listener/tcp.html#proxy_protocol_authorized_addrs). Both require a trusted load balancer and require IP address whitelisting to
+and [PROXY v1](https://www.vaultproject.io/docs/configuration/listener/tcp.html#proxy_protocol_authorized_addrs).  Both require a trusted load balancer and require IP address whitelisting to
 adhere to security best practices.
 
 ### High Availability
@@ -215,8 +217,9 @@ To learn more about setting up your Vault servers in HA mode, read [_Vault HA
 with Consul_](/guides/operations/vault-ha-consul.html) guide.
 
 > High-availability with [Performance Standby
-> Nodes](/guides/operations/performance-nodes.html) and data-locality across
-> datacenters requires Vault Enterprise.
+Nodes](/guides/operations/performance-nodes.html) and data-locality across
+datacenters requires Vault Enterprise.
+
 
 ## <a name="multi-dc"></a>Deployment Topology for Multiple Datacenters
 
@@ -245,7 +248,7 @@ about filtering out secret engines from being replicated across regions.
 #### Disaster Recovery Replication
 
 Vault disaster recovery replication ensures that a standby Vault cluster is kept
-synchronized with an active Vault cluster. This mode of replication includes
+synchronized with an active Vault cluster.  This mode of replication includes
 data such as ephemeral authentication tokens, time-based token information as
 well as token usage data. This provides for aggressive recovery point objective
 in environments where preventing loss of ephemeral operational data is of the
@@ -264,6 +267,7 @@ and write secrets from the Vault cluster in Region B. This may or may not raise
 an issue for your applications, but you need to take that into a consideration
 during the planning.
 
+
 #### In-Region Disaster Recovery
 
 If your disaster recovery strategy is to plan for a loss of a cluster but not the
@@ -279,28 +283,28 @@ scenario.
 Another common scenario to protect against, more prevalent in cloud environments
 that provide very high levels of intrinsic resiliency, might be the purposeful
 or accidental corruption of data and configuration, and or a loss of cloud account
-control. Vault's DR Replication is designed to replicate live data, which would
-propagate intentional or accidental data corruption or deletion. To protect against
-these possibilities, you should backup Vault's storage backend. This is supported
+control.  Vault's DR Replication is designed to replicate live data, which would
+propagate intentional or accidental data corruption or deletion.  To protect against
+these possibilities, you should backup Vault's storage backend.  This is supported
 through the Consul Snapshot feature, which can be automated for regular archival
-backups. A cold site or new infrastructure could be re-hydrated from a Consul
-snapshot.
+backups.  A cold site or new infrastructure could be re-hydrated from a Consul
+snapshot.  
 
 -> Refer to the online documentation to learn more about [Consul snapshots](https://www.consul.io/docs/commands/snapshot.html).
 
 #### Replication Notes
 
 - There is no set limit on number of clusters within a replication set. Largest
-  deployments today are in the 30+ cluster range.
+deployments today are in the 30+ cluster range.
 - Any cluster within a Performance replication set can act as a Disaster
-  Recovery primary cluster.
+Recovery primary cluster.
 - A cluster within a Performance replication set can also replicate to multiple
-  Disaster Recovery secondary clusters.
+Disaster Recovery secondary clusters.
 - While a Vault cluster can possess a replication role (or roles), there are no
-  special considerations required in terms of infrastructure, and clusters can
-  assume (or be promoted) to another role. Special circumstances related to mount
-  filters and HSM usage may limit swapping of roles, but those are based on
-  specific organization configurations.
+special considerations required in terms of infrastructure, and clusters can
+assume (or be promoted) to another role. Special circumstances related to mount
+filters and HSM usage may limit swapping of roles, but those are based on
+specific organization configurations.
 
 #### Considerations Related to Unseal proxy_protocol_behavior
 
@@ -309,7 +313,7 @@ unseal operations has some details that should be understood during the planning
 phase.
 
 - If a **performance** primary cluster utilizes an HSM, all other clusters
-  within that replication set must use an HSM as well.
+within that replication set must use an HSM as well.
 - If a **performance** primary cluster does NOT utilize an HSM (uses Shamir
   secret sharing method), the clusters within that replication set can be mixed,
   such that some may use an HSM, others may use Shamir.
@@ -320,15 +324,15 @@ HSM.
 ## Additional References
 
 - Vault [architecture](/docs/internals/architecture.html) documentation explains
-  each Vault component
+each Vault component
 - To integrate Vault with existing LDAP server, refer to
-  [LDAP Auth Method](/docs/auth/ldap.html) documentation
+[LDAP Auth Method](/docs/auth/ldap.html) documentation
 - Refer to the [AppRole Pull
-  Authentication](/guides/identity/authentication.html) guide to programmatically
-  generate a token for a machine or app
+Authentication](/guides/identity/authentication.html) guide to programmatically
+generate a token for a machine or app
 - Consul is an integral part of running a resilient Vault cluster, regardless of
-  location. Refer to the online [Consul documentation](https://www.consul.io/intro/getting-started/install.html) to
-  learn more.
+location.  Refer to the online [Consul documentation](https://www.consul.io/intro/getting-started/install.html) to
+learn more.
 
 ## Next steps
 

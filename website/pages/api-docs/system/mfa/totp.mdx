@@ -12,9 +12,9 @@ description: >-
 
 This endpoint defines a MFA method of type TOTP.
 
-| Method | Path                         |
-| :----- | :--------------------------- |
-| `POST` | `/sys/mfa/method/totp/:name` |
+| Method   | Path                           |
+| :----------------------------- | :--------------------- |
+| `POST`   | `/sys/mfa/method/totp/:name`   |
 
 ### Parameters
 
@@ -33,6 +33,7 @@ This endpoint defines a MFA method of type TOTP.
 - `digits` `(int: 6)` - The number of digits in the generated TOTP token. This value can either be 6 or 8.
 
 - `skew` `(int: 1)` - The number of delay periods that are allowed when validating a TOTP token. This value can either be 0 or 1.
+
 
 ### Sample Payload
 
@@ -57,9 +58,9 @@ $ curl \
 This endpoint queries the MFA configuration of TOTP type for a given method
 name.
 
-| Method | Path                         |
-| :----- | :--------------------------- |
-| `GET`  | `/sys/mfa/method/totp/:name` |
+| Method   | Path                           |
+| :----------------------------- | :----------------------- |
+| `GET`    | `/sys/mfa/method/totp/:name`   |
 
 ### Parameters
 
@@ -79,18 +80,18 @@ $ curl \
 
 ```json
 {
-  "data": {
-    "algorithm": "SHA1",
-    "digits": 6,
-    "id": "865587ba-6229-7f2a-6da0-609d5370af70",
-    "issuer": "vault",
-    "key_size": 20,
-    "name": "my_totp",
-    "period": 30,
-    "qr_size": 200,
-    "skew": 1,
-    "type": "totp"
-  }
+        "data": {
+                "algorithm": "SHA1",
+                "digits": 6,
+                "id": "865587ba-6229-7f2a-6da0-609d5370af70",
+                "issuer": "vault",
+                "key_size": 20,
+                "name": "my_totp",
+                "period": 30,
+                "qr_size": 200,
+                "skew": 1,
+                "type": "totp"
+        }
 }
 ```
 
@@ -98,9 +99,10 @@ $ curl \
 
 This endpoint deletes a TOTP MFA method.
 
-| Method   | Path                         |
-| :------- | :--------------------------- |
-| `DELETE` | `/sys/mfa/method/totp/:name` |
+| Method   | Path                           |
+| :----------------------------- | :----------------------- |
+| `DELETE` | `/sys/mfa/method/totp/:name`   |
+
 
 ### Parameters
 
@@ -122,9 +124,9 @@ This endpoint generates an MFA secret in the entity of the calling token, if it
 doesn't exist already, using the configuration stored under the given MFA
 method name.
 
-| Method | Path                                  |
-| :----- | :------------------------------------ |
-| `GET`  | `/sys/mfa/method/totp/:name/generate` |
+| Method   | Path                                  |
+| :------------------------------------ | :----------------------- |
+| `GET`    | `/sys/mfa/method/totp/:name/generate` |
 
 ### Parameters
 
@@ -156,9 +158,9 @@ This endpoint can be used to generate a TOTP MFA secret. Unlike the `generate`
 API which stores the generated secret on the entity ID of the calling token,
 the `admin-generate` API stores the generated secret on the given entity ID.
 
-| Method | Path                                        |
-| :----- | :------------------------------------------ |
-| `POST` | `/sys/mfa/method/totp/:name/admin-generate` |
+| Method   | Path                                         |
+| :------------------------------------------- | :----------------------- |
+| `POST`   | `/sys/mfa/method/totp/:name/admin-generate`  |
 
 ### Parameters
 
@@ -171,7 +173,7 @@ the `admin-generate` API stores the generated secret on the given entity ID.
 
 ```json
 {
-  "entity_id": "4746fb81-028c-cd4e-026b-7dd18fe4c2f4"
+  "entity_id":"4746fb81-028c-cd4e-026b-7dd18fe4c2f4"
 }
 ```
 
@@ -205,9 +207,9 @@ explicitly delete the secret first. This API can be used to delete the secret
 and the `generate` or `admin-generate` APIs should be used to regenerate a new
 secret.
 
-| Method | Path                                  |
-| :----- | :------------------------------------ |
-| `POST` | `/sys/mfa/method/:name/admin-destroy` |
+| Method   | Path                                    |
+| :-------------------------------------- | :--------------------- |
+| `POST`   | `/sys/mfa/method/:name/admin-destroy`   |
 
 ### Parameters
 

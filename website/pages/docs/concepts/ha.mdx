@@ -78,7 +78,7 @@ can be automatically determined.
 
 If `X-Vault-No-Request-Forwarding` header in the request is set to a non-empty
 value, the standby nodes will redirect the client using a `307` status code to
-the _active node's_ redirect address.
+the *active node's* redirect address.
 
 This is also the fallback method used when request forwarding is turned off or
 there is an error performing the forwarding. As such, a redirect address is
@@ -132,7 +132,7 @@ requests. If this value is not set, its IP address will be automatically set to
 same as the `address` value, and its port will be automatically set to the same
 as the `address` value plus one (so by default, port `8201`).
 
-Note that _only_ active nodes have active listeners. When a node becomes active
+Note that *only* active nodes have active listeners. When a node becomes active
 it will start cluster listeners, and when it becomes standby it will stop them.
 
 ### Per-Node Cluster Address

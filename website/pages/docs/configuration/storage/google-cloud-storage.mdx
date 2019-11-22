@@ -60,7 +60,9 @@ value with the value for your service account.
   "bindings": [
     {
       "role": "roles/storage.objectAdmin",
-      "members": ["serviceAccount:my-vault@gserviceaccount.com"]
+      "members": [
+        "serviceAccount:my-vault@gserviceaccount.com"
+      ]
     }
   ]
 }
@@ -78,12 +80,12 @@ Golang SDK. This means it supports the common ways of [providing credentials to
 Google Cloud][cloud-creds].
 
 1. The environment variable `GOOGLE_APPLICATION_CREDENTIALS`. This is specified
-   as the **path** to a Google Cloud credentials file, typically for a service
-   account. If this environment variable is present, the resulting credentials are
-   used. If the credentials are invalid, an error is returned.
+as the **path** to a Google Cloud credentials file, typically for a service
+account. If this environment variable is present, the resulting credentials are
+used. If the credentials are invalid, an error is returned.
 
 1. Default instance credentials. When no environment variable is present, the
-   default service account credentials are used.
+default service account credentials are used.
 
 For more information on service accounts, please see the [Google Cloud Service
 Accounts documentation][service-accounts].
@@ -104,8 +106,7 @@ https://www.googleapis.com/auth/devstorage.read_write
   send in a single request. If set to 0, it will attempt to send the whole
   object at once, but will not retry any failures. If you are not storing large
   objects in Vault, it is recommended to set this to a low value (minimum is
-
-  256. since it will reduce the amount of memory Vault uses.
+  256) since it will reduce the amount of memory Vault uses.
 
 - `max_parallel` `(int: 128)` - Specifies the maximum number of parallel
   operations to take place.

@@ -20,9 +20,9 @@ please update your API calls accordingly.
 
 This endpoint returns a list the existing AppRoles in the method.
 
-| Method | Path                 |
-| :----- | :------------------- |
-| `LIST` | `/auth/approle/role` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/approle/role`         |
 
 ### Sample Request
 
@@ -41,7 +41,11 @@ $ curl \
   "warnings": null,
   "wrap_info": null,
   "data": {
-    "keys": ["dev", "prod", "test"]
+    "keys": [
+      "dev",
+      "prod",
+      "test"
+    ]
   },
   "lease_duration": 0,
   "renewable": false,
@@ -56,9 +60,9 @@ supports both `create` and `update` capabilities. There can be one or more
 constraints enabled on the role. It is required to have at least one of them
 enabled while creating or updating a role.
 
-| Method | Path                            |
-| :----- | :------------------------------ |
-| `POST` | `/auth/approle/role/:role_name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/approle/role/:role_name` |
 
 ### Parameters
 
@@ -70,7 +74,7 @@ enabled while creating or updating a role.
   operation.
 - `secret_id_num_uses` `(integer: 0)` - Number of times any particular SecretID
   can be used to fetch a token from this AppRole, after which the SecretID will
-  expire. A value of zero will allow unlimited uses.
+  expire.  A value of zero will allow unlimited uses.
 - `secret_id_ttl` `(string: "")` - Duration in either an integer number of
   seconds (`3600`) or an integer time unit (`60m`) after which any SecretID
   expires.
@@ -86,7 +90,9 @@ enabled while creating or updating a role.
 {
   "token_ttl": "10m",
   "token_max_ttl": "15m",
-  "token_policies": ["default"],
+  "token_policies": [
+    "default"
+  ],
   "period": 0,
   "bind_secret_id": true
 }
@@ -106,9 +112,9 @@ $ curl \
 
 Reads the properties of an existing AppRole.
 
-| Method | Path                            |
-| :----- | :------------------------------ |
-| `GET`  | `/auth/approle/role/:role_name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`   | `/auth/approle/role/:role_name` |
 
 ### Parameters
 
@@ -134,7 +140,9 @@ $ curl \
     "token_max_ttl": 1800,
     "secret_id_ttl": 600,
     "secret_id_num_uses": 40,
-    "token_policies": ["default"],
+    "token_policies": [
+      "default"
+    ],
     "period": 0,
     "bind_secret_id": true,
     "bound_cidr_list": []
@@ -149,9 +157,9 @@ $ curl \
 
 Deletes an existing AppRole from the method.
 
-| Method   | Path                            |
-| :------- | :------------------------------ |
-| `DELETE` | `/auth/approle/role/:role_name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `DELETE` | `/auth/approle/role/:role_name`    |
 
 ### Parameters
 
@@ -170,9 +178,9 @@ $ curl \
 
 Reads the RoleID of an existing AppRole.
 
-| Method | Path                                    |
-| :----- | :-------------------------------------- |
-| `GET`  | `/auth/approle/role/:role_name/role-id` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`   | `/auth/approle/role/:role_name/role-id` |
 
 ### Parameters
 
@@ -206,9 +214,9 @@ $ curl \
 
 Updates the RoleID of an existing AppRole to a custom value.
 
-| Method | Path                                    |
-| :----- | :-------------------------------------- |
-| `POST` | `/auth/approle/role/:role_name/role-id` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/approle/role/:role_name/role-id` |
 
 ### Parameters
 
@@ -256,18 +264,18 @@ tokens, the response will also contain a `secret_id_accessor` value which can
 be used to read the properties of the SecretID without divulging the SecretID
 itself, and also to delete the SecretID from the AppRole.
 
-| Method | Path                                      |
-| :----- | :---------------------------------------- |
-| `POST` | `/auth/approle/role/:role_name/secret-id` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/approle/role/:role_name/secret-id` |
 
 ### Parameters
 
 - `role_name` `(string: <required>)` - Name of the AppRole.
-- `metadata` `(string: "")` - Metadata to be tied to the SecretID. This should be
+- `metadata` `(string: "")` -  Metadata to be tied to the SecretID. This should be
   a JSON-formatted string containing the metadata in key-value pairs. This
   metadata will be set on tokens issued with this SecretID, and is logged in
   audit logs _in plaintext_.
-- `cidr_list` `(array: [])` - Comma separated string or list of CIDR blocks
+- `cidr_list` `(array: [])` -  Comma separated string or list of CIDR blocks
   enforcing secret IDs to be used from specific set of IP addresses. If
   `bound_cidr_list` is set on the role, then the list of CIDR blocks listed
   here should be a subset of the CIDR blocks listed on the role.
@@ -315,9 +323,9 @@ $ curl \
 Lists the accessors of all the SecretIDs issued against the AppRole.
 This includes the accessors for "custom" SecretIDs as well.
 
-| Method | Path                                      |
-| :----- | :---------------------------------------- |
-| `LIST` | `/auth/approle/role/:role_name/secret-id` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/approle/role/:role_name/secret-id` |
 
 ### Parameters
 
@@ -358,14 +366,14 @@ $ curl \
 
 Reads out the properties of a SecretID.
 
-| Method | Path                                             |
-| :----- | :----------------------------------------------- |
-| `POST` | `/auth/approle/role/:role_name/secret-id/lookup` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/approle/role/:role_name/secret-id/lookup` |
 
 ### Parameters
 
 - `role_name` `(string: <required>)` - Name of the AppRole.
-- `secret_id` `(string: <required>)` - Secret ID attached to the role.
+-  `secret_id` `(string: <required>)` - Secret ID attached to the role.
 
 ### Sample Payload
 
@@ -389,14 +397,14 @@ $ curl \
 
 Destroy an AppRole secret ID.
 
-| Method | Path                                              |
-| :----- | :------------------------------------------------ |
-| `POST` | `/auth/approle/role/:role_name/secret-id/destroy` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/approle/role/:role_name/secret-id/destroy` |
 
 ### Parameters
 
 - `role_name` `(string: <required>)` - Name of the AppRole.
-- `secret_id` `(string: <required>)` - Secret ID attached to the role.
+-  `secret_id` `(string: <required>)` - Secret ID attached to the role.
 
 ### Sample Payload
 
@@ -420,14 +428,14 @@ $ curl \
 
 Reads out the properties of a SecretID.
 
-| Method | Path                                                      |
-| :----- | :-------------------------------------------------------- |
-| `POST` | `/auth/approle/role/:role_name/secret-id-accessor/lookup` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/approle/role/:role_name/secret-id-accessor/lookup` |
 
 ### Parameters
 
 - `role_name` `(string: <required>)` - Name of the AppRole.
-- `secret_id_accessor` `(string: <required>)` - Secret ID accessor attached to the role.
+-  `secret_id_accessor` `(string: <required>)` - Secret ID accessor attached to the role.
 
 ### Sample Payload
 
@@ -451,14 +459,14 @@ $ curl \
 
 Destroy an AppRole secret ID by its accessor.
 
-| Method | Path                                                       |
-| :----- | :--------------------------------------------------------- |
-| `POST` | `/auth/approle/role/:role_name/secret-id-accessor/destroy` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/approle/role/:role_name/secret-id-accessor/destroy` |
 
 ### Parameters
 
 - `role_name` `(string: <required>)` - Name of the AppRole.
-- `secret_id_accessor` `(string: <required>)` - Secret ID accessor attached to the role.
+-  `secret_id_accessor` `(string: <required>)` - Secret ID accessor attached to the role.
 
 ### Sample Payload
 
@@ -483,15 +491,15 @@ $ curl \
 Assigns a "custom" SecretID against an existing AppRole. This is used in the
 "Push" model of operation.
 
-| Method | Path                                             |
-| :----- | :----------------------------------------------- |
-| `POST` | `/auth/approle/role/:role_name/custom-secret-id` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/approle/role/:role_name/custom-secret-id` |
 
 ### Parameters
 
 - `role_name` `(string: <required>)` - Name of the AppRole.
-- `secret_id` `(string: <required>)` - SecretID to be attached to the Role.
-- `metadata` `(string: "")` - Metadata to be tied to the SecretID. This should be
+-  `secret_id` `(string: <required>)` - SecretID to be attached to the Role.
+- `metadata` `(string: "")` -  Metadata to be tied to the SecretID. This should be
   a JSON-formatted string containing the metadata in key-value pairs. This
   metadata will be set on tokens issued with this SecretID, and is logged in
   audit logs _in plaintext_.
@@ -545,14 +553,14 @@ required; if `bind_secret_id` is enabled (the default) on the AppRole,
 `secret_id` is required too. Any other bound authentication values on the
 AppRole (such as client IP CIDR) are also evaluated.
 
-| Method | Path                  |
-| :----- | :-------------------- |
-| `POST` | `/auth/approle/login` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/approle/login`        |
 
 ### Parameters
 
 - `role_id` `(string: <required>)` - RoleID of the AppRole.
-- `secret_id` `(string: <required>)` - SecretID belonging to AppRole.
+-  `secret_id` `(string: <required>)` - SecretID belonging to AppRole.
 
 ### Sample Payload
 
@@ -580,7 +588,9 @@ $ curl \
     "renewable": true,
     "lease_duration": 1200,
     "metadata": null,
-    "token_policies": ["default"],
+    "token_policies": [
+      "default"
+    ],
     "accessor": "fd6c9a00-d2dc-3b11-0be5-af7ae0e1d374",
     "client_token": "5b1a0318-679c-9c45-e5c6-d1b9a9035d49"
   },
@@ -600,17 +610,17 @@ parameters of the AppRole can be updated using the `/auth/approle/role/:role_nam
 endpoint directly. The endpoints for each field is provided separately
 to be able to delegate specific endpoints using Vault's ACL system.
 
-| Method            | Path                                                  |
-| :---------------- | :---------------------------------------------------- |
-| `GET/POST/DELETE` | `/auth/approle/role/:role_name/policies`              | `200/204` |
-| `GET/POST/DELETE` | `/auth/approle/role/:role_name/secret-id-num-uses`    | `200/204` |
-| `GET/POST/DELETE` | `/auth/approle/role/:role_name/secret-id-ttl`         | `200/204` |
-| `GET/POST/DELETE` | `/auth/approle/role/:role_name/token-ttl`             | `200/204` |
-| `GET/POST/DELETE` | `/auth/approle/role/:role_name/token-max-ttl`         | `200/204` |
-| `GET/POST/DELETE` | `/auth/approle/role/:role_name/bind-secret-id`        | `200/204` |
-| `GET/POST/DELETE` | `/auth/approle/role/:role_name/secret-id-bound-cidrs` | `200/204` |
-| `GET/POST/DELETE` | `/auth/approle/role/:role_name/token-bound-cidrs`     | `200/204` |
-| `GET/POST/DELETE` | `/auth/approle/role/:role_name/period`                | `200/204` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET/POST/DELETE`   | `/auth/approle/role/:role_name/policies`  | `200/204` |
+| `GET/POST/DELETE`   | `/auth/approle/role/:role_name/secret-id-num-uses`  | `200/204` |
+| `GET/POST/DELETE`   | `/auth/approle/role/:role_name/secret-id-ttl`  | `200/204` |
+| `GET/POST/DELETE`   | `/auth/approle/role/:role_name/token-ttl`  | `200/204` |
+| `GET/POST/DELETE`   | `/auth/approle/role/:role_name/token-max-ttl`  | `200/204` |
+| `GET/POST/DELETE`   | `/auth/approle/role/:role_name/bind-secret-id`  | `200/204` |
+| `GET/POST/DELETE`   | `/auth/approle/role/:role_name/secret-id-bound-cidrs`  | `200/204` |
+| `GET/POST/DELETE`   | `/auth/approle/role/:role_name/token-bound-cidrs`  | `200/204` |
+| `GET/POST/DELETE`   | `/auth/approle/role/:role_name/period`  | `200/204` |
 
 Refer to `/auth/approle/role/:role_name` endpoint.
 
@@ -621,9 +631,9 @@ in the token store. Generally, running this is not needed unless upgrade
 notes or support personnel suggest it. This may perform a lot of I/O to the
 storage method so should be used sparingly.
 
-| Method | Path                           |
-| :----- | :----------------------------- |
-| `POST` | `/auth/approle/tidy/secret-id` |
+| Method   | Path                            |
+| :------------------------------ | :--------------------- |
+| `POST`   | `/auth/approle/tidy/secret-id`  |
 
 ### Sample Request
 

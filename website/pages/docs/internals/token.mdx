@@ -15,13 +15,13 @@ token managed by the `token` backend.
 
 Every token has a number of properties:
 
-- ID - The primary ID of a token is a randomly generated value
-- Display Name - Optionally, a human readable display name
-- Metadata - Metadata used for audit logging
-- Number of Uses - Optionally, a restricted use count
-- Parent ID - Optionally, a parent token which created this child token
-- Policies - An associated list of ACL policies
-- Source Path - The path at which the token was generated (e.g. `auth/github/login`)
+* ID - The primary ID of a token is a randomly generated value
+* Display Name - Optionally, a human readable display name
+* Metadata - Metadata used for audit logging
+* Number of Uses - Optionally, a restricted use count
+* Parent ID - Optionally, a parent token which created this child token
+* Policies - An associated list of ACL policies
+* Source Path - The path at which the token was generated (e.g. `auth/github/login`)
 
 The properties of a token are immutable once created. The exception to this
 is the number of uses, which is decremented on each request. Each of these

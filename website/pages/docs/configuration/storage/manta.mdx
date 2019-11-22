@@ -12,7 +12,7 @@ description: >-
 
 # Manta Storage Backend
 
-The Manta storage backend is used to persist Vault's data in [Triton's Manta Object
+The Manta storage backend is used to persist Vault's data in [Triton's Manta Object 
 Storage][manta-object-store]. The storage folder must already exist.
 
 - **No High Availability** – the Manta storage backend does not support high
@@ -34,20 +34,21 @@ storage "manta" {
 ## `manta` Parameters
 
 - `directory` `(string: <required>)` – Specifies the name of the manta directory to use.
-  This will be in the `/stor/` folder in the specific manta account
+This will be in the `/stor/` folder in the specific manta account
 
 The following settings are used for authenticating to Manta.
 
 - `user` `(string: <required>)` – Specifies the Manta user account name. This can also be provided via
   the environment variable `MANTA_USER`.
-
-- `key_id` `(string: <required>)` – The fingerprint of the public key of the SSH key pair to use for authentication with the Manta API.
-  It is assumed that the SSH agent has the private key corresponding to this key ID loaded. This can also be provided
+  
+- `key_id` `(string: <required>)` – The fingerprint of the public key of the SSH key pair to use for authentication with the Manta API. 
+  It is assumed that the SSH agent has the private key corresponding to this key ID loaded. This can also be provided 
   via the environment variable `MANTA_KEY_ID`.
-
+  
 - `subuser` - The name of a subuser that has been granted access to the Manta account. This can also be
   provided via the environment variable `MANTA_SUBUSER`.
-- `url` – Specifies the Manta URL. Defaults to `https://us-east.manta.joyent.com`. This can also be provided via
+    
+- `url` – Specifies the Manta URL. Defaults to `https://us-east.manta.joyent.com`. This can also be provided via 
   the environment variable `MANTA_URL`.
 
 - `max_parallel` `(string: "128")` – Specifies The maximum number of concurrent

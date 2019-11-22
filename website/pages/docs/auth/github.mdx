@@ -56,7 +56,10 @@ The response will contain a token at `auth.client_token`:
       "username": "my-user",
       "org": "my-org"
     },
-    "policies": ["default", "dev-policy"],
+    "policies": [
+      "default",
+      "dev-policy"
+    ],
     "accessor": "f93c4b2d-18b6-2b50-7a32-0fecf88237b8",
     "client_token": "1977fceb-3bfa-6c71-4d1f-b64af98ac018"
   }
@@ -71,41 +74,41 @@ management tool.
 
 1. Enable the GitHub auth method:
 
-   ```text
-   $ vault auth enable github
-   ```
+    ```text
+    $ vault auth enable github
+    ```
 
 1. Use the `/config` endpoint to configure Vault to talk to GitHub.
 
-   ```text
-   $ vault write auth/github/config organization=hashicorp
-   ```
+    ```text
+    $ vault write auth/github/config organization=hashicorp
+    ```
 
-   For the complete list of configuration options, please see the API
-   documentation.
+    For the complete list of configuration options, please see the API
+    documentation.
 
 1. Map the users/teams of that GitHub organization to policies in Vault. Team
    names must be "slugified":
 
-   ```text
-   $ vault write auth/github/map/teams/dev value=dev-policy
-   ```
+    ```text
+    $ vault write auth/github/map/teams/dev value=dev-policy
+    ```
 
-   In this example, when members of the team "dev" in the organization
-   "hashicorp" authenticate to Vault using a GitHub personal access token, they
-   will be given a token with the "dev-policy" policy attached.
+    In this example, when members of the team "dev" in the organization
+    "hashicorp" authenticate to Vault using a GitHub personal access token, they
+    will be given a token with the "dev-policy" policy attached.
 
-   ***
+    ---
 
-   You can also create mappings for a specific user `map/users/<user>`
-   endpoint:
+    You can also create mappings for a specific user `map/users/<user>`
+    endpoint:
 
-   ```text
-   $ vault write auth/github/map/users/sethvargo value=sethvargo-policy
-   ```
+    ```text
+    $ vault write auth/github/map/users/sethvargo value=sethvargo-policy
+    ```
 
-   In this example, a user with the GitHub username `sethvargo` will be
-   assigned the `sethvargo-policy` policy **in addition to** any team policies.
+    In this example, a user with the GitHub username `sethvargo` will be
+    assigned the `sethvargo-policy` policy **in addition to** any team policies.
 
 ## API
 

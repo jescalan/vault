@@ -14,8 +14,8 @@ The Transit seal configures Vault to use Vault's Transit Secret Engine as the
 autoseal mechanism.
 The Transit seal is activated by one of the following:
 
-- The presence of a `seal "transit"` block in Vault's configuration file
-- The presence of the environment variable `VAULT_SEAL_TYPE` set to `transit`.
+* The presence of a `seal "transit"` block in Vault's configuration file
+* The presence of the environment variable `VAULT_SEAL_TYPE` set to `transit`.
 
 ## `transit` Example
 
@@ -53,7 +53,7 @@ These parameters apply to the `seal` stanza in the Vault configuration file:
   specified by the `VAULT_TOKEN` environment variable.
 
 - `key_name` `(string: <required>)`: The transit key to use for encryption and
-  decryption. This may also be supplied using the `VAULT_TRANSIT_SEAL_KEY_NAME`
+  decryption.  This may also be supplied using the `VAULT_TRANSIT_SEAL_KEY_NAME`
   environment variable.
 
 - `mount_path` `(string: <required>)`: The mount path to the transit secret engine.  
@@ -65,28 +65,28 @@ These parameters apply to the `seal` stanza in the Vault configuration file:
 
 - `disable_renewal` `(string: "false")`: Disables the automatic renewal of the token
   in case the lifecycle of the token is managed with some other mechanism outside of
-  Vault, such as Vault Agent. This may also be specified using the
+  Vault, such as Vault Agent.  This may also be specified using the
   `VAULT_TRANSIT_SEAL_DISABLE_RENEWAL` environment variable.
 
 - `tls_ca_cert` `(string: "")`: Specifies the path to the CA certificate file used
-  for communication with the Vault server. This may also be specified using the
+  for communication with the Vault server.  This may also be specified using the
   `VAULT_CA_CERT` environment variable.
 
 - `tls_client_cert` `(string: "")`: Specifies the path to the client certificate
-  for communication with the Vault server. This may also be specified using the
+  for communication with the Vault server.  This may also be specified using the
   `VAULT_CLIENT_CERT` environment variable.
 
 - `tls_client_key` `(string: "")`: Specifies the path to the private key for
-  communication with the Vault server. This may also be specified using the
+  communication with the Vault server.  This may also be specified using the
   `VAULT_CLIENT_KEY` environment variable.
 
 - `tls_server_name` `(string: "")`: Name to use as the SNI host when connecting
-  to the Vault server via TLS. This may also be specified via the
+  to the Vault server via TLS.  This may also be specified via the
   `VAULT_TLS_SERVER_NAME` environment variable.
 
 - `tls_skip_verify` `(bool: "false")`: Disable verification of TLS certificates.
   Using this option is highly discouraged and decreases the security of data
-  transmissions to and from the Vault server. This may also be specified using the
+  transmissions to and from the Vault server.  This may also be specified using the
   `VAULT_SKIP_VERIFY` environment variable.
 
 ## Authentication
@@ -95,7 +95,7 @@ Authentication-related values must be provided, either as environment
 variables or as configuration parameters.
 
 ~> **Note:** Although the configuration file allows you to pass in
-`VAULT_TOKEN` as part of the seal's parameters, it is _strongly_ recommended
+`VAULT_TOKEN` as part of the seal's parameters, it is *strongly* recommended
 to set these values via environment variables.
 
 The Vault token used to authenticate needs the following permissions on the
@@ -113,6 +113,11 @@ path "<mount path>/decrypt/<key name>" {
 
 ## Key Rotation
 
-This seal supports key rotation using the Transit Secret Engine's key rotation endpoints. See
+This seal supports key rotation using the Transit Secret Engine's key rotation endpoints.  See
 [doc](/api/secret/transit/index.html#rotate-key). Old keys must not be disabled or deleted and are
 used to decrypt older data.
+
+## Learn
+
+Refer to the [Auto-unseal using Transit Secrets Engine](https://learn.hashicorp.com/vault/operations/autounseal-transit)
+guide for a step-by-step tutorial.

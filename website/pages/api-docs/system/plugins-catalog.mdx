@@ -16,9 +16,9 @@ once registered backends can use the plugin by querying the catalog.
 
 This endpoint lists the plugins in the catalog by type.
 
-| Method | Path                   |
-| :----- | :--------------------- |
-| `GET`  | `/sys/plugins/catalog` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/sys/plugins/catalog`       |
 
 ### Sample Request
 
@@ -56,16 +56,15 @@ $ curl \
     }
 }
 ```
-
 ## LIST Plugins
 
 This endpoint lists the plugins in the catalog by type.
 
-| Method | Path                            |
-| :----- | :------------------------------ |
-| `LIST` | `/sys/plugins/catalog/auth`     |
-| `LIST` | `/sys/plugins/catalog/database` |
-| `LIST` | `/sys/plugins/catalog/secret`   |
+| Method   | Path                              |
+| :-------------------------------- | :--------------------- |
+| `LIST`   | `/sys/plugins/catalog/auth`       |
+| `LIST`   | `/sys/plugins/catalog/database`   |
+| `LIST`   | `/sys/plugins/catalog/secret`     |
 
 ### Sample Request
 
@@ -100,17 +99,17 @@ supplied name.
 - **`sudo` required** – This endpoint requires `sudo` capability in addition to
   any path-specific capabilities.
 
-| Method | Path                               |
-| :----- | :--------------------------------- |
-| `PUT`  | `/sys/plugins/catalog/:type/:name` |
+| Method   | Path                               |
+| :--------------------------------- | :--------------------- |
+| `PUT`    | `/sys/plugins/catalog/:type/:name` |
 
 ### Parameters
 
 - `name` `(string: <required>)` – Specifies the name for this plugin. The name
   is what is used to look up plugins in the catalog. This is part of the request
   URL.
-
-- `type` `(string: <required>)` – Specifies the type of this plugin. May be
+  
+- `type` `(string: <required>)` – Specifies the type of this plugin. May be 
   "auth", "database", or "secret".
 
 - `sha256` `(string: <required>)` – This is the SHA256 sum of the plugin's
@@ -154,16 +153,16 @@ This endpoint returns the configuration data for the plugin with the given name.
 - **`sudo` required** – This endpoint requires `sudo` capability in addition to
   any path-specific capabilities.
 
-| Method | Path                               |
-| :----- | :--------------------------------- |
-| `GET`  | `/sys/plugins/catalog/:type/:name` |
+| Method   | Path                               |
+| :--------------------------------- | :--------------------- |
+| `GET`    | `/sys/plugins/catalog/:type/:name` |
 
 ### Parameters
 
 - `name` `(string: <required>)` – Specifies the name of the plugin to retrieve.
   This is part of the request URL.
-
-- `type` `(string: <required>)` – Specifies the type of this plugin. May be
+  
+- `type` `(string: <required>)` – Specifies the type of this plugin. May be 
   "auth", "database", or "secret".
 
 ### Sample Request
@@ -188,7 +187,6 @@ $ curl \
 	}
 }
 ```
-
 ## Remove Plugin from Catalog
 
 This endpoint removes the plugin with the given name.
@@ -196,16 +194,16 @@ This endpoint removes the plugin with the given name.
 - **`sudo` required** – This endpoint requires `sudo` capability in addition to
   any path-specific capabilities.
 
-| Method   | Path                               |
-| :------- | :--------------------------------- |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
 | `DELETE` | `/sys/plugins/catalog/:type/:name` |
 
 ### Parameters
 
 - `name` `(string: <required>)` – Specifies the name of the plugin to delete.
   This is part of the request URL.
-
-- `type` `(string: <required>)` – Specifies the type of this plugin. May be
+  
+- `type` `(string: <required>)` – Specifies the type of this plugin. May be 
   "auth", "database", or "secret".
 
 ### Sample Request

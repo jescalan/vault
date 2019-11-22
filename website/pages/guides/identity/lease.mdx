@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Tokens and Leases - Guides
 sidebar_title: Tokens and Leases
 sidebar_current: guides-identity-lease
@@ -40,11 +41,12 @@ revoked by the Vault server. When it's revoked, it takes its child
 two hours later, `b519c6aa...` will be revoked and takes its child
 (`6a2cf3e7...`) with it.
 
+
 ## Reference Material
 
 - The [Validation](/guides/secret-mgmt/dynamic-secrets.html#validation) section of the
-  [Secret as a Service](/guides/secret-mgmt/dynamic-secrets.html) guide demonstrates lease
-  renewal and revocation
+[Secret as a Service](/guides/secret-mgmt/dynamic-secrets.html) guide demonstrates lease
+renewal and revocation
 - [Tokens documentation](/docs/concepts/tokens.html)
 - [Token Auth Method (API)](/api/auth/token/index.html)
 - [Lease, Renew, and Revoke](/docs/concepts/lease.html)
@@ -71,7 +73,7 @@ See the [policy requirements](#policy-requirements) section for details.
 Consider the following scenarios often encountered outside of Vault:
 
 - There is no **break glass** procedure available for revoking
-  access to credentials in the event of a breach
+access to credentials in the event of a breach
 - Credentials for external systems (e.g. AWS, MySQL) are shared
 - Need temporal access to a database in a specific scenario
 
@@ -93,10 +95,11 @@ This also allows for organizations to plan and train for various
 ## Prerequisites
 
 To perform the tasks described in this guide, you need to have a Vault
-environment. Refer to the [Getting
+environment.  Refer to the [Getting
 Started](/intro/getting-started/install.html) guide to install Vault. Make sure
 that your Vault server has been [initialized and
 unsealed](/intro/getting-started/deploy.html).
+
 
 ### Policy requirements
 
@@ -138,6 +141,7 @@ path "sys/mounts/database/tune" {
 If you are not familiar with policies, complete the
 [policies](/guides/identity/policies.html) guide.
 
+
 ## Steps
 
 Tokens are the core method for authentication within Vault. Tokens can be used
@@ -152,6 +156,7 @@ This guide demonstrates the lifecycle of tokens.
 1. [Periodic tokens](#step4)
 1. [Orphan tokens](#step5)
 1. [Revoke tokens](#step6)
+
 
 ### <a name="step1"></a>Step 1: Read token auth method configuration
 
@@ -246,7 +251,7 @@ To view optional parameters to create tokens:
 $ vault token create -help
 ```
 
-There are a number of parameters you can set. To specify the token TTL, pass
+There are a number of parameters you can set.  To specify the token TTL, pass
 the value using `-ttl` parameter.
 
 **Example:**
@@ -291,6 +296,7 @@ creation, it should work. Wait for 30 seconds and try again. It returns
 **`Code: 403. Errors:`** which indicates a forbidden API call due to expired
 token usage.
 
+
 You can **renew** the token's TTL as long as the token has not expired.
 
 ```shell
@@ -311,6 +317,7 @@ $ vault token renew -increment=<EXTENSION> <TOKEN>
 
 The extension value can be an integer number of seconds (e.g. 3600) or a string
 duration (e.g. "1h").
+
 
 #### API call using cURL
 
@@ -382,6 +389,7 @@ renew the token up to 24 hours from its creation time. Once 24 hours has passed 
 the token's creation time, the token is revoked by Vault. For long running
 processes, this may introduce complexity. In such case, use [periodic tokens](#step4).
 
+
 ### <a name="step3"></a>Step 3: Create tokens with use limit
 
 In addition to TTL and max TTL, tokens may be limited to a number of uses. Use
@@ -452,8 +460,9 @@ Code: 403. Errors:
 ```
 
 The first command read the token's properties and then wrote a value to the cubbyhole
-secret engine. This exhausted the use limit of 2 for this token. Therefore,
+secret engine. This exhausted the use limit of 2 for this token.  Therefore,
 the attempt to read the secret from the cubbyhole failed.
+
 
 #### API call using cURL
 
@@ -528,8 +537,10 @@ $ curl --header "X-Vault-Token: d9c2f2e5-6b8a-4021-476c-ebd3f166d668" \
 ```
 
 The first command read the token's properties and then wrote a value to the cubbyhole
-secret engine. This exhausted the use limit of 2 for this token. Therefore,
+secret engine. This exhausted the use limit of 2 for this token.  Therefore,
 the attempt to read the secret from the cubbyhole failed.
+
+
 
 ### <a name="step4"></a>Step 4: Periodic tokens
 
@@ -540,11 +551,10 @@ is useful for long-running services that cannot handle regenerating a token.
 
 #### CLI command
 
-First, create a token role with a specific `period`. When you set `period`,
+First, create a token role with a specific `period`.  When you set `period`,
 tokens created for this role will have no max TTL. Instead, the `period` becomes
 the token renewal period. This value can be an integer value in seconds (e.g.
-
-2764800. or a string duration (e.g. 72h).
+2764800) or a string duration (e.g. 72h).
 
 ```shell
 $ vault write auth/token/roles/<ROLE_NAME> allowed_policies="<POLICY_NAMES>" period=<RENEWAL_PERIOD>
@@ -570,13 +580,13 @@ token_renewable	true
 token_policies 	[default]
 ```
 
+
 #### API call using cURL
 
-First, create a token role by setting `period`. When you set `period`, tokens
+First, create a token role by setting `period`.  When you set `period`, tokens
 created for this role will have no max TTL. Instead, the `period` becomes the
 token renewal period. This value can be an integer value in seconds (e.g.
-
-2764800. or a string duration (e.g. 72h).
+2764800) or a string duration (e.g. 72h).
 
 **Example:**
 
@@ -624,6 +634,7 @@ Generated tokens are renewable indefinitely as long as they are renewed
 before the lease duration expires. The token renew command was covered in
 [Step 2](#step2).
 
+
 #### Additional Note: Periodic Tokens with AppRole
 
 It probably makes better sense to create **AppRole** periodic tokens since we
@@ -651,7 +662,7 @@ $ tee payload.json <<EOF
   "allowed_policies": [
 		"jenkins"
 	],
-  "period": "72h"
+  "period": "72h"  
 }
 EOF
 
@@ -660,6 +671,8 @@ $ curl --header "X-Vault-Token:..." --request POST \
        --data @payload.json \
        http://127.0.0.1:8200/v1/auth/approle/role/jenkins
 ```
+
+
 
 ### <a name="step5"></a>Step 5: Orphan tokens
 
@@ -735,7 +748,8 @@ $ vault token revoke -accessor 2b2b5b83-7f22-fecd-03f0-4e25bf64da11
 
 #### API call using cURL
 
-To revoke a specific token, call `/auth/token/revoke` endpoint. If you want to revoke tokens/secrets under a specific path, call `/sys/leases/revoke-prefix/<PATH>`.
+To revoke a specific token, call `/auth/token/revoke` endpoint.  If you want to revoke tokens/secrets under a specific path, call `/sys/leases/revoke-prefix/<PATH>`.
+
 
 **Example:**
 
@@ -758,6 +772,7 @@ $ curl --header "X-Vault-Token: ..." --request POST \
        --data '{ "accessor": "2b2b5b83-7f22-fecd-03f0-4e25bf64da11" }' \
        http://127.0.0.1:8200/v1/auth/token/revoke-accessor
 ```
+
 
 ## Advanced Features
 
@@ -803,6 +818,8 @@ $ curl --header "X-Vault-Token:..." --request POST \
        http://127.0.0.1:8200/v1/sys/mounts/database/tune
 ```
 
+
+
 #### 3. Check the role specific TTLs
 
 Depending on the auth method, there may be more specific TTLs configured (e.g.
@@ -822,6 +839,7 @@ path_suffix
 period             	86400
 renewable          	true
 ```
+
 
 ## Next steps
 

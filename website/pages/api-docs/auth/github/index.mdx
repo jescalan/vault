@@ -21,9 +21,9 @@ please update your API calls accordingly.
 Configures the connection parameters for GitHub. This path honors the
 distinction between the `create` and `update` capabilities inside ACL policies.
 
-| Method | Path                  |
-| :----- | :-------------------- |
-| `POST` | `/auth/github/config` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/github/config`          |
 
 ### Parameters
 
@@ -56,9 +56,9 @@ $ curl \
 
 Reads the GitHub configuration.
 
-| Method | Path                  |
-| :----- | :-------------------- |
-| `GET`  | `/auth/github/config` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/auth/github/config`        |
 
 ### Sample Request
 
@@ -90,13 +90,13 @@ $ curl \
 
 Map a list of policies to a team that exists in the configured GitHub organization.
 
-| Method | Path                                |
-| :----- | :---------------------------------- |
-| `POST` | `/auth/github/map/teams/:team_name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/github/map/teams/:team_name`   |
 
 ### Parameters
 
-- `key` `(string)` - GitHub team name in "slugified" format
+- `team_name` `(string)` - GitHub team name in "slugified" format
 - `value` `(string)` - Comma separated list of policies to assign
 
 ### Sample Payload
@@ -117,13 +117,14 @@ $ curl \
     http://127.0.0.1:8200/v1/auth/github/map/teams/dev
 ```
 
+
 ## Read Team Mapping
 
 Reads the GitHub team policy mapping.
 
-| Method | Path                                |
-| :----- | :---------------------------------- |
-| `GET`  | `/auth/github/map/teams/:team_name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/auth/github/map/teams/:team_name`        |
 
 ### Sample Request
 
@@ -156,13 +157,13 @@ $ curl \
 Map a list of policies to a specific GitHub user exists in the configured
 organization.
 
-| Method | Path                                |
-| :----- | :---------------------------------- |
-| `POST` | `/auth/github/map/users/:user_name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/github/map/users/:user_name`     |
 
 ### Parameters
 
-- `key` `(string)` - GitHub user name
+- `user_name` `(string)` - GitHub user name
 - `value` `(string)` - Comma separated list of policies to assign
 
 ### Sample Payload
@@ -190,9 +191,9 @@ policy **in addition to** any team policies.
 
 Reads the GitHub user policy mapping.
 
-| Method | Path                                |
-| :----- | :---------------------------------- |
-| `GET`  | `/auth/github/map/users/:user_name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/auth/github/map/users/:user_name`        |
 
 ### Sample Request
 
@@ -220,13 +221,14 @@ $ curl \
 }
 ```
 
+
 ## Login
 
 Login using GitHub access token.
 
-| Method | Path                 |
-| :----- | :------------------- |
-| `POST` | `/auth/github/login` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/github/login`         |
 
 ### Parameters
 
@@ -269,4 +271,4 @@ $ curl \
   "lease_duration": 7200,
   "renewable": true
 }
-```
+ ```

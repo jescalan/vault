@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Versioned KV Secret Engine - Guides
 sidebar_title: Versioned KV Secret Engine
 sidebar_current: guides-secret-mgmt-versioned-kv
@@ -13,8 +14,9 @@ description: |-
 The [Static Secrets](/guides/secret-mgmt/static-secrets.html) guide introduced
 the basics of working with key-value secret engine. **Vault 0.10** introduced [_K/V
 Secrets Engine v2 with Secret
-Versioning_](https://www.hashicorp.com/blog/vault-0-10). This guide
+Versioning_](https://www.hashicorp.com/blog/vault-0-10).  This guide
 demonstrates the new features introduced by the key-value secret engine v2.
+
 
 ## Reference Material
 
@@ -27,9 +29,11 @@ tutorial](https://www.katacoda.com/hashicorp/scenarios/vault-static-secrets) is
 also available if you do not have a Vault environment to perform the steps
 described in this guide.
 
+
 ## Estimated Time to Complete
 
 10 minutes
+
 
 ## Challenge
 
@@ -37,11 +41,12 @@ The KV secret engine v1 does not provide a way to version or roll back secrets.
 This made it difficult to recover from unintentional data loss or overwrite when
 more than one user is writing at the same path.
 
+
 ## Solution
 
 Run the **version 2** of KV secret engine which can retain a configurable
 number of secret versions. This enables older versions' data to be retrievable
-in case of unwanted deletion or updates of the data. In addition, its
+in case of unwanted deletion or updates of the data.  In addition, its
 _Check-and-Set_ operations can be used to protect the data from being overwritten
 unintentionally.
 
@@ -50,7 +55,7 @@ unintentionally.
 ## Prerequisites
 
 To perform the tasks described in this guide, you need to have a Vault
-environment. Refer to the [Getting
+environment.  Refer to the [Getting
 Started](/intro/getting-started/install.html) guide to install Vault. Make sure
 that your Vault server has been [initialized and
 unsealed](/intro/getting-started/deploy.html).
@@ -85,9 +90,10 @@ path "sys/mounts/*" {
 If you are not familiar with policies, complete the
 [policies](/guides/identity/policies.html) guide.
 
+
 ## Steps
 
-This guide demonstrates the basic commands for working with KV secret engine v2.
+This guide demonstrates the basic commands for working with KV secret engine v2.  
 
 You will perform the following:
 
@@ -98,8 +104,8 @@ You will perform the following:
 5. [Delete versions of secret](#step5)
 6. [Permanently delete data](#step6)
 
-### <a name="step1"></a>Step 1: Check the KV secret engine version
 
+### <a name="step1"></a>Step 1: Check the KV secret engine version
 (**Persona:** devops)
 
 Before beginning, verify that you are using the v2 of the KV secret engine.
@@ -144,6 +150,7 @@ $ curl --header "X-Vault-Token: <TOKEN>" \
 
 Where `<TOKEN>` is your valid token, and `<VAULT_ADDRESS>` is where your vault
 server is running.
+
 
 **Example:**
 
@@ -203,11 +210,12 @@ $ vault kv enable-versioning secret/
 
 Alternatively, you can enable KV secret engine v2 at a different path by
 clicking **Enable new engine**. Select **KV** from the **Secret engine type**
-drop-down list. Be sure that the **Version** is set to be **Version 2**.
+drop-down list.  Be sure that the **Version** is set to be **Version 2**.
 
 ![Enabling kv-v2](/img/vault-versioned-kv-3.png)
 
 Click **Enable Engine** to complete.
+
 
 ### <a name="step2"></a>Step 2: Write Secrets
 
@@ -329,6 +337,7 @@ $ curl --header "X-Vault-Token: ..." \
 }
 ```
 
+
 #### Web UI
 
 In the Web UI, select `secret/` and then click **Create secret**.
@@ -341,6 +350,7 @@ To update the existing secret, select **Edit**, change the `contact_email`
 value, and then click **Save**.
 
 ![Write Secret](/img/vault-versioned-kv-6.png)
+
 
 ### <a name="step3"></a>Step 3: Retrieve a Specific Version of Secret
 
@@ -394,6 +404,7 @@ created_time     2018-04-14T00:13:35.296018431Z
 deletion_time    n/a
 destroyed        false
 ```
+
 
 #### API call using cURL
 
@@ -460,9 +471,10 @@ $ curl --header "X-Vault-Token: ..." \
 }
 ```
 
+
 ### <a name="step4"></a>Step 4: Specify the number of versions to keep
 
-By default, the `kv-v2` secret engine keeps up to 10 versions. Let's limit the
+By default, the `kv-v2` secret engine keeps up to 10 versions.  Let's limit the
 maximum number of versions to keep to be 4.
 
 #### CLI command
@@ -590,6 +602,7 @@ $ curl --header "X-Vault-Token: ..." \
 
 Invoke the `secret/metadata/customer/acme` endpoint instead.
 
+
 Overwrite the data a few more times to see what happens to the data.
 
 ```plaintext
@@ -648,7 +661,9 @@ $ curl --header "X-Vault-Token: ..." \
 }
 ```
 
+
 ### <a name="step5"></a>Step 5: Delete versions of secret
+
 
 #### CLI command
 
@@ -680,12 +695,14 @@ destroyed        false
 The metadata on versions 4 and 5 reports its deletion timestamp
 (`deletion_time`); however, the `destroyed` parameter is set to `false`.
 
-If version 5 was deleted by mistake and you wish to recover, invoke the `vault kv undelete` command:
+If version 5 was deleted by mistake and you wish to recover, invoke the `vault
+kv undelete` command:
 
 ```plaintext
 $ vault kv undelete -versions=5 secret/customer/acme
 Success! Data written to: secret/undelete/customer/acme
 ```
+
 
 #### API call using cURL
 
@@ -727,6 +744,7 @@ $ curl --header "X-Vault-Token: ..." \
        http://127.0.0.1:8200/v1/secret/undelete/customer/acme
 ```
 
+
 ### <a name="step6"></a>Step 6: Permanently delete data
 
 #### CLI command
@@ -758,6 +776,7 @@ invoke the `vault kv metadata delete` command:
 $ vault kv metadata delete secret/customer/acme
 Success! Data deleted (if it existed) at: secret/metadata/customer/acme
 ```
+
 
 #### API call using cURL
 
@@ -792,6 +811,7 @@ $ curl --header "X-Vault-Token: ..." \
        http://127.0.0.1:8200/v1/secret/metadata/customer/acme
 ```
 
+
 ### Additional Discussion
 
 The v2 of KV secret engine supports a **_Check-And-Set_** operation to prevent
@@ -799,7 +819,7 @@ unintentional secret overwrite. When you pass the `cas` flag to Vault, it first
 checks if the key already exists.
 
 By default, _Check-And-Set_ operation is not enabled on the KV secret engine;
-therefore, write is always allowed (no checking is performed).
+therefore, write is always allowed (no checking is performed).  
 
 ```plaintext
 $ vault read secret/config
@@ -921,9 +941,11 @@ $ curl --header "X-Vault-Token: ..." \
 <br />
 
 ~> If the **`cas`** value is missing in your write request, the
-"`check-and-set parameter required for this call`" error will be returned. If
+"`check-and-set parameter required for this call`" error will be returned.  If
 the `cas` does not match the current version number, you will receive the
 "`check-and-set parameter did not match the current version`" message.
+
+
 
 ## Next steps
 

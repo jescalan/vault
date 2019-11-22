@@ -16,16 +16,16 @@ This endpoint returns the health status of Vault. This matches the semantics of
 a Consul HTTP health check and provides a simple way to monitor the health of a
 Vault instance.
 
-| Method | Path          |
-| :----- | :------------ |
-| `HEAD` | `/sys/health` | `000 (empty body)` |
-| `GET`  | `/sys/health` | `000 application/json` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `HEAD`   | `/sys/health`                | `000 (empty body)`     |
+| `GET`    | `/sys/health`                | `000 application/json` |
 
 The default status codes are:
 
 - `200` if initialized, unsealed, and active
 - `429` if unsealed and standby
-- `472` if data recovery mode replication secondary and active
+- `472` if disaster recovery mode replication secondary and active
 - `473` if performance standby
 - `501` if not initialized
 - `503` if sealed

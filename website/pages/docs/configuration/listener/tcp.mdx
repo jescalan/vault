@@ -65,13 +65,12 @@ advertise the correct address to other nodes.
 - `proxy_protocol_behavior` `(string: "")` – When specified, enables a PROXY
   protocol version 1 behavior for the listener.
   Accepted Values:
-
-  - _use_always_ - The client's IP address will always be used.
-  - _allow_authorized_ - If the source IP address is in the
-    `proxy_protocol_authorized_addrs` list, the client's IP address will be used.
-    If the source IP is not in the list, the source IP address will be used.
-  - _deny_unauthorized_ - The traffic will be rejected if the source IP
-    address is not in the `proxy_protocol_authorized_addrs` list.
+  - *use_always* - The client's IP address will always be used.
+  - *allow_authorized* - If the source IP address is in the
+  `proxy_protocol_authorized_addrs` list, the client's IP address will be used.
+  If the source IP is not in the list, the source IP address will be used.
+  - *deny_unauthorized* - The traffic will be rejected if the source IP
+  address is not in the `proxy_protocol_authorized_addrs` list.
 
 - `proxy_protocol_authorized_addrs` `(string: <required-if-enabled> or array: <required-if-enabled> )` –
   Specifies the list of allowed source IP addresses to be used with the PROXY protocol.
@@ -102,7 +101,7 @@ advertise the correct address to other nodes.
 - `tls_min_version` `(string: "tls12")` – Specifies the minimum supported
   version of TLS. Accepted values are "tls10", "tls11" or "tls12".
 
-  ~> **Warning**: TLS 1.1 and lower are generally considered insecure.
+    ~> **Warning**: TLS 1.1 and lower are generally considered insecure.
 
 - `tls_cipher_suites` `(string: "")` – Specifies the list of supported
   ciphersuites as a comma-separated-list. The list of all available ciphersuites
@@ -128,7 +127,7 @@ advertise the correct address to other nodes.
   X-Forwarded-For support.
 
 - `x_forwarded_for_hop_skips` `(string: "0")` – The number of addresses that will be
-  skipped from the _rear_ of the set of hops. For instance, for a header value
+  skipped from the *rear* of the set of hops. For instance, for a header value
   of `1.2.3.4, 2.3.4.5, 3.4.5.6`, if this value is set to `"1"`, the address that
   will be used as the originating client IP is `2.3.4.5`.
 
@@ -144,7 +143,7 @@ advertise the correct address to other nodes.
 ### `telemetry` Parameters
 
 - `unauthenticated_metrics_access` `(string: "false")` - If set to true, allows
-  unauthenticated access to the `/v1/sys/metrics` endpoint.
+  unauthenticated access to the `/v1/sys/metrics` endpoint. 
 
 ## `tcp` Listener Examples
 
@@ -177,7 +176,7 @@ api_addr = "https://10.0.0.5:8200"
 cluster_addr = "https://10.0.0.5:8201"
 ```
 
-### Configuring unauthenticated metrics access
+### Configuring unauthenticated metrics access 
 
 This example shows enabling unauthenticated metrics access.
 

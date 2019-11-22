@@ -38,7 +38,7 @@ over regions set in the enclosing environment.
 
 ### Audit Logging of Empty Values
 
-All values in audit logs now are omitted if they are empty. This helps reduce
+All values in audit logs now are omitted if they are empty.  This helps reduce
 the size of audit log entries by not reproducing keys in each entry that
 commonly don't contain any value, which can help in cases where audit log
 entries are above the maximum UDP packet size and others.
@@ -59,15 +59,15 @@ there is sufficient overhead.
 
 ### AppRole Various Changes
 
-- AppRole uses new, common token fields for values that overlap with other auth
+* AppRole uses new, common token fields for values that overlap with other auth
   methods. `period` and `policies` will continue to work, with priority being
   given to the `token_` prefixed versions of these fields, but the values for
   those will only be returned on read if they were set initially.
-- `default` is no longer automatically added to policies after submission. It
+* `default` is no longer automatically added to policies after submission. It
   was a no-op anyways since Vault's core would always add it, and changing this
   behavior allows AppRole to support the new `token_no_default_policy`
   parameter
-- The long-deprecated `bound_cidr_list` is no longer returned when reading a
+* The long-deprecated `bound_cidr_list` is no longer returned when reading a
   role.
 
 ### Token Store Roles Changes
@@ -105,7 +105,7 @@ configs to have that defaulted to true.
 
 ### JWT/OIDC Plugin
 
-Logins of role_type "oidc" via the /login path are no longer allowed.
+Logins of role_type "oidc" via the /login path are no longer allowed. 
 
 ### ACL Wildcards
 

@@ -14,7 +14,7 @@ description: >-
 
 Many organizations implement Vault as a "service", providing centralized
 management for teams within an organization while ensuring that those teams
-operate within isolated environments known as _tenants_.
+operate within isolated environments known as *tenants*.
 
 There are two common challenges when implementing this architecture in Vault:
 
@@ -34,7 +34,7 @@ become very difficult for a single team as the number of tenants within that
 organization grow.
 
 'Namespaces' is a set of features within Vault Enterprise that allows Vault
-environments to support _Secure Multi-tenancy_ (or _SMT_) within a single Vault
+environments to support *Secure Multi-tenancy* (or *SMT*) within a single Vault
 infrastructure. Through namespaces, Vault administrators can support tenant isolation
 for teams and individuals as well as empower delegated administrators to manage their
 own tenant environment.
@@ -54,7 +54,6 @@ qualified path from these two sources to correctly route the request to the
 appropriate namespace.
 
 For example, these three requests are equivalent:
-
 1. Path: `ns1/ns2/secret/foo`
 2. Path: `secret/foo`, Header: `X-Vault-Namespace: ns1/ns2/`
 3. Path: `ns2/secret/foo`, Header: `X-Vault-Namespace: ns1/`
@@ -81,8 +80,7 @@ may refer to parent identities (entities and groups) when writing policies that 
 within that child namespace. Similarly, a parent namespace can have policies asserted on child
 identities.
 
-## Setup and Best Practices
+## Learn
 
-A [deployment guide](/guides/operations/multi-tenant.html) is available to help guide you
-through the deployment and administration of namespaces, and contains examples on architecture
-for using namespaces to implement SMT across your organization.
+Refer to the [Secure Multi-Tenancy with Namespaces](https://learn.hashicorp.com/vault/operations/namespaces)
+guide for a step-by-step tutorial.

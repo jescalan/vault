@@ -14,6 +14,7 @@ description: |-
 ~> **NOTE:** This is a [K/V Version 2](/docs/secrets/kv/kv-v2.html) secrets
 engine command, and not available for Version 1.
 
+
 The `kv undelete` command undoes the deletes of the data for the provided version
 and path in the key-value store. This restores the data, allowing it to be
 returned on get requests.
@@ -41,4 +42,4 @@ included on all commands.
 ### Command Options
 
 - `-versions` `([]int: <required>)` - Specifies the version number that should
-  be made current again.
+be made current again.

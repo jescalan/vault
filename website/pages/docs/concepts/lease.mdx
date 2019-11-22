@@ -44,18 +44,19 @@ lease duration; see the documentation for more information.
 ## Lease IDs
 
 When reading a dynamic secret, such as via `vault read`, Vault always returns a
-`lease_id`. This is the ID used with commands such as `vault renew` and `vault revoke` to manage the lease of the secret.
+`lease_id`. This is the ID used with commands such as `vault renew` and `vault
+revoke` to manage the lease of the secret.
 
 ## Lease Durations and Renewal
 
 Along with the lease ID, a _lease duration_ can be read. The lease duration is
-a Time To Live value: the time in seconds for which the lease is valid. A
+a Time To Live value: the time in seconds for which the lease is valid.  A
 consumer of this secret must renew the lease within that time.
 
 When renewing the lease, the user can request a specific amount of time they
 want remaining on the lease, termed the `increment`. This is not an increment
 at the end of the current TTL; it is an increment _from the current time_. For
-example, `vault renew my-lease-id 3600` would request that the TTL of the lease
+example, `vault lease renew -increment=3600 my-lease-id` would request that the TTL of the lease
 be adjusted to 1 hour (3600 seconds). Having the increment be rooted at the
 current time instead of the end of the lease makes it easy for users to reduce
 the length of leases if they don't actually need credentials for the full

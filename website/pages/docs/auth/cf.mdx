@@ -21,16 +21,16 @@ At a high level, this works as follows:
 
 ## Known Risks
 
-This authentication engine uses CF's instance identity service to authenticate users to Vault. Because
-CF makes its CA certificate and private key available to certain users at any time, it's possible for
-someone with access to them to self-issue identity certificates that meet the criteria for a Vault role,
+This authentication engine uses CF's instance identity service to authenticate users to Vault. Because 
+CF makes its CA certificate and private key available to certain users at any time, it's possible for 
+someone with access to them to self-issue identity certificates that meet the criteria for a Vault role, 
 allowing them to gain unintended access to Vault.
 
-For this reason, we recommend that if you enable this auth method, you carefully guard access to the
-private key for your instance identity CA certificate. In CredHub, it can be obtained through the
+For this reason, we recommend that if you enable this auth method, you carefully guard access to the 
+private key for your instance identity CA certificate. In CredHub, it can be obtained through the 
 following call: `$ credhub get -n /cf/diego-instance-identity-root-ca`.
 
-Take extra steps to limit access to that path in CredHub, whether it be through use of CredHub's ACL
+Take extra steps to limit access to that path in CredHub, whether it be through use of CredHub's ACL 
 system, or through carefully limiting the users who can access CredHub.
 
 ## Usage
@@ -38,7 +38,7 @@ system, or through carefully limiting the users who can access CredHub.
 ### Preparing to Configure the Plugin
 
 To configure this plugin, you'll need to gather the CA certificate that CF uses to issue each `CF_INSTANCE_CERT`,
-and you'll need to configure it to access the CF API.
+and you'll need to configure it to access the CF API. 
 
 To gain your instance identity CA certificate, in the [cf dev](https://github.com/cloudfoundry-incubator/cfdev)
 environment it can be found using:
@@ -145,9 +145,9 @@ Certificate:
                     6e:ed
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
-            X509v3 Subject Key Identifier:
+            X509v3 Subject Key Identifier: 
                 01:DF:A7:0A:81:85:9F:3F:03:A6:40:BD:4F:A9:E4:93:F3:FE:89:A3
-            X509v3 Authority Key Identifier:
+            X509v3 Authority Key Identifier: 
                 keyid:01:DF:A7:0A:81:85:9F:3F:03:A6:40:BD:4F:A9:E4:93:F3:FE:89:A3
 
             X509v3 Basic Constraints: critical
@@ -177,7 +177,7 @@ First, while in the directory containing the `metadata` file you used earlier to
 to CF, run `$ pcf target`. This points the `cf` tool at the same place as the `pcf` tool. Next,
 run `$ cf api` to view the API endpoint that Vault will use.
 
-Next, configure a user for Vault to use. This plugin was tested with Org Manager level
+Next, configure a user for Vault to use. This plugin was tested with Org Manager level 
 permissions, but lower level permissions _may_ be usable.
 
 ```
@@ -191,11 +191,11 @@ Specifically, the `vault` user created here will need to be able to perform the 
 
 - Method: "GET", endpoint: "/v2/info"
 - Method: "POST", endpoint: "/oauth/token"
-- Method: "GET", endpoint: "/v2/apps/\$APP_ID"
-- Method: "GET", endpoint: "/v2/organizations/\$ORG_ID"
-- Method: "GET", endpoint: "/v2/spaces/\$SPACE_ID"
+- Method: "GET", endpoint: "/v2/apps/$APP_ID"
+- Method: "GET", endpoint: "/v2/organizations/$ORG_ID"
+- Method: "GET", endpoint: "/v2/spaces/$SPACE_ID"
 
-Next, PCF often uses a self-signed certificate for TLS, which can be rejected at first
+Next, PCF often uses a self-signed certificate for TLS, which can be rejected at first 
 with an error like:
 
 ```
@@ -234,7 +234,7 @@ $ vault write auth/cf/config \
       cf_username=vault \
       cf_password=pa55w0rd \
       cf_api_trusted_certificates=@cfapi.crt
-
+      
 $ vault write auth/cf/roles/my-role \
     bound_application_ids=2d3e834a-3a25-4591-974c-fa5626d5d0a1 \
     bound_space_ids=3d2eba6b-ef19-44d5-91dd-1975b0db5cc9 \
@@ -242,7 +242,7 @@ $ vault write auth/cf/roles/my-role \
     policies=my-policy
 ```
 
-Once configured, from a CF instance containing real values for the `CF_INSTANCE_CERT` and
+Once configured, from a CF instance containing real values for the `CF_INSTANCE_CERT` and 
 `CF_INSTANCE_KEY`, login can be performed using:
 
 ```
@@ -255,9 +255,9 @@ your behalf.
 ### Maintenance
 
 In testing we found that CF instance identity CA certificates were set to expire in 3 years. Some
-CF docs indicate they expire every 4 years. However long they last, at some point you may need
+CF docs indicate they expire every 4 years. However long they last, at some point you may need 
 to add another CA certificate - one that's soon to expire, and one that is currently or soon-to-be
-valid.
+valid. 
 
 ```
 $ CURRENT=$(cat /path/to/current-ca.crt)
@@ -272,13 +272,13 @@ A similar approach can be taken to update the `cf_api_trusted_certificates`.
 
 ### Troubleshooting At-A-Glance
 
-If you receive an error containing `x509: certificate signed by unknown authority`, set
+If you receive an error containing `x509: certificate signed by unknown authority`, set 
 `cf_api_trusted_certificates` as described above.
 
 If you're unable to authenticate using the `CF_INSTANCE_CERT`, first obtain a current copy
-of your `CF_INSTANCE_CERT` and copy it to your local environment. Then divide it into two
-files, each being a distinct certificate. The first certificate tends to be the actual
-`identity.crt`, and the second one tends to be the `intermediate.crt`. Verify each are
+of your `CF_INSTANCE_CERT` and copy it to your local environment. Then divide it into two 
+files, each being a distinct certificate. The first certificate tends to be the actual 
+`identity.crt`, and the second one tends to be the `intermediate.crt`. Verify each are 
 properly named and formatted using a command like:
 
 ```
@@ -292,10 +292,10 @@ $ openssl verify -CAfile ca.crt -untrusted intermediate.crt identity.crt
 ```
 
 This should show a success response. If it doesn't, try to identify the root cause, be it
-an expired certificate, an incorrect `ca.crt`, or a Vault configuration that doesn't
+an expired certificate, an incorrect `ca.crt`, or a Vault configuration that doesn't 
 match the certificates you're checking.
 
 ## API
 
-The CF auth method has a full HTTP API. Please see the [CF Auth API](/api/auth/cf/index.html)
+The CF auth method has a full HTTP API. Please see the [CF Auth API](/api/auth/cf/index.html) 
 for more details.

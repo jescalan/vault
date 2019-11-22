@@ -22,9 +22,9 @@ please update your API calls accordingly.
 
 Create a new user or update an existing user. This path honors the distinction between the `create` and `update` capabilities inside ACL policies.
 
-| Method | Path                             |
-| :----- | :------------------------------- |
-| `POST` | `/auth/userpass/users/:username` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`    | `/auth/userpass/users/:username`   |
 
 ### Parameters
 
@@ -58,9 +58,9 @@ $ curl \
 
 Reads the properties of an existing username.
 
-| Method | Path                             |
-| :----- | :------------------------------- |
-| `GET`  | `/auth/userpass/users/:username` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/auth/userpass/users/:username`   |
 
 ### Sample Request
 
@@ -91,8 +91,8 @@ $ curl \
 
 This endpoint deletes the user from the method.
 
-| Method   | Path                             |
-| :------- | :------------------------------- |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
 | `DELETE` | `/auth/userpass/users/:username` |
 
 ### Parameters
@@ -112,8 +112,8 @@ $ curl \
 
 Update password for an existing user.
 
-| Method | Path                                      |
-| :----- | :---------------------------------------- |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
 | `POST` | `/auth/userpass/users/:username/password` |
 
 ### Parameters
@@ -125,7 +125,7 @@ Update password for an existing user.
 
 ```json
 {
-  "password": "superSecretPassword2"
+  "password": "superSecretPassword2",
 }
 ```
 
@@ -143,8 +143,8 @@ $ curl \
 
 Update policies for an existing user.
 
-| Method | Path                                      |
-| :----- | :---------------------------------------- |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
 | `POST` | `/auth/userpass/users/:username/policies` |
 
 ### Parameters
@@ -156,7 +156,7 @@ Update policies for an existing user.
 
 ```json
 {
-  "policies": ["policy1", "policy2"]
+  "policies": ["policy1", "policy2"],
 }
 ```
 
@@ -174,9 +174,9 @@ $ curl \
 
 List available userpass users.
 
-| Method | Path                   |
-| :----- | :--------------------- |
-| `LIST` | `/auth/userpass/users` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/userpass/users`          |
 
 ### Sample Request
 
@@ -192,7 +192,10 @@ $ curl \
 ```json
 {
   "data": {
-    "keys": ["mitchellh", "armon"]
+    "keys": [
+      "mitchellh",
+      "armon"
+    ]
   }
 }
 ```
@@ -201,8 +204,8 @@ $ curl \
 
 Login with the username and password.
 
-| Method | Path                             |
-| :----- | :------------------------------- |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
 | `POST` | `/auth/userpass/login/:username` |
 
 ### Parameters
@@ -214,7 +217,7 @@ Login with the username and password.
 
 ```json
 {
-  "password": "superSecretPassword2"
+  "password": "superSecretPassword2",
 }
 ```
 

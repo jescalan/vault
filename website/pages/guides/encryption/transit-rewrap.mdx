@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Transit Secrets Re-wrapping - Guides
 sidebar_title: Transit Secrets Re-wrapping
 sidebar_current: guides-encryption-transit-rewrap
@@ -19,9 +20,9 @@ store the data.
 The [`transit` secret engine](/docs/secrets/transit/index.html) handles
 cryptographic functions on data-in-transit, and often referred to as
 **_Encryption as a Service_** (EaaS). Both small amounts of arbitrary data, and
-large files such as images, can be protected with the transit engine. This EaaS
+large files such as images, can be protected with the transit engine.  This EaaS
 function can augment or eliminate the need for Transparent Data Encryption (TDE)
-with databases to encrypt the contents of a bucket, volume, and disk, etc.
+with databases to encrypt the contents of a bucket, volume, and disk, etc.  
 
 ![Encryption as a Service](/img/vault-encryption.png)
 
@@ -35,6 +36,7 @@ pipeline, a periodic Nomad batch job, Kubernetes Job, etc.
 The goal of this guide is to demonstrate an example for re-wrapping data after
 rotating an encryption key in the transit engine in Vault.
 
+
 ## Reference Material
 
 - [Encryption as a Service](/guides/encryption/transit.html)
@@ -42,9 +44,11 @@ rotating an encryption key in the transit engine in Vault.
 - [Transit Secret Engine API](/api/secret/transit/index.html)
 - [Transparent Data Encryption in the Modern Datacenter](https://www.hashicorp.com/blog/transparent-data-encryption-in-the-modern-datacenter)
 
+
 ## Estimated Time to Complete
 
 30 minutes
+
 
 ## Personas
 
@@ -53,12 +57,13 @@ The end-to-end scenario described in this guide involves two personas:
 - **security engineer** with privileged permissions to manage the encryption keys
 - **app** with un-privileged permissions rewraps secrets via API
 
+
 ## Challenge
 
 Vault maintains the versioned keyring and the operator can decide
-the minimum version allowed for decryption operations. When data is
+the minimum version allowed for decryption operations.  When data is
 encrypted using Vault, the resulting ciphertext is prepended with the version of
-the key used to encrypt it.
+the key used to encrypt it.  
 
 The following example shows data that was encrypted using the fourth version of
 a particular encryption key:
@@ -69,7 +74,7 @@ vault:v4:ueizdCqCJ/YhowQSvmJyucnLfIUMd4S/nLTpGTcz64HXoY69dwOrqerFzOlhqg==
 
 For example, an organization could decide that a key should be rotated _once a
 week_, and that the minimum version allowed to decrypt records is the current
-version as well as the previous two versions. If the current version is five,
+version as well as the previous two versions.  If the current version is five,
 then Vault would decrypt records that were sent to it with the following
 prefixes:
 
@@ -78,27 +83,29 @@ prefixes:
 - vault:**v3**:ouoiujarontoiue8987sdjf^1==
 
 In this example, what would happen if you send Vault data that was encrypted
-with the first or second version of the key (`vault:v1:...` or `vault:v2:...`)?
+with the first or second version of the key (`vault:v1:...` or `vault:v2:...`)?  
 
 Vault would refuse to decrypt the data as the key used is less than the minimum
 key version allowed.
 
+
 ## Solution
 
 Luckily, Vault provides an easy way of re-wrapping encrypted data when a key is
-rotated. Using the rewrap API endpoint, a non-privileged Vault entity can send
+rotated.  Using the rewrap API endpoint, a non-privileged Vault entity can send
 data encrypted with an older version of the key to have it re-encrypted with the
 latest version. The application performing the re-wrapping never interacts with
 the decrypted data. The process of rotating the encryption key and rewrapping
 records could (and should) be completely **automated**. Records could be updated
 slowly over time to lessen database load, or all at once at the time of
-rotation. The exact implementation will depend heavily on the needs of each
+rotation.  The exact implementation will depend heavily on the needs of each
 particular organization or application.
+
 
 ## Prerequisites
 
 To perform the tasks described in this guide, you need to have a Vault
-environment. Refer to the [Getting
+environment.  Refer to the [Getting
 Started](/intro/getting-started/install.html) guide to install Vault. Make sure
 that your Vault server has been [initialized and
 unsealed](/intro/getting-started/deploy.html).
@@ -126,6 +133,7 @@ The `vault-transit-rewrap-example` contains the following:
 ├── WebHelper.cs
 └── rewrap_example.csproj
 ```
+
 
 ### Policy requirements
 
@@ -162,6 +170,7 @@ path "auth/token/create" {
 If you are not familiar with policies, complete the
 [policies](/guides/identity/policies.html) guide.
 
+
 ## Steps
 
 This guide introduces a sample _.Net_ application which automates the
@@ -180,9 +189,10 @@ You are going to perform the following steps:
 1. [Rotate the encryption keys](#step5)
 1. [Re-wrapping data programmatically](#step6)
 
+
 ### <a name="step1"></a>Step 1: Test database setup (Docker)
 
-You need a database to test with. You can create one to test with easily using
+You need a database to test with.  You can create one to test with easily using
 Docker:
 
 ```bash
@@ -206,7 +216,6 @@ docker run --name mysql-rewrap \
 ```
 
 ### <a name="step2"></a>Step 2: Enable the transit secret engine
-
 (**Persona:** security engineer)
 
 #### CLI command
@@ -261,6 +270,7 @@ $ curl --header "X-Vault-Token: ..." \
 The above example passes the **type** (`transit`) in the request payload which
 at the `sys/mounts/transit` endpoint.
 
+
 Next, create an encryption key to use for transit named, "my_app_key".
 
 ```bash
@@ -269,12 +279,12 @@ $ curl --header "X-Vault-Token: ..." \
        https://localhost:8200/v1/transit/keys/my_app_key
 ```
 
-### <a name="step3"></a>Step 3: Generate a new token for sample app
 
+### <a name="step3"></a>Step 3: Generate a new token for sample app
 (**Persona:** security engineer)
 
 Before generating a token, create a limited scope policy named, "**rewrap_example**"
-for the sample application.
+for the sample application.  
 
 The ACL policy (`rewrap_example.hcl`) looks as follows:
 
@@ -287,7 +297,7 @@ path "transit/rewrap/my_app_key" {
   capabilities = ["update"]
 }
 
-# This last policy is needed to seed the database as part of the example.
+# This last policy is needed to seed the database as part of the example.  
 # It can be omitted if seeding is not required
 path "transit/encrypt/my_app_key" {
   capabilities = ["update"]
@@ -322,6 +332,7 @@ token_policies     [default rewrap_example]
 ```
 
 The generated token is what the sample application uses to connect to Vault.
+
 
 #### API call using cURL
 
@@ -369,8 +380,8 @@ $ curl --header "X-Vault-Token: ..." --request POST  \
 
 The generated token is what the sample application uses to connect to Vault.
 
-### <a name="step4"></a>Step 4: Run the sample application
 
+### <a name="step4"></a>Step 4: Run the sample application
 (**Persona:** app)
 
 You are now ready to run the app. Be sure to [download](#prerequisites) the
@@ -378,15 +389,16 @@ sample application code before beginning.
 
 **Sample application**
 
-| File                  | Description                                                                                                                                                                                                          |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Program.cs            | Starting point of this sample app (the `Main()` method) is in this file. It reads the environment variable values, connects to Vault and the MySQL database. If the `user_data` table does not exist, it creates it. |
-| DBHelper.cs           | Defines a method to create the `user_data` table if it does not exist. Finds and updates records that need to be rewrapped with the new key.                                                                         |
-| AppDb.cs              | Connects to the MySQL database.                                                                                                                                                                                      |
-| Record.cs             | Sample data record template.                                                                                                                                                                                         |
-| VaultClient.cs        | Defines methods necessary to rewrap transit data.                                                                                                                                                                    |
-| WebHelper.cs          | Helper code to seed the initial table schema.                                                                                                                                                                        |
-| rewrap_example.csproj | Project file for this sample app.                                                                                                                                                                                    |
+| File                   | Description                                       |
+|------------------------|---------------------------------------------------|
+| Program.cs             | Starting point of this sample app (the `Main()` method) is in this file.  It reads the environment variable values, connects to Vault and the MySQL database.  If the `user_data` table does not exist, it creates it.   |
+| DBHelper.cs            | Defines a method to create the `user_data` table if it does not exist. Finds and updates records that need to be rewrapped with the new key.    |
+| AppDb.cs               | Connects to the MySQL database.                   |
+| Record.cs              | Sample data record template.                      |
+| VaultClient.cs         | Defines methods necessary to rewrap transit data. |
+| WebHelper.cs           | Helper code to seed the initial table schema.     |
+| rewrap_example.csproj  | Project file for this sample app.                 |
+
 
 The sample app retrieves the user token, Vault address, and the name of the
 transit key through environment variables. Be sure to supply the token created
@@ -401,7 +413,7 @@ $ VAULT_TOKEN=<APP_TOKEN> \
 ```
 
 > If you need to seed test data you can do so by including the
-> `SHOULD_SEED_USERS=true`.
+`SHOULD_SEED_USERS=true`.  
 
 **Example:**
 
@@ -428,7 +440,6 @@ mysql> SELECT * FROM user_data WHERE dob LIKE "vault:v1%" limit 10;
 ```
 
 ### <a name="step5"></a>Step 5: Rotate the encryption keys
-
 (**Persona:** security engineer)
 
 The encryption key (`my_app_key`) can be rotated easily.
@@ -497,6 +508,7 @@ supports_encryption       true
 supports_signing          false
 type                      aes256-gcm96
 ```
+
 
 #### API call using cURL
 
@@ -574,8 +586,8 @@ $ curl --request GET --header "X-Vault-Token: ..." \
 }
 ```
 
-### <a name="step6"></a>Step 6: Programmatically re-wrap the data
 
+### <a name="step6"></a>Step 6: Programmatically re-wrap the data
 (**Persona:** app)
 
 Now you have records in the database and you have updated our minimum key
@@ -601,7 +613,7 @@ Wrapped another 10 records: 30 so far...
 
 #### Validation
 
-The application has now re-wrapped all records with the latest key. You can
+The application has now re-wrapped all records with the latest key.  You can
 verify this by running the application again, or by inspecting the records using the
 MySQL client.
 
@@ -621,17 +633,18 @@ mysql> SELECT * FROM user_data WHERE dob LIKE "vault:v6%" limit 10;
 An application similar to this could be scheduled via cron, run periodically as
 a [Nomad batch
 job](https://www.nomadproject.io/docs/job-specification/periodic.html), or
-executed in a variety of other ways. You could also modify it to re-wrap a
+executed in a variety of other ways.  You could also modify it to re-wrap a
 limited number of records at a time so as to not put undue strain on the
-database. The final implementation should be based upon the needs and design
-goals specific to each organization or application.
+database.  The final implementation should be based upon the needs and design
+goals specific to each organization or application.  
+
 
 ## Next Steps
 
 Since the main focus of this guide was to programmatically rewrap your secrets
 using the latest encryption key, the token used by the sample application was
 generated manually. In a production environment, you'll want to pass the token in
-a more secure manner. Refer to the [Cubbyhole Response
+a more secure manner.  Refer to the [Cubbyhole Response
 Wrapping](/guides/secret-mgmt/cubbyhole.html) guide to wrap the token so that only the
 expecting app can unwrap to obtain the token.
 

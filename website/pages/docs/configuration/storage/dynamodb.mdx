@@ -58,7 +58,7 @@ see the [official AWS DynamoDB documentation][dynamodb-rw-capacity].
 - `table` `(string: "vault-dynamodb-backend")` – Specifies the name of the
   DynamoDB table in which to store Vault data. If the specified table does not
   yet exist, it will be created during initialization. This can also be
-  provided via the environment variable `AWS_DYNAMODB_TABLE`. See the
+  provided via the environment variable `AWS_DYNAMODB_TABLE`. See the 
   information on the table schema below.
 
 - `write_capacity` `(int: 5)` – Specifies the maximum number of writes performed
@@ -90,7 +90,7 @@ the required operations on the DynamoDB table:
 ```javascript
   "Statement": [
     {
-      "Action": [
+      "Action": [ 
         "dynamodb:DescribeLimits",
         "dynamodb:DescribeTimeToLive",
         "dynamodb:ListTagsOfResource",
@@ -119,8 +119,8 @@ the required operations on the DynamoDB table:
 If you are going to create the DynamoDB table prior to the execution and
 initialization of Vault, you will need to create a table with these attributes:
 
-- Primary partition key: "Path", a string
-- Primary sort key: "Key", a string
+* Primary partition key: "Path", a string
+* Primary sort key: "Key", a string
 
 You might create the table via Terraform, with a configuration similar to this:
 

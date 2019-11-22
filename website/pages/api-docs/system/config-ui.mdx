@@ -17,9 +17,9 @@ The `/sys/config/ui` endpoint is used to configure UI settings.
 
 This endpoint returns the given UI header configuration.
 
-| Method | Path                           |
-| :----- | :----------------------------- |
-| `GET`  | `/sys/config/ui/headers/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/sys/config/ui/headers/:name` |
 
 ### Parameters
 
@@ -45,9 +45,9 @@ $ curl \
 
 This endpoint allows configuring the values to be returned for the UI header.
 
-| Method | Path                           |
-| :----- | :----------------------------- |
-| `PUT`  | `/sys/config/ui/headers/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `PUT`    | `/sys/config/ui/headers/:name` |
 
 ### Parameters
 
@@ -77,9 +77,9 @@ $ curl \
 
 This endpoint removes a UI header.
 
-| Method   | Path                           |
-| :------- | :----------------------------- |
-| `DELETE` | `/sys/config/ui/headers/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `DELETE` | `/sys/config/ui/headers/:name`|
 
 ### Sample Request
 
@@ -94,9 +94,10 @@ $ curl \
 
 This endpoint returns a list of configured UI headers.
 
-| Method | Path                     |
-| :----- | :----------------------- |
-| `LIST` | `/sys/config/ui/headers` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/sys/config/ui/headers`   |
+
 
 ### Sample Request
 
@@ -111,8 +112,11 @@ $ curl \
 
 ```json
 {
-  "data": {
-    "keys": ["X-Custom...", "X-Header..."]
+  "data":{
+    "keys":[
+      "X-Custom...",
+      "X-Header...",
+    ]
   }
 }
 ```

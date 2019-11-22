@@ -13,6 +13,7 @@ description: |-
 The Swift storage backend is used to persist Vault's data in an
 [OpenStack Swift Container][swift].
 
+
 - **No High Availability** – the Swift storage backend does not support high
   availability.
 
@@ -51,7 +52,7 @@ storage "swift" {
 - `username` `(string: <required>)` – Specifies the OpenStack account/username.
   This can also be provided via the environment variable `OS_USERNAME`.
 
-- `region` `(string: "")` – Specifies the name of the region. This can also be provided via the environment variable `OS_REGION_NAME`.
+- `region` `(string: "")` – Specifies the name of the region. This can also be provided via the environment variable `OS_REGION_NAME`. 
 
 - `tenant_id` `(string: "")` - Specifies the id of the tenant. This can also be provided via the environment variable `OS_TENANT_ID`.
 

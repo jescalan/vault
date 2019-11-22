@@ -12,9 +12,9 @@ description: >-
 
 This endpoint defines a MFA method of type PingID.
 
-| Method | Path                           |
-| :----- | :----------------------------- |
-| `POST` | `/sys/mfa/method/pingid/:name` |
+| Method   | Path                           |
+| :----------------------------- | :--------------------- |
+| `POST`   | `/sys/mfa/method/pingid/:name`   |
 
 ### Parameters
 
@@ -23,7 +23,6 @@ This endpoint defines a MFA method of type PingID.
 - `mount_accessor` `(string: <required>)` - The mount to tie this method to for use in automatic mappings. The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
 
 - `username_format` `(string)` - A format string for mapping Identity names to MFA method names. Values to substitute should be placed in `{{}}`. For example, `"{{alias.name}}@example.com"`. If blank, the Alias's Name field will be used as-is. Currently-supported mappings:
-
   - alias.name: The name returned by the mount configured via the `mount_accessor` parameter
   - entity.name: The name configured for the Entity
   - alias.metadata.`<key>`: The value of the Alias's metadata parameter
@@ -55,9 +54,9 @@ $ curl \
 This endpoint queries the MFA configuration of PingID type for a given method
 name.
 
-| Method | Path                           |
-| :----- | :----------------------------- |
-| `GET`  | `/sys/mfa/method/pingid/:name` |
+| Method   | Path                           |
+| :----------------------------- | :----------------------- |
+| `GET`    | `/sys/mfa/method/pingid/:name`   |
 
 ### Parameters
 
@@ -77,27 +76,27 @@ $ curl \
 
 ```json
 {
-  "data": {
-    "use_signature": true,
-    "idp_url": "https://idpxnyl3m.pingidentity.com/pingid",
-    "admin_url": "https://idpxnyl3m.pingidentity.com/pingid",
-    "authenticator_url": "https://authenticator.pingone.com/pingid/ppm",
-    "mount_accessor": "auth_userpass_1793464a",
-    "name": "ping",
-    "org_alias": "181459b0-9fb1-4938-8c86...",
-    "type": "pingid",
-    "username_format": ""
-  }
+        "data": {
+                "use_signature": true,
+                "idp_url": "https://idpxnyl3m.pingidentity.com/pingid",
+                "admin_url": "https://idpxnyl3m.pingidentity.com/pingid",
+                "authenticator_url": "https://authenticator.pingone.com/pingid/ppm",
+                "mount_accessor": "auth_userpass_1793464a",
+                "name": "ping",
+                "org_alias": "181459b0-9fb1-4938-8c86...",
+                "type": "pingid",
+                "username_format": ""
+        }
 }
 ```
-
 ## Delete PingID MFA Method
 
 This endpoint deletes a PingID MFA method.
 
 | Method   | Path                           |
-| :------- | :----------------------------- |
-| `DELETE` | `/sys/mfa/method/pingid/:name` |
+| :----------------------------- | :----------------------- |
+| `DELETE` | `/sys/mfa/method/pingid/:name`   |
+
 
 ### Parameters
 

@@ -111,7 +111,11 @@ perform limited actions:
 
 1. Look up a token's properties (not including the actual token ID)
 2. Look up a token's capabilities on a path
-3. Revoke the token
+3. Renew the token
+4. Revoke the token
+
+The token _making the call_, *not* the token associated with the accessor, must
+have appropriate permissions for these functions.
 
 There are many useful workflows around token accessors. As an example, a
 service that creates tokens on behalf of another service (such as the
@@ -214,9 +218,9 @@ to be given periodic tokens.
 
 There are a few important things to know when using periodic tokens:
 
-- When a periodic token is created via a token store role, the _current_ value
+* When a periodic token is created via a token store role, the _current_ value
   of the role's period setting will be used at renewal time
-- A token with both a period and an explicit max TTL will act like a periodic
+* A token with both a period and an explicit max TTL will act like a periodic
   token but will be revoked when the explicit max TTL is reached
 
 ## CIDR-Bound Tokens
@@ -234,7 +238,7 @@ There are currently two types of tokens.
 
 Service tokens are what users will generally think of as "normal" Vault tokens.
 They support all features, such as renewal, revocation, creating child tokens,
-and more. The are correspondingly heavyweight to create and track.
+and more. They are correspondingly heavyweight to create and track.
 
 ### Batch Tokens
 
@@ -246,22 +250,22 @@ flexibility and features of service tokens.
 ### Token Type Comparison
 
 This reference chart describes the difference in behavior between service and
-batch tokens.
+batch tokens. 
 
-|                                                     |                                          Service Tokens |                                    Batch Tokens |
-| --------------------------------------------------- | ------------------------------------------------------: | ----------------------------------------------: |
-| Can Be Root Tokens                                  |                                                     Yes |                                              No |
-| Can Create Child Tokens                             |                                                     Yes |                                              No |
-| Can be Renewable                                    |                                                     Yes |                                              No |
-| Can be Periodic                                     |                                                     Yes |                                              No |
-| Can have Explicit Max TTL                           |                                                     Yes |                    No (always uses a fixed TTL) |
-| Has Accessors                                       |                                                     Yes |                                              No |
-| Has Cubbyhole                                       |                                                     Yes |                                              No |
-| Revoked with Parent (if not orphan)                 |                                                     Yes |                                   Stops Working |
-| Dynamic Secrets Lease Assignment                    |                                                    Self |                          Parent (if not orphan) |
-| Can be Used Across Performance Replication Clusters |                                                      No |                                 Yes (if orphan) |
-| Creation Scales with Performance Standby Node Count |                                                      No |                                             Yes |
-| Cost                                                | Heavyweight; multiple storage writes per token creation | Lightweight; no storage cost for token creation |
+|  | Service Tokens | Batch Tokens |
+|---|---:|---:|
+| Can Be Root Tokens | Yes | No |
+| Can Create Child Tokens | Yes | No |
+| Can be Renewable | Yes | No |
+| Can be Periodic | Yes | No |
+| Can have Explicit Max TTL | Yes | No (always uses a fixed TTL) |
+| Has Accessors | Yes | No |
+| Has Cubbyhole | Yes | No |
+| Revoked with Parent (if not orphan) | Yes | Stops Working |
+| Dynamic Secrets Lease Assignment | Self | Parent (if not orphan) |
+| Can be Used Across Performance Replication Clusters | No | Yes (if orphan) |
+| Creation Scales with Performance Standby Node Count | No | Yes |
+| Cost | Heavyweight; multiple storage writes per token creation | Lightweight; no storage cost for token creation |
 
 ### Service vs. Batch Token Lease Handling
 

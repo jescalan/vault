@@ -51,23 +51,23 @@ znodes and, potentially, take Vault out of service.
   of the Zookeeper ACL format. The expected format is `schema:user-ACL-match`,
   for example:
 
-  ```text
-  # Access for user "UserName" with corresponding digest "HIDfRvTv623G=="
-  digest:UserName:HIDfRvTv623G==
-  ```
+    ```text
+    # Access for user "UserName" with corresponding digest "HIDfRvTv623G=="
+    digest:UserName:HIDfRvTv623G==
+    ```
 
-  ```text
-  # Access from localhost only
-  ip:127.0.0.1
-  ```
+    ```text
+    # Access from localhost only
+    ip:127.0.0.1
+    ```
 
-  ```text
-  # Access from any host on the 70.95.0.0 network (Zookeeper 3.5+)
-  ip:70.95.0.0/16
-  ```
+    ```text
+    # Access from any host on the 70.95.0.0 network (Zookeeper 3.5+)
+    ip:70.95.0.0/16
+    ```
 
 - `tls_enabled` `(bool: false)` – Specifies if TLS communication with the Zookeeper
-  backend has to be enabled.
+   backend has to be enabled.
 
 - `tls_ca_file` `(string: "")` – Specifies the path to the CA certificate file used
   for Zookeeper communication. Multiple CA certificates can be provided in the same file.
@@ -86,8 +86,9 @@ znodes and, potentially, take Vault out of service.
 
 - `tls_verify_ip` `(bool: false)` - This property comes into play only when
   'tls_skip_verify' is set to false. When 'tls_verify_ip' is set to 'true', the
-  zookeeper server's IP is verified in the presented certificates CN/SAN entry.
+  zookeeper server's IP is verified in the presented certificates CN/SAN entry. 
   When set to 'false' the server's DNS name is verified in the certificates CN/SAN entry.
+
 
 ## `zookeeper` Examples
 

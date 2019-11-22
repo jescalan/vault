@@ -14,9 +14,9 @@ The `/sys/leases` endpoints are used to view and manage leases in Vault.
 
 This endpoint retrieve lease metadata.
 
-| Method | Path                 |
-| :----- | :------------------- |
-| `PUT`  | `/sys/leases/lookup` |
+| Method   | Path                          |
+| :---------------------------- | :--------------------- |
+| `PUT`    | `/sys/leases/lookup`          |
 
 ### Parameters
 
@@ -59,9 +59,10 @@ This endpoint returns a list of lease ids.
 
 **This endpoint requires 'sudo' capability.**
 
-| Method | Path                         |
-| :----- | :--------------------------- |
-| `LIST` | `/sys/leases/lookup/:prefix` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/sys/leases/lookup/:prefix` |
+
 
 ### Sample Request
 
@@ -76,20 +77,24 @@ $ curl \
 
 ```json
 {
-  "data": {
-    "keys": ["abcd-1234...", "efgh-1234...", "ijkl-1234..."]
+  "data":{
+    "keys":[
+      "abcd-1234...",
+      "efgh-1234...",
+      "ijkl-1234..."
+    ]
   }
 }
 ```
 
 ## Renew Lease
 
-This endpoint renews a lease, requesting to extend the lease. Token leases
+This endpoint renews a lease, requesting to extend the lease.  Token leases 
 cannot be renewed using this endpoint, use instead the auth/token/renew endpoint.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `PUT`  | `/sys/leases/renew` |
+| Method   | Path                          |
+| :---------------------------- | :--------------------- |
+| `PUT`    | `/sys/leases/renew`           |
 
 ### Parameters
 
@@ -132,9 +137,9 @@ $ curl \
 
 This endpoint revokes a lease immediately.
 
-| Method | Path                 |
-| :----- | :------------------- |
-| `PUT`  | `/sys/leases/revoke` |
+| Method   | Path                          |
+| :---------------------------- | :--------------------- |
+| `PUT`    | `/sys/leases/revoke`          |
 
 ### Parameters
 
@@ -172,9 +177,9 @@ this endpoint should be tightly controlled.
 
 **This endpoint requires 'sudo' capability.**
 
-| Method | Path                               |
-| :----- | :--------------------------------- |
-| `PUT`  | `/sys/leases/revoke-force/:prefix` |
+| Method   | Path                                |
+| :---------------------------------- | :--------------------- |
+| `PUT`    | `/sys/leases/revoke-force/:prefix`  |
 
 ### Parameters
 
@@ -199,9 +204,9 @@ used to revoke very large numbers of secrets/tokens at once.
 
 **This endpoint requires 'sudo' capability.**
 
-| Method | Path                                |
-| :----- | :---------------------------------- |
-| `PUT`  | `/sys/leases/revoke-prefix/:prefix` |
+| Method   | Path                                |
+| :---------------------------------- | :--------------------- |
+| `PUT`    | `/sys/leases/revoke-prefix/:prefix` |
 
 ### Parameters
 
@@ -215,4 +220,24 @@ $ curl \
     --header "X-Vault-Token: ..." \
     --request PUT \
     http://127.0.0.1:8200/v1/sys/leases/revoke-prefix/aws/creds
+```
+
+
+## Tidy Leases
+
+This endpoint cleans up the dangling storage entries for leases. Generally,
+running this is not needed unless upgrade notes or support personnel suggest it.
+This may perform a lot of I/O to the storage method so should be used sparingly.
+
+| Method | Path               |
+|:-------|:-------------------|
+| `POST` | `/sys/leases/tidy` |
+
+### Sample Request
+
+```
+$ curl \
+    --header "X-Vault-Token: ..." \
+    --request POST \
+    http://127.0.0.1:8200/v1/sys/leases/tidy
 ```

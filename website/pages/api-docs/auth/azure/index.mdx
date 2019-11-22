@@ -24,17 +24,17 @@ Configures the credentials required for the plugin to perform API calls
 to Azure. These credentials will be used to query the metadata about the
 virtual machine.
 
-| Method | Path                 |
-| :----- | :------------------- |
-| `POST` | `/auth/azure/config` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/azure/config`         |
 
 ### Parameters
 
 - `tenant_id` `(string: <required>)` - The tenant id for the Azure Active Directory organization.
 - `resource` `(string: <required>)` - The configured URL for the application registered in Azure Active Directory.
 - `environment` `(string: 'AzurePublicCloud')` - The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.
-- `client_id` `(string: '')` - The client id for credentials to query the Azure APIs. Currently read permissions to query compute resources are required.
-- `client_secret` `(string: '')` - The client secret for credentials to query the Azure APIs.
+- `client_id` `(string: '')` - The client id for credentials to query the Azure APIs.  Currently read permissions to query compute resources are required.
+- `client_secret` `(string: '')` - The client secret for credentials to query the Azure APIs. 
 
 ### Sample Payload
 
@@ -61,9 +61,9 @@ $ curl \
 
 Returns the previously configured config, including credentials.
 
-| Method | Path                 |
-| :----- | :------------------- |
-| `GET`  | `/auth/azure/config` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/auth/azure/config`           |
 
 ### Sample Request
 
@@ -92,9 +92,9 @@ $ curl \
 
 Deletes the previously configured Azure config and credentials.
 
-| Method   | Path                 |
-| :------- | :------------------- |
-| `DELETE` | `/auth/azure/config` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `DELETE` | `/auth/azure/config`         |
 
 ### Sample Request
 
@@ -112,24 +112,23 @@ that can perform login operations against this endpoint. Constraints specific
 to the role type must be set on the role. These are applied to the authenticated
 entities attempting to login.
 
-| Method | Path                     |
-| :----- | :----------------------- |
-| `POST` | `/auth/azure/role/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/azure/role/:name`       |
 
 ### Parameters
-
 - `name` `(string: <required>)` - Name of the role.
-- `bound_service_principal_ids` `(array: [])` - The list of Service Principal IDs
+- `bound_service_principal_ids` `(array: [])` - The list of Service Principal IDs 
   that login is restricted to.
-- `bound_group_ids` `(array: [])` - The list of group ids that login is restricted
+- `bound_group_ids` `(array: [])` - The list of group ids that login is restricted 
   to.
 - `bound_locations` `(array: [])` - The list of locations that login is restricted to.
-- `bound_subscription_ids` `(array: [])` - The list of subscription IDs that login
+- `bound_subscription_ids` `(array: [])` - The list of subscription IDs that login 
   is restricted to.
 - `bound_resource_groups` `(array: [])` - The list of resource groups that
-  login is restricted to.
-- `bound_scale_sets` `(array: [])` - The list of scale set names that the
-  login is restricted to.
+  login is restricted to. 
+- `bound_scale_sets` `(array: [])` - The list of scale set names that the 
+  login is restricted to. 
 
 @include 'partials/tokenfields.mdx'
 
@@ -137,10 +136,18 @@ entities attempting to login.
 
 ```json
 {
-  "policies": ["default", "dev", "prod"],
+  "token_policies": [
+    "default",
+    "dev",
+    "prod"
+  ],
   "max_ttl": 1800000,
   "max_jwt_exp": 10000,
-  "bound_resource_groups": ["vault-dev", "vault-staging", "vault-prod"]
+  "bound_resource_groups": [
+    "vault-dev",
+    "vault-staging",
+    "vault-prod"
+  ]
 }
 ```
 
@@ -158,9 +165,9 @@ $ curl \
 
 Returns the previously registered role configuration.
 
-| Method | Path                     |
-| :----- | :----------------------- |
-| `GET`  | `/auth/azure/role/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`   | `/auth/azure/role/:name`      |
 
 ### Parameters
 
@@ -179,7 +186,7 @@ $ curl \
 ```json
 {
   "data":{
-    "policies": [
+    "token_policies": [
         "default",
         "dev",
         "prod"
@@ -201,9 +208,9 @@ $ curl \
 
 Lists all the roles that are registered with the plugin.
 
-| Method | Path               |
-| :----- | :----------------- |
-| `LIST` | `/auth/azure/role` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/azure/role`          |
 
 ### Sample Request
 
@@ -216,7 +223,7 @@ $ curl \
 
 ### Sample Response
 
-```json
+```json  
 {
   "data": {
     "keys": [
@@ -232,9 +239,9 @@ $ curl \
 
 Deletes the previously registered role.
 
-| Method   | Path                     |
-| :------- | :----------------------- |
-| `DELETE` | `/auth/azure/role/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `DELETE` | `/auth/azure/role/:name`     |
 
 ### Parameters
 
@@ -255,9 +262,9 @@ Fetch a token. This endpoint takes a signed JSON Web Token (JWT) and
 a role name for some entity. It verifies the JWT signature to authenticate that
 entity and then authorizes the entity for the given role.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `POST` | `/auth/azure/login` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/azure/login`          |
 
 ### Sample Payload
 
@@ -265,24 +272,24 @@ entity and then authorizes the entity for the given role.
   attempted.
 - `jwt` `(string: <required>)` - Signed [JSON Web Token](https://tools.ietf.org/html/rfc7519) (JWT) from Azure MSI.
 - `subscription_id` `(string: "")` - The subscription ID for the machine that
-  generated the MSI token. This information can be obtained through instance
+  generated the MSI token.  This information can be obtained through instance
   metadata.
 - `resource_group_name` `(string: "")` - The resource group for the machine that
-  generated the MSI token. This information can be obtained through instance
+  generated the MSI token.  This information can be obtained through instance
   metadata.
 - `vm_name` `(string: "")` - The virtual machine name for the machine that
-  generated the MSI token. This information can be obtained through instance
-  metadata. If vmss_name is provided, this value is ignored.
-- `vmss_name` `(string: "")` - The virtual machine scale set name for the machine
-  that generated the MSI token. This information can be obtained through instance
+  generated the MSI token.  This information can be obtained through instance
+  metadata.  If vmss_name is provided, this value is ignored.
+- `vmss_name` `(string: "")` - The virtual machine scale set name for the machine 
+  that generated the MSI token.  This information can be obtained through instance
   metadata.
 
 ### Sample Payload
 
 ```json
 {
-  "role": "dev-role",
-  "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    "role": "dev-role",
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
@@ -302,7 +309,7 @@ $ curl \
     "auth":{
         "client_token":"f33f8c72-924e-11f8-cb43-ac59d697597c",
         "accessor":"0e9e354a-520f-df04-6867-ee81cae3d42d",
-        "policies":[
+        "token_policies":[
             "default",
             "dev",
             "prod"

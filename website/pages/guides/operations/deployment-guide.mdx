@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Vault Deployment Guide - Guides
 sidebar_current: guides-operations-deployment-guide
 description: |-
@@ -191,10 +192,12 @@ curl \
 }' http://127.0.0.1:8500/v1/acl/create
 ```
 
+
+
 The response includes the value you will use as the `token` parameter value in Vault's storage stanza configuration. An example response:
 
 ```json
-{ "ID": "fe3b8d40-0ee0-8783-6cc2-ab1aa9bb16c1" }
+{"ID":"fe3b8d40-0ee0-8783-6cc2-ab1aa9bb16c1"}
 ```
 
 ## Configure Vault
@@ -236,7 +239,7 @@ The following parameters are set for the `tcp` listener stanza:
 
 ### Seal stanza
 
-This is an **ENTERPRISE** feature.
+This is an __ENTERPRISE__ feature.
 
 If you are deploying [Vault Enterprise](https://www.hashicorp.com/products/vault), you can include `seal` stanza configuration to specify the seal type to use for additional data protection, such as using HSM or Cloud KMS solutions to encrypt and decrypt the Vault master key. This stanza is optional, and if this is not configured, Vault will use the Shamir algorithm to cryptographically split the master key.
 
@@ -244,7 +247,7 @@ If you are deploying Vault Enterprise, you should review the [seal configuration
 
 An example PKCS #11 compatible HSM example is:
 
-```hcl
+``` hcl
 seal "pkcs11" {
   lib            = "/usr/vault/lib/libCryptoki2_64.so"
   slot           = "0"

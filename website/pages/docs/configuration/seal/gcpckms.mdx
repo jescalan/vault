@@ -15,8 +15,8 @@ description: >-
 The GCP Cloud KMS seal configures Vault to use GCP Cloud KMS as the seal
 wrapping mechanism. The GCP Cloud KMS seal is activated by one of the following:
 
-- The presence of a `seal "gcpckms"` block in Vault's configuration file.
-- The presence of the environment variable `VAULT_SEAL_TYPE` set to `gcpckms`.
+* The presence of a `seal "gcpckms"` block in Vault's configuration file.
+* The presence of the environment variable `VAULT_SEAL_TYPE` set to `gcpckms`.
   If enabling via environment variable, all other required values specific to
   Cloud KMS (i.e. `VAULT_GCPCKMS_SEAL_KEY_RING`, etc.) must be also supplied, as
   well as all other GCP-related environment variables that lends to successful
@@ -65,13 +65,12 @@ These parameters apply to the `seal` stanza in the Vault configuration file:
 Authentication-related values must be provided, either as environment
 variables or as configuration parameters.
 
-```text
 GCP authentication values:
 
 * `GOOGLE_CREDENTIALS` or `GOOGLE_APPLICATION_CREDENTIALS`
 * `GOOGLE_PROJECT`
 * `GOOGLE_REGION`
-```
+
 
 Note: The client uses the official Google SDK and will use the specified
 credentials, environment credentials, or [application default
@@ -100,11 +99,10 @@ cloudkms.cryptoKeys.get
 Alternatively, the GCP Cloud KMS seal can be activated by providing the following
 environment variables:
 
-```text
 * `VAULT_SEAL_TYPE`
 * `VAULT_GCPCKMS_SEAL_KEY_RING`
 * `VAULT_GCPCKMS_SEAL_CRYPTO_KEY`
-```
+
 
 ## Key Rotation
 
@@ -113,3 +111,8 @@ This seal supports rotating keys defined in Google Cloud KMS
 rotation is supported for CKMS since the key information. Old keys version must not be
 disabled or deleted and are used to decrypt older data. Any new or updated data will be
 encrypted with the primary key version.
+
+## Learn
+
+Refer to the [Auto-unseal using GCP Cloud KMS](https://learn.hashicorp.com/vault/operations/autounseal-gcp-kms)
+guide for a step-by-step tutorial.

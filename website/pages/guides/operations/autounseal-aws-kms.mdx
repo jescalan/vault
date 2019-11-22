@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Vault Auto-unseal using AWS KMS - Guides
 sidebar_title: Vault Auto-unseal with AWS KMS
 sidebar_current: guides-operations-autounseal-aws-kms
@@ -8,12 +9,13 @@ description: |-
   to unseal Vault.
 ---
 
+
 # Vault Auto-unseal using AWS Key Management Service
 
 ~> **Enterprise Only:** Vault auto-unseal feature is a part of _Vault Enterprise Pro_.
 
 When a Vault server is started, it starts in a
-[**_sealed_**](/docs/concepts/seal.html) state and it does not know how to
+[***sealed***](/docs/concepts/seal.html) state and it does not know how to
 decrypt data. Before any operation can be performed on the Vault, it must be
 unsealed. Unsealing is the process of constructing the master key necessary to
 decrypt the data encryption key.
@@ -29,6 +31,7 @@ instance that can utilize an encryption key from [AWS Key Management Services
 - [Vault Auto Unseal](/docs/configuration/seal/index.html)
 - [Configuration: `awskms` Seal](/docs/configuration/seal/awskms.html)
 
+
 ## Estimated Time to Complete
 
 10 minutes
@@ -42,7 +45,7 @@ persona.
 
 Vault unseal operation requires a quorum of existing unseal keys split by
 Shamir's Secret sharing algorithm. This is done so that the "_keys to the
-kingdom_" won't fall into one person's hand. However, this process is manual
+kingdom_" won't fall into one person's hand.  However, this process is manual
 and can become painful when you have many Vault clusters as there are now
 many different key holders with many different keys.
 
@@ -58,13 +61,13 @@ clusters.
 
 ## Prerequisites
 
-This guide assumes the following:
+This guide assumes the following:   
 
-- Access to **Vault Enterprise 0.9.0 or later**
+- Access to **Vault Enterprise 0.9.0 or later** 
 - A URL to download Vault Enterprise from (an Amazon S3 bucket will suffice)
 - AWS account for provisioning cloud resources
 - [Terraform installed](https://www.terraform.io/intro/getting-started/install.html)
-  and basic understanding of its usage
+and basic understanding of its usage
 
 ### Download demo assets
 
@@ -72,22 +75,26 @@ Clone or download the demo assets from the
 [hashicorp/vault-guides](https://github.com/hashicorp/vault-guides/tree/master/operations/aws-kms-unseal/terraform-aws)
 GitHub repository to perform the steps described in this guide.
 
+
 ## Steps
 
 This guide demonstrates how to implement and use the Auto-unseal feature using
-AWS KMS. Included is a Terraform configuration that has the following:
+AWS KMS. Included is a Terraform configuration that has the following:   
 
-- Ubuntu 16.04 LTS with Vault Enterprise
-- An instance profile granting the Amazon EC2 instance to an AWS KMS key
-- Vault configured with access to an AWS KMS key
+* Ubuntu 16.04 LTS with Vault Enterprise    
+* An instance profile granting the Amazon EC2 instance to an AWS KMS key
+* Vault configured with access to an AWS KMS key   
+
 
 [![YouTube](/img/vault-autounseal-4.png)](https://youtu.be/iRyqOEDFIiY)
+
 
 You are going to perform the following steps:
 
 1. [Provision the Cloud Resources](#step-1-provision-the-cloud-resources)
 1. [Test the Auto-unseal Feature](#step-2-test-the-auto-unseal-feature)
 1. [Clean Up](#step-3-clean-up)
+
 
 ### Step 1: Provision the Cloud Resources
 
@@ -157,6 +164,7 @@ Vault Enterprise web interface  http://192.0.2.1:8200/ui
 **NOTE:** The Terraform output will display the public IP address to SSH into
 your server as well as the Vault Enterprise web interface address.
 
+
 ### Step 2: Test the Auto-unseal Feature
 
 SSH into the provisioned EC2 instance.
@@ -166,7 +174,6 @@ $ ssh ubuntu@192.0.2.1 -i private.key
 ...
 Are you sure you want to continue connecting (yes/no)? yes
 ```
-
 When you are prompted, enter "yes" to continue.
 
 To verify that Vault has been installed, run `vault status` command which should
@@ -263,6 +270,7 @@ and log in with your initial root token.
 
 ![Vault Enterprise UI Login](/img/vault-autounseal-3.png)
 
+
 ### Step 3: Clean Up
 
 Once completed, execute the following commands to clean up:
@@ -272,6 +280,7 @@ $ terraform destroy -force
 
 $ rm -rf .terraform terraform.tfstate* private.key
 ```
+
 
 ## Next steps
 

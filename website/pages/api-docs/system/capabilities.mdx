@@ -22,9 +22,9 @@ paths. Multiple paths are taken in at once and the capabilities of the token
 for each path is returned. For backwards compatibility, if a single path is
 supplied, a `capabilities` field will also be returned.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `POST` | `/sys/capabilities` |
+| Method   | Path                 |
+| :------------------- | :--------------------- |
+| `POST`   | `/sys/capabilities`  |
 
 ### Parameters
 
@@ -56,7 +56,17 @@ $ curl \
 
 ```json
 {
-  "capabilities": ["delete", "list", "read", "update"],
-  "secret/foo": ["delete", "list", "read", "update"]
+  "capabilities": [
+    "delete",
+    "list",
+    "read",
+    "update"
+  ],
+  "secret/foo": [
+    "delete",
+    "list",
+    "read",
+    "update"
+  ]
 }
 ```

@@ -44,7 +44,7 @@ Following in the footsteps of `dynamodb`, the `etcd` storage backend now
 requires that `ha_enabled` be explicitly specified in the configuration file.
 The backend currently has known broken HA behavior, so this flag discourages
 use by default without explicitly enabling it. If you are using this
-functionality, when upgrading, you should set `ha_enabled` to `"true"` _before_
+functionality, when upgrading, you should set `ha_enabled` to `"true"` *before*
 starting the new versions of Vault.
 
 ## Reading Wrapped Responses From `cubbyhole/response` Is Deprecated
@@ -69,7 +69,7 @@ not the URL.
 ## Behavior Change for `bound_iam_role_arn` in AWS-EC2 Backend
 
 In prior versions a bug caused the `bound_iam_role_arn` value in the `aws-ec2`
-auth method to actually use the instance profile ARN. This has been
+auth method to actually use the instance profile ARN.  This has been
 corrected, but as a result there is a behavior change. To match using the
 instance profile ARN, a new parameter `bound_iam_instance_profile_arn` has been
 added. Existing roles will automatically transfer the value over to the correct

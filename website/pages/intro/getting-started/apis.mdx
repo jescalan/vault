@@ -1,4 +1,5 @@
 ---
+layout: intro
 page_title: Using the HTTP APIs with Authentication
 sidebar_title: HTTP API
 sidebar_current: gettingstarted-apis
@@ -71,8 +72,12 @@ The response should be JSON and looks something like this:
 
 ```json
 {
-  "keys": ["373d500274dd8eb95271cb0f868e4ded27d9afa205d1741d60bb97cd7ce2fe41"],
-  "keys_base64": ["Nz1QAnTdjrlSccsPho5N7SfZr6IF0XQdYLuXzXzi/kE="],
+  "keys": [
+    "373d500274dd8eb95271cb0f868e4ded27d9afa205d1741d60bb97cd7ce2fe41"
+  ],
+  "keys_base64": [
+    "Nz1QAnTdjrlSccsPho5N7SfZr6IF0XQdYLuXzXzi/kE="
+  ],
   "root_token": "6fa4128e-8bd2-fd02-0ea8-a5e020d9b766"
 }
 ```
@@ -204,7 +209,11 @@ The response will be JSON, under the key `auth`:
   "auth": {
     "client_token": "50617721-dfb5-1916-7b13-4091e169d28c",
     "accessor": "ada8d354-47c0-5d9e-50f9-d74e6de2df9b",
-    "policies": ["default", "dev-policy", "my-policy"],
+    "policies": [
+      "default",
+      "dev-policy",
+      "my-policy"
+    ],
     "metadata": {
       "role_name": "my-role"
     },

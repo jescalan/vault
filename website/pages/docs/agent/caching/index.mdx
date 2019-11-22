@@ -121,9 +121,9 @@ cached response, the `lease` that is attached to the cached response, the
 exposes some factors through which associated cache entries are fetched and
 evicted.
 
-| Method | Path                    | Produces               |
-| :----- | :---------------------- | :--------------------- |
-| `POST` | `/agent/v1/cache-clear` | `200 application/json` |
+| Method   | Path                         | Produces               |
+| :------- | :--------------------------- | :--------------------- |
+| `POST`   | `/agent/v1/cache-clear`      | `200 application/json` |
 
 #### Parameters
 
@@ -176,7 +176,7 @@ These configuration values are common to all `listener` blocks.
 
 - `type` `(string: required)` - The type of the listener to use. Valid values
   are `tcp` and `unix`.
-  _Note_: when using HCL this can be used as the key for the block, e.g.
+  *Note*: when using HCL this can be used as the key for the block, e.g.
   `listener "tcp" {...}`.
 
 - `address` `(string: required)` - The address for the listener to listen to.
@@ -232,3 +232,9 @@ vault {
   address = "http://127.0.0.1:8200"
 }
 ```
+
+## Learn
+
+Refer to the [Vault Agent
+Caching](https://learn.hashicorp.com/vault/identity-access-management/agent-caching)
+guide for a step-by-step tutorial.

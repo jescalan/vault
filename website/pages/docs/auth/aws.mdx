@@ -32,7 +32,7 @@ automatically supplied by AWS to all EC2 instances.
 
 Based on how you attempt to authenticate, Vault will determine if you are
 attempting to use the `iam` or `ec2` type. Each has a different authentication
-workflow, and each can solve different use cases.
+workflow, and each can solve different use cases. 
 
 Note: The `ec2` method was implemented before the primitives to implement the
 `iam` method were supported by AWS. The `iam` method is the recommended approach
@@ -60,7 +60,7 @@ Importantly, the credentials used to sign the GetCallerIdentity request can
 come from the EC2 instance metadata service for an EC2 instance, or from the
 AWS environment variables in an AWS Lambda function execution, which obviates
 the need for an operator to manually provision some sort of identity material
-first. However, the credentials can, in principle, come from anywhere, not
+first.  However, the credentials can, in principle, come from anywhere, not
 just from the locations AWS has provided for you.
 
 Each signed AWS request includes the current timestamp to mitigate the risk of
@@ -95,21 +95,21 @@ is also represented in the graphic below) is as follows:
 [![Vault AWS EC2 Authentication Flow](/img/vault-aws-ec2-auth-flow.png)](/img/vault-aws-ec2-auth-flow.png)
 
 1. An AWS EC2 instance fetches its [AWS Instance Identity Document][aws-iid]
-   from the [EC2 Metadata Service][aws-ec2-mds]. In addition to data itself, AWS
-   also provides the PKCS#7 signature of the data, and publishes the public keys
-   (by region) which can be used to verify the signature.
+from the [EC2 Metadata Service][aws-ec2-mds]. In addition to data itself, AWS
+also provides the PKCS#7 signature of the data, and publishes the public keys
+(by region) which can be used to verify the signature.
 
 1. The AWS EC2 instance makes a request to Vault with the PKCS#7 signature.
-   The PKCS#7 signature contains the Instance Identity Document within itself.
+The PKCS#7 signature contains the Instance Identity Document within itself.
 
 1. Vault verifies the signature on the PKCS#7 document, ensuring the information
-   is certified accurate by AWS. This process validates both the validity and
-   integrity of the document data. As an added security measure, Vault verifies
-   that the instance is currently running using the public EC2 API endpoint.
+is certified accurate by AWS. This process validates both the validity and
+integrity of the document data. As an added security measure, Vault verifies
+that the instance is currently running using the public EC2 API endpoint.
 
 1. Provided all steps are successful, Vault returns the initial Vault token to
-   the EC2 instance. This token is mapped to any configured policies based on the
-   instance metadata.
+the EC2 instance. This token is mapped to any configured policies based on the
+instance metadata.
 
 [aws-iid]: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html
 [aws-ec2-mds]: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
@@ -239,26 +239,26 @@ functionality, in that both authenticate some type of AWS entity to Vault.
 Here are some comparisons that illustrate why `iam` method is preferred over
 `ec2`.
 
-- What type of entity is authenticated:
-  - The ec2 auth method authenticates only AWS EC2 instances and is specialized
+* What type of entity is authenticated:
+  * The ec2 auth method authenticates only AWS EC2 instances and is specialized
     to handle EC2 instances, such as restricting access to EC2 instances from
     a particular AMI, EC2 instances in a particular instance profile, or EC2
     instances with a specialized tag value (via the role_tag feature).
-  - The iam auth method authenticates AWS IAM principals. This can
+  * The iam auth method authenticates AWS IAM principals. This can
     include IAM users, IAM roles assumed from other accounts, AWS Lambdas that
     are launched in an IAM role, or even EC2 instances that are launched in an
     IAM instance profile. However, because it authenticates more generalized IAM
     principals, this method doesn't offer more granular controls beyond binding
     to a given IAM principal without the use of inferencing.
-- How the entities are authenticated
-  - The ec2 auth method authenticates instances by making use of the EC2
+* How the entities are authenticated
+  * The ec2 auth method authenticates instances by making use of the EC2
     instance identity document, which is a cryptographically signed document
     containing metadata about the instance. This document changes relatively
     infrequently, so Vault adds a number of other constructs to mitigate against
     replay attacks, such as client nonces, role tags, instance migrations, etc.
     Because the instance identity document is signed by AWS, you have a strong
     guarantee that it came from an EC2 instance.
-  - The iam auth method authenticates by having clients provide a specially
+  * The iam auth method authenticates by having clients provide a specially
     signed AWS API request which the method then passes on to AWS to validate
     the signature and tell Vault who created it. The actual secret (i.e.,
     the AWS secret access key) is never transmitted over the wire, and the
@@ -267,18 +267,18 @@ Here are some comparisons that illustrate why `iam` method is preferred over
     inferencing, however, provides a weaker guarantee that the credentials came
     from an EC2 instance in an IAM instance profile compared to the ec2
     authentication mechanism.
-  - The instance identity document used in the ec2 auth method is more likely to
+  * The instance identity document used in the ec2 auth method is more likely to
     be stolen given its relatively static nature, but it's harder to spoof. On
     the other hand, the credentials of an EC2 instance in an IAM instance
     profile are less likely to be stolen given their dynamic and short-lived
     nature, but it's easier to spoof credentials that might have come from an
     EC2 instance.
-- Specific use cases
-  - If you have non-EC2 instance entities, such as IAM users, Lambdas in IAM
+* Specific use cases
+  * If you have non-EC2 instance entities, such as IAM users, Lambdas in IAM
     roles, or developer laptops using [AdRoll's
     Hologram](https://github.com/AdRoll/hologram) then you would need to use the
     iam auth method.
-  - If you have EC2 instances, then you could use either auth method. If you
+  * If you have EC2 instances, then you could use either auth method. If you
     need more granular filtering beyond just the instance profile of given EC2
     instances (such as filtering based off the AMI the instance was launched
     from), then you would need to use the ec2 auth method, change the instance
@@ -312,7 +312,9 @@ method.
     {
       "Effect": "Allow",
       "Action": ["sts:AssumeRole"],
-      "Resource": ["arn:aws:iam::<AccountId>:role/<VaultRole>"]
+      "Resource": [
+        "arn:aws:iam::<AccountId>:role/<VaultRole>"
+      ]
     }
   ]
 }
@@ -323,17 +325,17 @@ permissions. This isn't intended to be an exhaustive list of all the scenarios
 in which Vault might make an AWS API call, but rather illustrative of why these
 are needed.
 
-- `ec2:DescribeInstances` is necessary when you are using the `ec2` auth method
+* `ec2:DescribeInstances` is necessary when you are using the `ec2` auth method
   or when you are inferring an `ec2_instance` entity type to validate that the
   EC2 instance meets binding requirements of the role
-- `iam:GetInstanceProfile` is used when you have a `bound_iam_role_arn` in the
+* `iam:GetInstanceProfile` is used when you have a `bound_iam_role_arn` in the
   `ec2` auth method. Vault needs to determine which IAM role is attached to the
   instance profile.
-- `iam:GetUser` and `iam:GetRole` are used when using the iam auth method and
+* `iam:GetUser` and `iam:GetRole` are used when using the iam auth method and
   binding to an IAM user or role principal to determine the unique AWS user ID
   or when using a wildcard on the bound ARN to resolve the full ARN of the user
   or role.
-- The `sts:AssumeRole` stanza is necessary when you are using [Cross Account
+* The `sts:AssumeRole` stanza is necessary when you are using [Cross Account
   Access](#cross-account-access). The `Resource`s specified should be a list of
   all the roles for which you have configured cross-account access, and each of
   those roles should have this IAM policy attached (except for the
@@ -412,7 +414,7 @@ role it plays, the `role_tag` option can be used to provide a tag to set on
 instances, for a given role. When this option is set, during login, along with
 verification of PKCS#7 signature and instance health, the method will query
 for the value of a specific tag with the configured key that is attached to the
-instance. The tag holds information that represents a _subset_ of privileges that
+instance. The tag holds information that represents a *subset* of privileges that
 are set on the role and are used to further restrict the set of the role's
 privileges for that particular instance.
 
@@ -544,7 +546,8 @@ PKCS#7 signature, varies for different AWS regions. The primary AWS public
 certificate, which covers most AWS regions, is already included in Vault and
 does not need to be added. Instances whose PKCS#7 signatures cannot be
 verified by the default public certificate included in Vault can register a
-different public certificate which can be found [here](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html),
+different public certificate which can be found [here]
+(http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html),
 via the `auth/aws/config/certificate/<cert_name>` endpoint.
 
 ### Dangling Tokens
@@ -612,6 +615,7 @@ $ vault write auth/aws/role/dev-role-iam auth_type=iam \
 $ vault write auth/aws/config/client iam_server_id_header_value=vault.example.com
 ```
 
+
 #### Perform the login operation
 
 ```
@@ -641,12 +645,10 @@ $ vault login -method=aws header_value=vault.example.com role=dev-role-iam \
 ```
 
 The region used defaults to `us-east-1`, but you can specify a custom region like so:
-
 ```
 $ vault login -method=aws region=us-west-2 role=dev-role-iam
 ```
-
-When using a custom region, be sure the designated region corresponds to that of the
+When using a custom region, be sure the designated region corresponds to that of the 
 STS endpoint you're using.
 
 An example of how to generate the required request values for the `login` method

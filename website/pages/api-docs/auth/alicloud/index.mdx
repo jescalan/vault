@@ -18,12 +18,12 @@ please update your API calls accordingly.
 
 ## Create Role
 
-Registers a role. Only entities using the role registered using this endpoint
+Registers a role. Only entities using the role registered using this endpoint 
 will be able to perform the login operation.
 
-| Method | Path                        |
-| :----- | :-------------------------- |
-| `POST` | `/auth/alicloud/role/:role` |
+| Method   | Path                             |
+| :------------------------------- | :--------------------- |
+| `POST`   | `/auth/alicloud/role/:role`      |
 
 ### Parameters
 
@@ -37,7 +37,10 @@ will be able to perform the login operation.
 ```json
 {
   "arn": "acs:ram::5138828231865461:role/dev-role",
-  "policies": ["dev", "prod"]
+  "policies": [
+    "dev",
+    "prod"
+  ]
 }
 ```
 
@@ -55,9 +58,9 @@ $ curl \
 
 Returns the previously registered role configuration.
 
-| Method | Path                        |
-| :----- | :-------------------------- |
-| `GET`  | `/auth/alicloud/role/:role` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/auth/alicloud/role/:role`  |
 
 ### Parameters
 
@@ -77,7 +80,11 @@ $ curl \
 {
   "data": {
     "arn": "acs:ram::5138828231865461:role/dev-role",
-    "policies": ["default", "dev", "prod"],
+    "policies": [
+      "default",
+      "dev",
+      "prod"
+    ],
     "ttl": 1800000,
     "max_ttl": 1800000,
     "period": 0
@@ -89,9 +96,9 @@ $ curl \
 
 Lists all the roles that are registered with the method.
 
-| Method | Path                   |
-| :----- | :--------------------- |
-| `LIST` | `/auth/alicloud/roles` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/alicloud/roles`       |
 
 ### Sample Request
 
@@ -107,7 +114,10 @@ $ curl \
 ```json
 {
   "data": {
-    "keys": ["dev-role", "prod-role"]
+    "keys": [
+      "dev-role",
+      "prod-role"
+    ]
   }
 }
 ```
@@ -116,9 +126,9 @@ $ curl \
 
 Deletes the previously registered role.
 
-| Method   | Path                        |
-| :------- | :-------------------------- |
-| `DELETE` | `/auth/alicloud/role/:role` |
+| Method   | Path                             |
+| :------------------------------- | :--------------------- |
+| `DELETE` | `/auth/alicloud/role/:role`      |
 
 ### Parameters
 
@@ -135,12 +145,12 @@ $ curl \
 
 ## Login
 
-Fetch a token. This endpoint verifies the signature of the signed
+Fetch a token. This endpoint verifies the signature of the signed 
 GetCallerIdentity request.
 
-| Method | Path                   |
-| :----- | :--------------------- |
-| `POST` | `/auth/alicloud/login` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/alicloud/login`       |
 
 ### Parameters
 
@@ -152,6 +162,7 @@ GetCallerIdentity request.
   headers. The JSON serialization assumes that each header key maps to either a
   string value or an array of string values (though the length of that array
   will probably only be one).
+
 
 ### Sample Payload
 
@@ -185,16 +196,19 @@ $ curl \
       "ami_id": "ami-fce36983",
       "role": "dev-role",
       "auth_type": "ec2",
-      "account_id": "5138828231865461",
-      "user_id": "216959339000654321",
-      "role_id": "4657-abcd",
-      "arn": "acs:ram::5138828231865461:assumed-role/dev-role/vm-ram-i-rj978rorvlg76urhqh7q",
+      "account_id":    "5138828231865461",
+      "user_id":       "216959339000654321",
+      "role_id":       "4657-abcd",
+      "arn":           "acs:ram::5138828231865461:assumed-role/dev-role/vm-ram-i-rj978rorvlg76urhqh7q",
       "identity_type": "assumed-role",
-      "principal_id": "vm-ram-i-rj978rorvlg76urhqh7q",
-      "request_id": "D6E46F10-F26C-4AA0-BB69-FE2743D9AE62",
-      "role_name": "dev-role"
+      "principal_id":  "vm-ram-i-rj978rorvlg76urhqh7q",
+      "request_id":    "D6E46F10-F26C-4AA0-BB69-FE2743D9AE62",
+      "role_name":     "dev-role"
     },
-    "policies": ["default", "dev"],
+    "policies": [
+      "default",
+      "dev"
+    ],
     "accessor": "20b89871-e6f2-1160-fb29-31c2f6d4645e",
     "client_token": "c9368254-3f21-aded-8a6f-7c818e81b17a"
   }

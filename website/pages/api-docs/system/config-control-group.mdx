@@ -10,16 +10,16 @@ description: The '/sys/config/control-group' endpoint configures control groups.
 
 ~> **Enterprise Only** – These endpoints require Vault Enterprise.
 
-The `/sys/config/control-group` endpoint is used to configure Control Group
+The `/sys/config/control-group` endpoint is used to configure Control Group 
 settings.
 
 ## Read Control Group Settings
 
 This endpoint returns the current Control Group configuration.
 
-| Method | Path                        |
-| :----- | :-------------------------- |
-| `GET`  | `/sys/config/control-group` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/sys/config/control-group` |
 
 ### Sample Request
 
@@ -41,13 +41,13 @@ $ curl \
 
 This endpoint allows configuring control groups.
 
-| Method | Path                        |
-| :----- | :-------------------------- |
-| `PUT`  | `/sys/config/control-group` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `PUT`    | `/sys/config/control-group` |
 
 ### Parameters
 
-- `max_ttl` `int` – The maximum ttl for a control group wrapping token. This can be provided in seconds or duration (2h).
+- `max_ttl` `int` – The maximum ttl for a control group wrapping token.  This can be provided in seconds or duration (2h).
 
 ### Sample Payload
 
@@ -71,8 +71,8 @@ $ curl \
 
 This endpoint removes any control group configuration.
 
-| Method   | Path                        |
-| :------- | :-------------------------- |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
 | `DELETE` | `/sys/config/control-group` |
 
 ### Sample Request

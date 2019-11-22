@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Cubbyhole Response Wrapping - Guides
 sidebar_title: Cubbyhole Response Wrapping
 sidebar_current: guides-secret-mgmt-cubbyhole
@@ -12,13 +13,14 @@ description: |-
 
 The term _cubbyhole_ comes from an Americanism where you get a "locker" or "safe
 place" to store your belongings or valuables. In Vault, cubbyhole is your
-"locker". All secrets are namespaced under **your token**. If that token
+"locker".  All secrets are namespaced under **your token**. If that token
 expires or is revoked, all the secrets in its cubbyhole are revoked as well.
 
 It is not possible to reach into another token's cubbyhole even as the root
 user. This is the key difference between the cubbyhole and the key/value secret
 engine. The secrets in the key/value secret engine are accessible to any token for as
 long as its policy allows it.
+
 
 ## Reference Material
 
@@ -66,7 +68,7 @@ be minimized.
 ## Prerequisites
 
 To perform the tasks described in this guide, you need to have a Vault
-environment. Refer to the [Getting
+environment.  Refer to the [Getting
 Started](/intro/getting-started/install.html) guide to install Vault. Make sure
 that your Vault server has been [initialized and
 unsealed](/intro/getting-started/deploy.html).
@@ -122,13 +124,12 @@ about reading and writing secrets in Vault, refer to the [Static
 Secret](/guides/secret-mgmt/static-secrets.html) guide.
 
 ### <a name="step1"></a>Step 1: Create and wrap a token
-
 (**Persona:** admin)
 
 To solve the [challenge](#challenge) addressed in this guide:
 
 1. More privileged token (`admin`) wraps a secret only the expecting client can
-   read
+read
 2. The receiving client (`app`) unwraps the secret to obtain the token
 
 When the response to `vault token create` request is wrapped, Vault inserts the
@@ -185,6 +186,7 @@ wrapped_accessor:            	195763a9-3f26-1fcf-6a1a-ee0a11e76cb1
 
 The response is the wrapping token; therefore, the admin user does not even see
 the generated token from the `token create` command.
+
 
 #### API call using cURL
 
@@ -255,17 +257,17 @@ $ curl --header "X-Vault-Wrap-TTL: 120" \
   },
   "warnings": null,
   "auth": null
-}
+}  
 ```
 
 This API call generates a token for `apps` persona using response wrapping with
 TTL of 60 seconds. The admin user does not even see the generated token.
 
-### <a name="step2"></a>Step 2: Unwrap the secret
 
+### <a name="step2"></a>Step 2: Unwrap the secret
 (**Persona:** apps)
 
-The `apps` persona receives a wrapping token from the `admin`. In order for the
+The `apps` persona receives a wrapping token from the `admin`.  In order for the
 `apps` to acquire a valid token to read secrets from `secret/dev` path, it must
 run the unwrap operation using this token.
 
@@ -280,6 +282,7 @@ The following tasks will be performed to demonstrate the client operations:
 2. Authenticate with Vault using this `default` token (less privileged token)
 3. Unwrap the secret to obtain more privileged token (**`apps`** persona token)
 4. Verify that you can read `secret/dev` using the `apps`token
+
 
 #### CLI command
 
@@ -318,7 +321,6 @@ The command to unwrap the wrapped secret is:
 ```shell
 $ vault unwrap <WRAPPING_TOKEN>
 ```
-
 Or
 
 ```shell
@@ -545,9 +547,10 @@ $ curl --header "X-Vault-Token: root" --request GET \
 
 Also, refer to [Cubbyhole Secret Engine (API)](/api/secret/cubbyhole/index.html).
 
+
 ## Next steps
 
 The use of [AppRole Pull Authentication](/guides/identity/authentication.html) is a good
 use case to leverage the response wrapping. Go through the guide if you have not
-done so. To better understand the lifecycle of Vault tokens, proceed to [Tokens
+done so.  To better understand the lifecycle of Vault tokens, proceed to [Tokens
 and Leases](/guides/identity/lease.html) guide.

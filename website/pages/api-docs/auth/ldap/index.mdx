@@ -20,13 +20,13 @@ please update your API calls accordingly.
 
 This endpoint configures the LDAP auth method.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `POST` | `/auth/ldap/config` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`    | `/auth/ldap/config`         |
 
 ### Parameters
 
-- `url` `(string: <required>)` – The LDAP server to connect to. Examples:
+- `url` `(string: ldap://127.0.0.1)` – The LDAP server to connect to. Examples:
   `ldap://ldap.myorg.com`, `ldaps://ldap.myorg.com:636`. Multiple URLs can be
   specified with commas, e.g. `ldap://ldap.myorg.com,ldap://ldap2.myorg.com`;
   these will be tried in-order.
@@ -35,6 +35,9 @@ This endpoint configures the LDAP auth method.
   names will be normalized to lower case. Case will still be preserved when
   sending the username to the LDAP server at login time; this is only for
   matching local user/group definitions.
+- `request_timeout` `(integer: 90 or string: "90s")` - Timeout, in seconds, for
+  the connection when making requests against the server before returning back
+  an error.
 - `starttls` `(bool: false)` – If true, issues a `StartTLS` command after
   establishing an unencrypted connection.
 - `tls_min_version` `(string: tls12)` – Minimum TLS version to use. Accepted
@@ -46,12 +49,12 @@ This endpoint configures the LDAP auth method.
 - `certificate` `(string: "")` – CA certificate to use when verifying LDAP server
   certificate, must be x509 PEM encoded.
 - `binddn` `(string: "")` – Distinguished name of object to bind when performing
-  user search. Example: `cn=vault,ou=Users,dc=example,dc=com`
+  user search.  Example: `cn=vault,ou=Users,dc=example,dc=com`
 - `bindpass` `(string: "")` – Password to use along with `binddn` when performing
   user search.
 - `userdn` `(string: "")` – Base DN under which to perform user search. Example:
   `ou=Users,dc=example,dc=com`
-- `userattr` `(string: "")` – Attribute on user attribute object matching the
+- `userattr` `(string: "cn")` – Attribute on user attribute object matching the
   username passed when authenticating. Examples: `sAMAccountName`, `cn`, `uid`
 - `discoverdn` `(bool: false)` – Use anonymous bind to discover the bind DN of a
   user.
@@ -69,7 +72,7 @@ This endpoint configures the LDAP auth method.
   nested group resolution for Active Directory, instead use the following
   query: `(&(objectClass=group)(member:1.2.840.113556.1.4.1941:={{.UserDN}}))`.
 - `groupdn` `(string: "")` – LDAP search base to use for group membership
-  search. This can be the root containing either groups or users. Example:
+  search. This can be the root containing either groups or users.  Example:
   `ou=Groups,dc=example,dc=com`
 - `groupattr` `(string: "")` – LDAP attribute to follow on objects returned by
   `groupfilter` in order to enumerate user group membership. Examples: for
@@ -112,9 +115,9 @@ $ curl \
 
 This endpoint retrieves the LDAP configuration for the auth method.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `GET`  | `/auth/ldap/config` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/auth/ldap/config`          |
 
 ### Sample Request
 
@@ -159,9 +162,9 @@ $ curl \
 
 This endpoint returns a list of existing groups in the method.
 
-| Method | Path                |
-| :----- | :------------------ |
-| `LIST` | `/auth/ldap/groups` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/ldap/groups`          |
 
 ### Sample Request
 
@@ -180,7 +183,10 @@ $ curl \
   "warnings": null,
   "wrap_info": null,
   "data": {
-    "keys": ["scientists", "engineers"]
+    "keys": [
+      "scientists",
+      "engineers"
+    ]
   },
   "lease_duration": 0,
   "renewable": false,
@@ -192,9 +198,9 @@ $ curl \
 
 This endpoint returns the policies associated with a LDAP group.
 
-| Method | Path                      |
-| :----- | :------------------------ |
-| `GET`  | `/auth/ldap/groups/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/auth/ldap/groups/:name`     |
 
 ### Parameters
 
@@ -229,9 +235,9 @@ $ curl \
 
 This endpoint creates or updates LDAP group policies.
 
-| Method | Path                      |
-| :----- | :------------------------ |
-| `POST` | `/auth/ldap/groups/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`    | `/auth/ldap/groups/:name`   |
 
 ### Parameters
 
@@ -261,9 +267,9 @@ $ curl \
 
 This endpoint deletes the LDAP group and policy association.
 
-| Method   | Path                      |
-| :------- | :------------------------ |
-| `DELETE` | `/auth/ldap/groups/:name` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `DELETE` | `/auth/ldap/groups/:name`    |
 
 ### Parameters
 
@@ -282,9 +288,9 @@ $ curl \
 
 This endpoint returns a list of existing users in the method.
 
-| Method | Path               |
-| :----- | :----------------- |
-| `LIST` | `/auth/ldap/users` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `LIST`   | `/auth/ldap/users`           |
 
 ### Sample Request
 
@@ -303,7 +309,10 @@ $ curl \
   "warnings": null,
   "wrap_info": null,
   "data": {
-    "keys": ["mitchellh", "armon"]
+    "keys": [
+      "mitchellh",
+      "armon"
+    ]
   },
   "lease_duration": 0,
   "renewable": false,
@@ -315,9 +324,9 @@ $ curl \
 
 This endpoint returns the policies associated with a LDAP user.
 
-| Method | Path                         |
-| :----- | :--------------------------- |
-| `GET`  | `/auth/ldap/users/:username` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/auth/ldap/users/:username` |
 
 ### Parameters
 
@@ -353,9 +362,9 @@ $ curl \
 
 This endpoint creates or updates LDAP users policies and group associations.
 
-| Method | Path                         |
-| :----- | :--------------------------- |
-| `POST` | `/auth/ldap/users/:username` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`    | `/auth/ldap/users/:username`   |
 
 ### Parameters
 
@@ -388,7 +397,7 @@ $ curl \
 This endpoint deletes the LDAP user and policy association.
 
 | Method   | Path                         |
-| :------- | :--------------------------- |
+| :--------------------------- | :--------------------- |
 | `DELETE` | `/auth/ldap/users/:username` |
 
 ### Parameters
@@ -408,9 +417,9 @@ $ curl \
 
 This endpoint allows you to log in with LDAP credentials
 
-| Method | Path                         |
-| :----- | :--------------------------- |
-| `POST` | `/auth/ldap/login/:username` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/auth/ldap/login/:username` |
 
 ### Parameters
 
@@ -444,7 +453,10 @@ $ curl \
   "data": null,
   "auth": {
     "client_token": "c4f280f6-fdb2-18eb-89d3-589e2e834cdb",
-    "policies": ["admins", "default"],
+    "policies": [
+      "admins",
+      "default"
+    ],
     "metadata": {
       "username": "mitchellh"
     },

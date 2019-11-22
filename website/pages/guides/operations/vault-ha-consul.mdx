@@ -1,4 +1,5 @@
 ---
+layout: guides
 page_title: Vault HA with Consul - Guides
 sidebar_title: Vault HA with Consul
 sidebar_current: guides-operations-vault-ha
@@ -11,32 +12,34 @@ description: |-
 
 # Vault High Availability (HA)
 
-Vault can run in a high availability (HA) mode to protect against outages by
+Vault can run in a high availability (HA) mode to protect against  outages by
 running multiple Vault servers. Vault is typically bound by the IO limits of the
 storage backend rather than the compute requirements. Certain storage backends,
 such as Consul, provide additional coordination functions that enable Vault to
 run in an HA configuration while others provide a more robust backup and
 restoration process.
 
-When running in HA mode, Vault servers have two additional states: **_standby_**
-and **_active_**. Within a Vault cluster, only a single instance will be
+When running in HA mode, Vault servers have two additional states: ***standby***
+and ***active***. Within a Vault cluster, only a single instance will be
 _active_ and handles all requests (reads and writes) and all _standby_ nodes
 redirect requests to the _active_ node.
 
 ![Reference Architecture](/img/vault-ha-consul-3.png)
 
 > **NOTE:** As of version **0.11**, those standby nodes can handle most
-> read-only requests and behave as read-replica nodes. This **Performance Standby
-> Nodes** feature is included in _Vault Enterprise Premium_, and also available
-> for _Vault Enterprise Pro_ with additional fee. This is particularly useful for
-> processing high volume Encryption as a Service ([Transit secrets
-> engine](/docs/secrets/transit/index.html)) requests. Read [Performance Standby
-> Nodes](/docs/enterprise/performance-standby/index.html) documentation and a [guide](/guides/operations/performance-nodes.html) for more details.
+read-only requests and behave as read-replica nodes. This **Performance Standby
+Nodes** feature is included in _Vault Enterprise Premium_, and also available
+for _Vault Enterprise Pro_ with additional fee. This is particularly useful for
+processing high volume Encryption as a Service ([Transit secrets
+engine](/docs/secrets/transit/index.html)) requests. Read [Performance Standby
+Nodes](/docs/enterprise/performance-standby/index.html) documentation and a [guide](/guides/operations/performance-nodes.html) for more details.
+
 
 ~> This guide will walk you through a simple Vault Highly Available (HA) cluster
 implementation. While this is not an exhaustive or prescriptive guide that can
 be used as a drop-in production example, it covers the **basics** enough to
 inform your own production setup.
+
 
 ## Reference Materials
 
@@ -53,6 +56,7 @@ inform your own production setup.
 
 This intermediate Vault operations guide assumes that you have some working
 knowledge of Vault and Consul.
+
 
 ## Steps
 
@@ -78,6 +82,7 @@ You perform the following:
 
 -> For the purpose of this guide, we will use the open source software editions of
 Vault and Consul; however, the setup is the same for Enterprise editions.
+
 
 ### <a name="step1"></a>Step 1: Setup a Consul Server Cluster
 
@@ -116,18 +121,19 @@ Note that some values contain variable placeholders while the rest have
 reasonable defaults. You should replace the following values in your own Consul
 server configuration based on the example:
 
-- **\$NODE_NAME** this is a unique label for the node; in our case, this will be
-  `consul_s1`, `consul_s2`, and `consul_s3` respectively.
-- **\$CONSUL_DATA_PATH**: absolute path to Consul data directory; ensure that
-  this directory is writable by the Consul process user.
-- **\$ADVERTISE_ADDR**: set to address that you prefer the Consul
-  servers advertise to the other servers in the cluster and should not be set to
-  `0.0.0.0`; for this guide, it should be set to the Consul server’s IP address in
-  each instance of the configuration file, or `10.1.42.101`,`10.1.42.102`, and
-  `10.1.42.103` respectively.
-- **\$JOIN1**, **\$JOIN2**, **\$JOIN3**: This example uses the `retry_join`
-  method of joining the server agents to form a cluster; as such, the values for
-  this guide would be `10.1.42.101`, `10.1.42.102`, and `10.1.42.103` respectively.
+- **$NODE_NAME** this is a unique label for the node; in our case, this will be
+`consul_s1`, `consul_s2`, and `consul_s3` respectively.
+- **$CONSUL_DATA_PATH**: absolute path to Consul data directory; ensure that
+this directory is writable by the Consul process user.
+- **$ADVERTISE_ADDR**: set to address that you prefer the Consul
+servers advertise to the other servers in the cluster and should not be set to
+`0.0.0.0`; for this guide, it should be set to the Consul server’s IP address in
+each instance of the configuration file, or `10.1.42.101`,` 10.1.42.102`, and
+`10.1.42.103` respectively.
+- **$JOIN1**, **$JOIN2**, **$JOIN3**: This example uses the `retry_join`
+method of joining the server agents to form a cluster; as such, the values for
+this guide would be `10.1.42.101`, `10.1.42.102`, and `10.1.42.103` respectively.
+
 
 Note that the web user interface is enabled (`"ui": true`), and Consul will be
 logging at DEBUG level to the system log (`"log_level": "DEBUG"`). For the
@@ -282,13 +288,15 @@ leader before proceeding:
     consul_s3              56370ec8-da25-e7dc-dfc6-bf5f27978a7a  10.1.42.103:8300  leader    true   3
 
 The above output shows that **`consul_s3`** is the current cluster leader in
-this example. Now, you are good to move on to the Vault server configuration.
+this example.  Now, you are good to move on to the Vault server configuration.
+
 
 ### <a name="step3"></a>Step 3: Setup Consul Client Agents on Vault Nodes
 
 The Vault server nodes require **both** the Consul and Vault binaries on each node. Consul will be configured as a **client** agent and Vault will be configured as a server.
 
 ![Reference Architecture](/img/vault-ha-consul-2.png)
+
 
 #### Consul Client Agent Configuration
 
@@ -322,18 +330,18 @@ Here is the example configuration for the Consul client agent:
 Similar to what you have done in [Step 1](#step1), replace the following values
 in your own Consul client agent configuration accordingly:
 
-- **\$NODE_NAME** this is a unique label for the node; in
-  our case, this will be `consul_c1` and `consul_c2` respectively.
-- **\$CONSUL_DATA_PATH**: absolute path to Consul data directory; ensure that this
-  directory is writable by the Consul process user.
-- **\$BIND_ADDR**: this should be set
-  to address that you prefer the Consul servers advertise to the other servers in
-  the cluster and should not be set to `0.0.0.0`; for this guide, it should be set
-  to the Vault server’s IP address in each instance of the configuration file, or
-  `10.1.42.201` and `10.1.42.202` respectively.
-- **\$JOIN1**, **\$JOIN2**, **\$JOIN3**: This example uses the `retry_join` method of
-  joining the server agents to form a cluster; as such, the values for this guide
-  would be `10.1.42.101`, `10.1.42.102`, and `10.1.42.103` respectively.
+- **$NODE_NAME** this is a unique label for the node; in
+our case, this will be `consul_c1` and `consul_c2` respectively.
+- **$CONSUL_DATA_PATH**: absolute path to Consul data directory; ensure that this
+directory is writable by the Consul process user.
+- **$BIND_ADDR**: this should be set
+to address that you prefer the Consul servers advertise to the other servers in
+the cluster and should not be set to `0.0.0.0`; for this guide, it should be set
+to the Vault server’s IP address in each instance of the configuration file, or
+`10.1.42.201` and `10.1.42.202` respectively.
+- **$JOIN1**, **$JOIN2**, **$JOIN3**: This example uses the `retry_join` method of
+joining the server agents to form a cluster; as such, the values for this guide
+would be `10.1.42.101`, `10.1.42.102`, and `10.1.42.103` respectively.
 
 Create a configuration file for each Vault server and save it as
 **`/usr/local/etc/consul/client_agent.json`**.
@@ -414,7 +422,8 @@ Change the following values as necessary:
 - **`-pid-file`**
 
 Once the unit file is defined and saved (e.g.
-`/etc/systemd/system/consul.service`), be sure to perform a `systemctl daemon-reload` and then you can start your Consul service on each Vault server.
+`/etc/systemd/system/consul.service`), be sure to perform a `systemctl
+daemon-reload` and then you can start your Consul service on each Vault server.
 
 Start the Consul and verify its cluster state to be sure that the ownership and
 permissions are correct on the directory you specified for the value of
@@ -444,7 +453,7 @@ After starting all Consul client agents, check the Consul cluster status:
     consul_c2   10.1.42.202:8301  alive   client  1.0.6  2         arus  <default>
 
 The above output shows 3 Consul server agents and 2 Consul client agents in the
-cluster. Now, you are ready to configure the Vault servers.
+cluster.  Now, you are ready to configure the Vault servers.
 
 ### <a name="step4"></a>Step 4: Configure the Vault Servers
 
@@ -461,7 +470,7 @@ by a label as well:
 In our configuration file, we'll set up the following:
 
 - [**`tcp`**](/docs/configuration/listener/tcp.html) listener
-- [**`consul`**](/docs/configuration/storage/consul.html) storage backend
+- [**`consul`**](/docs/configuration/storage/consul.html)  storage backend
 - [High Availability parameters](/docs/configuration/index.html#high-availability-parameters)
 
 This section assumes the Vault binary is located at **`/usr/local/bin/vault`**
@@ -482,6 +491,7 @@ This section assumes the Vault binary is located at **`/usr/local/bin/vault`**
     api_addr =  "$API_ADDR"
     cluster_addr = "$CLUSTER_ADDR"
 
+
 We're setting the following parameters for our `tcp` listener:
 
 - `address` (string: "127.0.0.1:8200") – Specifies the address to bind to for listening.
@@ -498,14 +508,15 @@ Note that some values contain variable placeholders while the rest have
 reasonable defaults. You should replace the following values in your own Vault
 server configuration based on the example:
 
-- **\$API_ADDR**: Specifies the address (full URL) to advertise to other Vault servers in the cluster for client redirection. This can also be provided via the environment variable `VAULT_API_ADDR`. In general this should be set to a full URL that points to the value of the listener address. In our scenario, it will be `http://10.1.42.201:8200`
-  and `http://10.1.42.202:8200` respectively.
+- **$API_ADDR**: Specifies the address (full URL) to advertise to other Vault servers in the cluster for client redirection. This can also be provided via the environment variable `VAULT_API_ADDR`. In general this should be set to a full URL that points to the value of the listener address. In our scenario, it will be `http://10.1.42.201:8200`
+and `http://10.1.42.202:8200` respectively.
 
-- **\$CLUSTER_ADDR**: Specifies the address to advertise to other Vault servers in the cluster for request forwarding. This can also be provided via the environment variable `VAULT_CLUSTER_ADDR`. This is a full URL, like `api_addr`. In our scenario, it will be `https://10.1.42.201:8201` and
-  `https://10.1.42.202:8201` respectively.
+- **$CLUSTER_ADDR**: Specifies the address to advertise to other Vault servers in the cluster for request forwarding. This can also be provided via the environment variable `VAULT_CLUSTER_ADDR`. This is a full URL, like `api_addr`. In our scenario, it will be `https://10.1.42.201:8201` and
+`https://10.1.42.202:8201` respectively.
 
 > Note that the scheme here (https) is ignored; all cluster members will always
-> use TLS with a private key/certificate.
+use TLS with a private key/certificate.
+
 
 #### `vault_s1.hcl` Example
 
@@ -523,6 +534,7 @@ server configuration based on the example:
     api_addr = "http://10.1.42.201:8200"
     cluster_addr = "https://10.1.42.201:8201"
 
+
 #### `vault_s2.hcl` Example
 
     listener "tcp" {
@@ -539,10 +551,11 @@ server configuration based on the example:
     api_addr = "http://10.1.42.202:8200"
     cluster_addr = "https://10.1.42.202:8201"
 
+
 #### Vault Server `systemd` Unit file
 
 You have Vault binaries and a reasonably basic configuration along with local
-client agents configured. Now, you just need to start Vault on each server
+client agents configured.  Now, you just need to start Vault on each server
 instance. Here is an example `systemd` unit file:
 
     ### BEGIN INIT INFO
@@ -640,11 +653,13 @@ The **standby** Vault server:
     HA Mode                 standby
     Active Node Address:    http://10.1.42.201:8200
 
+
 Vault servers are now operational in HA mode at this point, and you should be
 able to write a secret from either the active or the standby Vault instance and
 see it succeed as a test of request forwarding. Also, you can shut down the
 active instance (`sudo systemctl stop vault`) to simulate a system failure and
 see the standby instance assumes the leadership.
+
 
 ## Next steps
 

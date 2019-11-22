@@ -16,9 +16,9 @@ token which can be used for all future requests.
 
 This endpoint lists all enabled auth methods.
 
-| Method | Path        |
-| :----- | :---------- |
-| `GET`  | `/sys/auth` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/sys/auth`                  |
 
 ### Sample Request
 
@@ -59,16 +59,16 @@ For example, enable the "foo" auth method will make it accessible at
 - **`sudo` required** – This endpoint requires `sudo` capability in addition to
   any path-specific capabilities.
 
-| Method | Path              |
-| :----- | :---------------- |
-| `POST` | `/sys/auth/:path` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/auth/:path`            |
 
 ### Parameters
 
 - `path` `(string: <required>)` – Specifies the path in which to enable the auth
   method. This is part of the request URL.
 
-  !> **NOTE:** Use ASCII printable characters to specify the desired path.
+    !> **NOTE:** Use ASCII printable characters to specify the desired path.
 
 - `description` `(string: "")` – Specifies a human-friendly description of the
   auth method.
@@ -141,9 +141,9 @@ This endpoint disables the auth method at the given auth path.
 - **`sudo` required** – This endpoint requires `sudo` capability in addition to
   any path-specific capabilities.
 
-| Method   | Path              |
-| :------- | :---------------- |
-| `DELETE` | `/sys/auth/:path` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `DELETE` | `/sys/auth/:path`            |
 
 ### Parameters
 
@@ -168,9 +168,9 @@ without `sudo` via `sys/mounts/auth/[auth-path]/tune`._
 - **`sudo` required** – This endpoint requires `sudo` capability in addition to
   any path-specific capabilities.
 
-| Method | Path                   |
-| :----- | :--------------------- |
-| `GET`  | `/sys/auth/:path/tune` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `GET`    | `/sys/auth/:path/tune`       |
 
 ### Parameters
 
@@ -202,9 +202,9 @@ can be achieved without `sudo` via `sys/mounts/auth/[auth-path]/tune`._
 - **`sudo` required** – This endpoint requires `sudo` capability in addition to
   any path-specific capabilities.
 
-| Method | Path                   |
-| :----- | :--------------------- |
-| `POST` | `/sys/auth/:path/tune` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/auth/:path/tune`       |
 
 ### Parameters
 
@@ -226,7 +226,7 @@ can be achieved without `sudo` via `sys/mounts/auth/[auth-path]/tune`._
   object.
 
 - `listing_visibility` `(string: "")` - Specifies whether to show this mount
-  in the UI-specific listing endpoint. Valid values are `"unauth"` or `""`.
+   in the UI-specific listing endpoint. Valid values are `"unauth"` or `""`.
 
 - `passthrough_request_headers` `(array: [])` - Comma-separated list of headers
   to whitelist and pass from the request to the plugin.

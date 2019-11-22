@@ -57,7 +57,7 @@ for Vault to quickly scale its ability to service these kinds of operations,
 providing near-linear request-per-second scaling in many common scenarios for
 some secrets engines like K/V and Transit. By spreading traffic across
 performance standby nodes, clients can scale these IOPS horizontally to handle
-extremely high traffic workloads.
+extremely high traffic workloads.  
 
 If a request comes into a Performance Standby Node that causes a storage write
 the request will be forwarded onto the active server. If the request is

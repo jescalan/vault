@@ -23,43 +23,39 @@ certificates, and configure access to the CF API. For detailed instructions
 on how to obtain these values, please see the [Vault CF method
 documentation](/docs/auth/cf.html).
 
-| Method | Path              |
-| :----- | ----------------- |
-| `POST` | `/auth/cf/config` |
+| Method   | Path                  |
+| :--------|---------------------- |
+| `POST`   | `/auth/cf/config`    |
 
 ### Parameters
 
-- `identity_ca_certificates` `(array: [], required)` - The root CA certificate(s)
-  to be used for verifying that the `CF_INSTANCE_CERT` presented for logging in was
-  issued by the proper authority.
+- `identity_ca_certificates` `(array: [], required)` - The root CA certificate(s) 
+to be used for verifying that the `CF_INSTANCE_CERT` presented for logging in was
+issued by the proper authority.
 - `cf_api_addr` `(string: required)`: CF's full API address, to be used for verifying
-  that a given `CF_INSTANCE_CERT` shows an application ID, space ID, and organization ID
-  that presently exist.
+that a given `CF_INSTANCE_CERT` shows an application ID, space ID, and organization ID 
+that presently exist.
 - `cf_username` `(string: required)`: The username for authenticating to the CF API.
 - `cf_password` `(string: required)`: The password for authenticating to the CF API.
 - `cf_api_trusted_certificates` `(array: [])`: The certificate that's presented by the
-  CF API. This configures Vault to trust this certificate when making API calls, resolving
-  `x509: certificate signed by unknown authority` errors.
+CF API. This configures Vault to trust this certificate when making API calls, resolving
+`x509: certificate signed by unknown authority` errors.
 - `login_max_seconds_not_before` `(int: 300)`: The maximum number of seconds in the past when a
-  signature could have been created. The lower the value, the lower the risk of replay
-  attacks.
+signature could have been created. The lower the value, the lower the risk of replay
+attacks.
 - `login_max_seconds_not_after` `(int: 60)`: In case of clock drift, the maximum number of
-  seconds in the future when a signature could have been created. The lower the value,
-  the lower the risk of replay attacks.
+seconds in the future when a signature could have been created. The lower the value, 
+the lower the risk of replay attacks.
 
 ### Sample Payload
 
 ```json
 {
-  "identity_ca_certificates": [
-    "-----BEGIN CERTIFICATE-----\nMIIEtzCCA5+.......ZRtAfQ6r\nwlW975rYa1ZqEdA=\n-----END CERTIFICATE-----"
-  ],
+  "identity_ca_certificates": ["-----BEGIN CERTIFICATE-----\nMIIEtzCCA5+.......ZRtAfQ6r\nwlW975rYa1ZqEdA=\n-----END CERTIFICATE-----"],
   "cf_api_addr": "https://api.sys.somewhere.cf-app.com",
   "cf_username": "vault",
   "cf_password": "pa55w0rd",
-  "cf_api_trusted_certificates": [
-    "-----BEGIN CERTIFICATE-----\nMIIEtzCCA5+.......ZRtAfQ6r\nwlW975rYa1ZqEdA=\n-----END CERTIFICATE-----"
-  ],
+  "cf_api_trusted_certificates": ["-----BEGIN CERTIFICATE-----\nMIIEtzCCA5+.......ZRtAfQ6r\nwlW975rYa1ZqEdA=\n-----END CERTIFICATE-----"],
   "login_max_seconds_not_before": 5,
   "login_max_seconds_not_after": 1
 }
@@ -79,9 +75,9 @@ $ curl \
 
 Returns the present CF configuration.
 
-| Method | Path              |
-| :----- | ----------------- |
-| `GET`  | `/auth/cf/config` |
+| Method   | Path                  |
+| :--------|---------------------- |
+| `GET`    | `/auth/cf/config`    |
 
 ### Sample Request
 
@@ -95,14 +91,10 @@ $ curl \
 
 ```json
 {
-  "identity_ca_certificates": [
-    "-----BEGIN CERTIFICATE-----\nMIIEtzCCA5+.......ZRtAfQ6r\nwlW975rYa1ZqEdA=\n-----END CERTIFICATE-----"
-  ],
+  "identity_ca_certificates": ["-----BEGIN CERTIFICATE-----\nMIIEtzCCA5+.......ZRtAfQ6r\nwlW975rYa1ZqEdA=\n-----END CERTIFICATE-----"],
   "cf_api_addr": "https://api.sys.somewhere.cf-app.com",
   "cf_username": "vault",
-  "cf_api_trusted_certificates": [
-    "-----BEGIN CERTIFICATE-----\nMIIEtzCCA5+.......ZRtAfQ6r\nwlW975rYa1ZqEdA=\n-----END CERTIFICATE-----"
-  ],
+  "cf_api_trusted_certificates": ["-----BEGIN CERTIFICATE-----\nMIIEtzCCA5+.......ZRtAfQ6r\nwlW975rYa1ZqEdA=\n-----END CERTIFICATE-----"],
   "login_max_seconds_not_before": 5,
   "login_max_seconds_not_after": 1
 }
@@ -112,9 +104,9 @@ $ curl \
 
 Deletes the present CF configuration.
 
-| Method   | Path              |
-| :------- | ----------------- |
-| `DELETE` | `/auth/cf/config` |
+| Method   | Path                  |
+| :--------|---------------------- |
+| `DELETE` | `/auth/cf/config`    |
 
 ### Sample Request
 
@@ -129,34 +121,34 @@ $ curl \
 
 Create a role in Vault granting a particular level of access to a particular group
 of CF instances. We recommend using the CF API or the CF CLI to gain the IDs you
-wish to target.
+wish to target. 
 
-If you list no `bound` parameters, then any entity with a valid
+If you list no `bound` parameters, then any entity with a valid 
 `CF_INSTANCE_CERT` that's been issued by any configured `identity_ca_certificates`
 will be able to authenticate against this role.
 
-| Method | Path                   |
-| :----- | ---------------------- |
-| `POST` | `/auth/cf/roles/:role` |
+| Method   | Path                   |
+| :--------|----------------------- |
+| `POST`   | `/auth/cf/roles/:role`|
 
 ### Parameters
 
 - `role` `(string: required)` - The name of the role.
-- `bound_application_ids` `(array: [])` - An optional list of application IDs
-  an instance must be a member of to qualify as a member of this role.
-- `bound_space_ids` `(array: [])` - An optional list of space IDs
-  an instance must be a member of to qualify as a member of this role.
-- `bound_organization_ids` `(array: [])` - An optional list of organization IDs
-  an instance must be a member of to qualify as a member of this role.
-- `bound_instance_ids` `(array: [])` - An optional list of instance IDs
-  an instance must be a member of to qualify as a member of this role. Please note that
-  every time you use `cf push` on an app, its instance ID changes. Also, instance IDs
-  are not verifiable as being presently alive using the CF API. Thus, we recommend against
-  using this setting for most use cases.
-- `disable_ip_matching` `(bool: false)` - If set to true, disables the default behavior
-  that logging in must be performed from an acceptable IP address described by the
-  certificate presented. Should only be set to true if required, generally when a proxy
-  is used to perform logins.
+- `bound_application_ids` `(array: [])` - An optional list of application IDs 
+an instance must be a member of to qualify as a member of this role.
+- `bound_space_ids` `(array: [])` - An optional list of space IDs 
+an instance must be a member of to qualify as a member of this role.
+- `bound_organization_ids` `(array: [])` - An optional list of organization IDs 
+an instance must be a member of to qualify as a member of this role.
+- `bound_instance_ids` `(array: [])` - An optional list of instance IDs 
+an instance must be a member of to qualify as a member of this role. Please note that 
+every time you use `cf push` on an app, its instance ID changes. Also, instance IDs 
+are not verifiable as being presently alive using the CF API. Thus, we recommend against
+using this setting for most use cases.
+- `disable_ip_matching` `(bool: false)` - If set to true, disables the default behavior 
+that logging in must be performed from an acceptable IP address described by the 
+certificate presented. Should only be set to true if required, generally when a proxy
+is used to perform logins.
 
 @include 'partials/tokenfields.mdx'
 
@@ -190,9 +182,9 @@ $ curl \
 
 Returns a CF role.
 
-| Method | Path                   |
-| :----- | ---------------------- |
-| `GET`  | `/auth/cf/roles/:role` |
+| Method   | Path                   |
+| :--------|----------------------- |
+| `GET`    | `/auth/cf/roles/:role`|
 
 ### Sample Request
 
@@ -223,8 +215,8 @@ $ curl \
 Deletes a CF role.
 
 | Method   | Path                   |
-| :------- | ---------------------- |
-| `DELETE` | `/auth/cf/roles/:role` |
+| :--------|----------------------- |
+| `DELETE` | `/auth/cf/roles/:role`|
 
 ### Sample Request
 
@@ -239,9 +231,9 @@ $ curl \
 
 Returns a CF role.
 
-| Method | Path             |
-| :----- | ---------------- |
-| `LIST` | `/auth/cf/roles` |
+| Method   | Path                   |
+| :--------|----------------------- |
+| `LIST`   | `/auth/cf/roles`      |
 
 ### Sample Request
 
@@ -257,7 +249,10 @@ $ curl \
 ```json
 {
   "data": {
-    "keys": ["role1", "role2"]
+    "keys": [
+      "role1",
+      "role2"
+    ]
   }
 }
 ```
@@ -267,40 +262,37 @@ $ curl \
 Log in to CF.
 
 Vault provides both an agent and a CLI tool for logging in that
-eliminates the need to build a signature yourself. However, if you do wish to
+eliminates the need to build a signature yourself. However, if you do wish to 
 build the signature, its signing algorithm is viewable [here](https://github.com/hashicorp/vault-plugin-auth-cf/tree/master/signatures).
 The [plugin repo](https://github.com/hashicorp/vault-plugin-auth-cf) also contains
 a command-line tool (`generate-signature`) that can be compiled as a binary for generating a signature,
 and a test that outputs steps in generating the signature so they can be duplicated.
 
 However, at a high level, these are the steps for generating a signature:
-
 - Get and format the current time, ex. `2006-01-02T15:04:05Z`.
 - Get the full body of the file located at `CF_INSTANCE_CERT`.
 - Get the name of the role.
 - Concatenate them together in the above order, with no extra string used for joining them.
 - Create a SHA256 checksum of the resulting string (`checksum` below).
 - Sign the string using the key located at `CF_INSTANCE_KEY`. In Go, this is performed using
-  the following line of code which you can more deeply inspect:
-
+the following line of code which you can more deeply inspect: 
 ```
 rsa.SignPSS(rand.Reader, rsaPrivateKey, crypto.SHA256, checksum, nil)
 ```
-
 - Convert the signature to a string.
 
-| Method | Path             |
-| :----- | ---------------- |
-| `POST` | `/auth/cf/login` |
+| Method   | Path                   |
+| :--------|----------------------- |
+| `POST`   | `/auth/cf/login`      |
 
 ### Parameters
 
 - `role` `(string: required)` - The name of the role.
 - `cf_instance_cert` `(string: required)` - The full body of the file available at
-  the path denoted by `CF_INSTANCE_CERT`.
+the path denoted by `CF_INSTANCE_CERT`.
 - `signing_time` `(string: required)` - The date and time used to construct the signature.
 - `signature` `(string: required)` - The signature generated by the algorithm described
-  above using the `CF_INSTANCE_KEY`.
+above using the `CF_INSTANCE_KEY`.
 
 ### Sample Payload
 
@@ -324,13 +316,15 @@ $ curl \
 ```
 
 ### Sample Response
-
 ```json
 {
   "auth": {
     "renewable": true,
     "lease_duration": 1800000,
-    "policies": ["default", "dev"],
+    "policies": [
+      "default",
+      "dev"
+    ],
     "accessor": "20b89871-e6f2-1160-fb29-31c2f6d4645e",
     "client_token": "c9368254-3f21-aded-8a6f-7c818e81b17a"
   }

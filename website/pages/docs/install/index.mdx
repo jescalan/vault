@@ -39,8 +39,7 @@ To compile from source, you will need [Go](https://golang.org) installed and
 configured properly (including a `GOPATH` environment variable set), as well
 as a copy of [`git`](https://www.git-scm.com/) in your `PATH`.
 
-1. Clone the Vault repository from GitHub into your `GOPATH`:
-
+  1. Clone the Vault repository from GitHub into your `GOPATH`:
 
     ```shell
     $ mkdir -p $GOPATH/src/github.com/hashicorp && cd $_
@@ -48,19 +47,17 @@ as a copy of [`git`](https://www.git-scm.com/) in your `PATH`.
     $ cd vault
     ```
 
-1. Bootstrap the project. This will download and compile libraries and tools
-   needed to compile Vault:
-
+  1. Bootstrap the project. This will download and compile libraries and tools
+  needed to compile Vault:
 
     ```shell
     $ make bootstrap
     ```
 
-1. Build Vault for your current system and put the
-   binary in `./bin/` (relative to the git checkout). The `make dev` target is
-   just a shortcut that builds `vault` for only your local build environment (no
-   cross-compiled targets).
-
+  1. Build Vault for your current system and put the
+  binary in `./bin/` (relative to the git checkout). The `make dev` target is
+  just a shortcut that builds `vault` for only your local build environment (no
+  cross-compiled targets).
 
     ```shell
     $ make dev

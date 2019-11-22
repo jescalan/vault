@@ -14,9 +14,9 @@ The `/sys/tools` endpoints are a general set of tools.
 
 This endpoint returns high-quality random bytes of the specified length.
 
-| Method | Path                         |
-| :----- | :--------------------------- |
-| `POST` | `/sys/tools/random(/:bytes)` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/tools/random(/:bytes)`   |
 
 ### Parameters
 
@@ -59,19 +59,19 @@ $ curl \
 This endpoint returns the cryptographic hash of given data using the specified
 algorithm.
 
-| Method | Path                           |
-| :----- | :----------------------------- |
-| `POST` | `/sys/tools/hash(/:algorithm)` |
+| Method   | Path                         |
+| :--------------------------- | :--------------------- |
+| `POST`   | `/sys/tools/hash(/:algorithm)` |
 
 ### Parameters
 
 - `algorithm` `(string: "sha2-256")` – Specifies the hash algorithm to use. This
   can also be specified as part of the URL. Currently-supported algorithms are:
 
-  - `sha2-224`
-  - `sha2-256`
-  - `sha2-384`
-  - `sha2-512`
+    - `sha2-224`
+    - `sha2-256`
+    - `sha2-384`
+    - `sha2-512`
 
 - `input` `(string: <required>)` – Specifies the **base64 encoded** input data.
 
@@ -105,3 +105,4 @@ $ curl \
   }
 }
 ```
+

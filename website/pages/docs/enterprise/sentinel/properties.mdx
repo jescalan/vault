@@ -20,8 +20,8 @@ The `namespace` (Sentinel) namespace gives access to information about the
 namespace in which the request is running. (This may or may not match the
 client's chosen namespace, if a request reaches into a child namespace).
 
-| Name   | Type     | Description                    |
-| :----- | :------- | :----------------------------- |
+| Name | Type   | Description                    |
+| :----| :------| :------------------------------|
 | `id`   | `string` | The namespace ID               |
 | `path` | `string` | The root path of the namespace |
 
@@ -29,22 +29,22 @@ client's chosen namespace, if a request reaches into a child namespace).
 
 The following properties are available in the `request` namespace.
 
-| Name                     | Type                  | Description                                                                                 |
-| :----------------------- | :-------------------- | :------------------------------------------------------------------------------------------ |
-| `connection.remote_addr` | `string`              | TCP/IP source address/port of the client                                                    |
-| `data`                   | `map (string -> any)` | Raw request data                                                                            |
-| `operation`              | `string`              | Operation type, e.g. "read" or "update"                                                     |
-| `path`                   | `string`              | Path, with any leading `/` trimmed                                                          |
-| `policy_override`        | `bool`                | `true` if a `soft-mandatory` policy override was requested                                  |
-| `unauthenticated`        | `bool`                | `true` if the requested path is an unauthenticated path                                     |
-| `wrapping.ttl`           | `duration`            | The requested response-wrapping TTL in nanoseconds, suitable for use with the `time` import |
-| `wrapping.ttl_seconds`   | `int`                 | The requested response-wrapping TTL in seconds                                              |
+|           Name           |           Type           |                                         Description                                         |
+| :----------------------- | :----------------------- | :------------------------------------------------------------------------------------------ |
+| `connection.remote_addr` | `string`                 | TCP/IP source address/port of the client                                                    |
+| `data`                   | `map (string -> any)`    | Raw request data                                                                            |
+| `operation`              | `string`                 | Operation type, e.g. "read" or "update"                                                     |
+| `path`                   | `string`                 | Path, with any leading `/` trimmed                                                          |
+| `policy_override`        | `bool`                   | `true` if a `soft-mandatory` policy override was requested                                  |
+| `unauthenticated`        | `bool`                   | `true` if the requested path is an unauthenticated path                                     |
+| `wrapping.ttl`           | `duration`               | The requested response-wrapping TTL in nanoseconds, suitable for use with the `time` import |
+| `wrapping.ttl_seconds`   | `int`                    | The requested response-wrapping TTL in seconds                                              |
 
 ### Replication Properties
 
 The following properties exists at the `replication.mode` namespace.
 
-| Name          | Type     | Description                                                                                                    |
+|     Name      |   Type   |                                                  Description                                                   |
 | :------------ | :------- | :------------------------------------------------------------------------------------------------------------- |
 | `dr`          | `string` | The state of DR replication. Valid values are "disabled", "bootstrapping", "primary", and "secondary"          |
 | `replication` | `string` | The state of performance replication. Valid values are "disabled", "bootstrapping", "primary", and "secondary" |
@@ -55,7 +55,7 @@ The following properties, if available, are in the `token` namespace. The
 namespace will not exist if there is no token information attached to a
 request, e.g. when logging in.
 
-| Name                       | Type                     | Description                                                                                                                        |
+|            Name            |           Type           |                                                            Description                                                             |
 | :------------------------- | :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
 | `creation_time`            | `string`                 | The timestamp of the token's creation, in RFC3339 format                                                                           |
 | `creation_time_unix`       | `int`                    | The timestamp of the token's creation, in seconds since Unix epoch UTC                                                             |
@@ -72,16 +72,16 @@ request, e.g. when logging in.
 | `period_seconds`           | `int`                    | If the token has a period, the duration of the period in seconds                                                                   |
 | `policies`                 | `list (string)`          | Policies directly attached to the token                                                                                            |
 | `role`                     | `string`                 | If created via a token role, the role that created the token                                                                       |
-| `type`                     | `string`                 | The type of token, currently will be either `batch` or `service`                                                                   |
+| `type`                     | `string`                 | The type of token, currently will be either `batch` or `service` |
 
 ## Token Namespace Properties
 
-The following properties, if available, are in the `token.namespace` namespace.
+The following properties, if available, are in the `token.namespace` namespace. 
 The (Sentinel) namespace will not exist if there is no token information attached to a
 request, e.g. when logging in.
 
-| Name   | Type     | Description                    |
-| :----- | :------- | :----------------------------- |
+| Name | Type   | Description                    |
+| :----| :------| :------------------------------|
 | `id`   | `string` | The namespace ID               |
 | `path` | `string` | The root path of the namespace |
 
@@ -97,7 +97,7 @@ to MFA functions.
 
 These exist at the `identity.entity` namespace.
 
-| Name                | Type                     | Description                                                   |
+|        Name         |           Type           |                          Description                          |
 | :------------------ | :----------------------- | :------------------------------------------------------------ |
 | `creation_time`     | `string`                 | The entity's creation time in RFC3339 format                  |
 | `id`                | `string`                 | The entity's ID                                               |
@@ -112,7 +112,7 @@ These exist at the `identity.entity` namespace.
 
 These can be retrieved from `identity.entity.aliases`.
 
-| Name                     | Type                     | Description                                                                                                                                   |
+|           Name           |           Type           |                                                                  Description                                                                  |
 | :----------------------- | :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
 | `creation_time`          | `string`                 | The alias's creation time in RFC3339 format                                                                                                   |
 | `id`                     | `string`                 | The alias's ID                                                                                                                                |
@@ -128,7 +128,7 @@ These can be retrieved from `identity.entity.aliases`.
 
 These exist at the `identity.groups` namespace.
 
-| Name      | Type                    | Description                                                                                                                                     |
+|   Name    |          Type           |                                                                   Description                                                                   |
 | :-------- | :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `by_id`   | `map (string -> group)` | A map of group ID to group information                                                                                                          |
 | `by_name` | `map (string -> group)` | A map of group name to group information; unlike the group ID, there is no guarantee that the current name will always represent the same group |
@@ -137,7 +137,7 @@ These exist at the `identity.groups` namespace.
 
 These can be retrieved from the `identity.groups` maps.
 
-| Name                | Type                     | Description                                                        |
+|        Name         |           Type           |                            Description                             |
 | :------------------ | :----------------------- | :----------------------------------------------------------------- |
 | `creation_time`     | `string`                 | The group's creation time in RFC3339 format                        |
 | `id`                | `string`                 | The group's ID                                                     |
@@ -152,7 +152,7 @@ These can be retrieved from the `identity.groups` maps.
 
 These properties exist at the `mfa` namespace.
 
-| Name      | Type                     | Description                               |
+|   Name    |           Type           |                Description                |
 | :-------- | :----------------------- | :---------------------------------------- |
 | `methods` | `map (string -> method)` | A map of method name to method properties |
 
@@ -160,7 +160,7 @@ These properties exist at the `mfa` namespace.
 
 These properties can be accessed via the `mfa.methods` selector.
 
-| Name    | Type   | Description                                                                                                                                                                                                                                   |
+|  Name   |  Type  |                                                                                                                  Description                                                                                                                  |
 | :------ | :----- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `valid` | `bool` | Whether the method has successfully been validated; if validation has not been attempted, this will trigger the validation attempt. The result of the validation attempt will be used for this method for all policies for the given request. |
 
@@ -168,7 +168,7 @@ These properties can be accessed via the `mfa.methods` selector.
 
 These properties exist at the `controlgroup` namespace.
 
-| Name                   | Type                   | Description                                 |
+|          Name          |          Type          |                 Description                 |
 | :--------------------- | :--------------------- | :------------------------------------------ |
 | `time`, `request_time` | `string`               | The original request time in RFC3339 format |
 | `authorizations`       | `list (authorization)` | List of control group authorizations        |
@@ -177,7 +177,7 @@ These properties exist at the `controlgroup` namespace.
 
 These properties can be accessed via the `controlgroup.authorizations` selector.
 
-| Name     | Type              | Description                                                |
+|   Name   |       Type        |                        Description                         |
 | :------- | :---------------- | :--------------------------------------------------------- |
 | `time`   | `string`          | The authorization time in RFC3339 format                   |
 | `entity` | `identity.entity` | The identity entity for the authorizer.                    |

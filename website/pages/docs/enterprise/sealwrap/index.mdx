@@ -32,7 +32,7 @@ To disable seal wrapping, set `disable_sealwrap = true` in Vault's
 master key will still be protected by the seal wrapping mechanism. It will
 simply prevent other storage entries within Vault from being seal wrapped.
 
-_N.B._: This is a lazy downgrade; as keys are accessed or written their seal
+*N.B.*: This is a lazy downgrade; as keys are accessed or written their seal
 wrapping status will change. Similarly, if the flag is removed, it will be a
 lazy upgrade (which is the case when initially upgrading to a seal
 wrap-supporting version of Vault).
@@ -55,10 +55,10 @@ release of Vault that have not yet been asserted as compliant by Leidos. The
 mechanism for seal wrapping is the same, they simply were not specifically
 evaluated by the auditors.
 
-- Root tokens
-- Replication secondary activation tokens
-- Client authentication information for the GCP Auth Backend
-- Client authentication information for the Kubernetes Auth Backend
+* Root tokens
+* Replication secondary activation tokens
+* Client authentication information for the GCP Auth Backend
+* Client authentication information for the Kubernetes Auth Backend
 
 ## Activating Seal Wrapping
 
