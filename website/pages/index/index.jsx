@@ -107,10 +107,10 @@ export default function IndexPage(data) {
   )
 }
 
-IndexPage.getInitialProps = async () => {
+export async function unstable_getStaticProps() {
   const { vaultOssPage } = await fetch({
     query,
     dependencies: [Hero, SectionHeader, SplitCta, Callouts]
   })
-  return vaultOssPage
+  return { props: vaultOssPage }
 }
