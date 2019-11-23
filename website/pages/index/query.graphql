@@ -6,8 +6,8 @@ query VaultHomepage {
     useCasesHeadline {
       ...sectionHeaderFields
     }
-    useCasesCallouts {
-      ...calloutsFields
+    useCases {
+      ...useCasesFields
     }
     featuresHeadline {
       ...sectionHeaderFields

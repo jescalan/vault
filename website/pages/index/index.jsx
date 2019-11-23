@@ -1,7 +1,7 @@
 import './style.css'
 import Hero from '@hashicorp/react-hero'
 import SectionHeader from '@hashicorp/react-section-header'
-import Callouts from '@hashicorp/react-callouts'
+import UseCases from '@hashicorp/react-use-cases'
 import LinkedTextSummaryList from '@hashicorp/react-linked-text-summary-list'
 import Button from '@hashicorp/react-button'
 import SplitCta from '@hashicorp/react-split-cta'
@@ -15,7 +15,7 @@ export default function IndexPage(data) {
       <Hero data={data.hero} />
       <section id="use-cases" className="g-container padded">
         <SectionHeader {...data.useCasesHeadline} />
-        <Callouts {...data.useCasesCallouts[0]} />
+        <UseCases {...data.useCases} />
       </section>
       <section id="docs-summary" className="g-container padded">
         <SectionHeader {...data.documentationHeadline} />
@@ -110,7 +110,7 @@ export default function IndexPage(data) {
 export async function unstable_getStaticProps() {
   const { vaultOssPage } = await fetch({
     query,
-    dependencies: [Hero, SectionHeader, SplitCta, Callouts]
+    dependencies: [Hero, SectionHeader, SplitCta, UseCases]
   })
   return { props: vaultOssPage }
 }

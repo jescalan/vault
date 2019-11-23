@@ -1,7 +1,7 @@
 @import '@hashicorp/react-global-styles/custom-properties/color.css';
 @import '@hashicorp/react-hero/dist/style.css';
 @import '@hashicorp/react-section-header/dist/style.css';
-@import '@hashicorp/react-callouts/dist/style.css';
+@import '@hashicorp/react-use-cases/dist/style.css';
 @import '@hashicorp/react-linked-text-summary-list/dist/style.css';
 @import '@hashicorp/react-split-cta/dist/style.css';
 
