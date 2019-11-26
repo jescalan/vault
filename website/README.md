@@ -1,93 +1,66 @@
-# Website Template
+# Vault Website
 
-This repository contains a generic template for creating a new website based on the standard platform used by HashiCorp.
+[![Netlify Status](https://img.shields.io/netlify/f7fa8963-0022-4a0e-9ccf-f5385355906b?style=flat-square)](https://app.netlify.com/sites/vault-docs-platform/deploys)
 
-## Installation
+This subdirectory contains the entire source for the [Vault Website](https://vaultproject.io/). This is a [NextJS](https://nextjs.org/) project, which builds a static site from these source files.
 
-A copy of this base template can be created using [next-hashicorp](https://github.com/hashicorp/next-hashicorp/), using the binary command `next-hashicorp generate website`. We suggest running it with `npx` to avoid a global installation, the command for this would look like `npx next-hashicorp generate website`.
+## Contributions Welcome!
 
-After the template is generates, make sure to run `npm install` to install dependencies.
+If you find a typo or you feel like you can improve the HTML, CSS, or JavaScript, we welcome contributions. Feel free to open issues or pull requests like any normal GitHub project, and we'll merge it in 🚀
 
-## Local Development
+## Running the Site Locally
 
-There are two ways that the website can be run locally. If you do not have node installed and prefer not to, it can be run through Docker. The caveat here is that everything will be a little bit slower due to the additional overhead, so for frequent contributors it may be worth it to install node. Additionally, if the modifications you are introducing change the node dependencies, you will need to rebuild the Docker container in order for the dependency changes to appear, as the Docker workflow build pre-installed dependencies into the image so that they do not need to be re-installed each time it runs.
+The website can be run locally through node.js or Docker. If you choose to run through Docker, everything will be a little bit slower due to the additional overhead, so for frequent contributors it may be worth it to use node. Also if you are a vim user, it's also worth noting that vim's swapfile usage can cause issues for the live reload functionality. In order to avoid these issues, make sure you have run `:set backupcopy=yes` within vim.
 
-### Local Development with Docker
+### With Docker
 
-To run the website in a Docker container, you must have Docker installed, but do not need node to be installed. First run `make build-image` to build a Docker image with node dependencies installed. After this, you can run `make website` to run the website in development mode. You only need to run `make build-image` the first time you start working on the site, or if dependencies change.
+Running the site locally is simple. Provided you have Docker installed, clone this repo, run `make`, and then visit `http://localhost:3000`.
 
-### Local Development with Node
+The docker image is pre-built with all the website dependencies installed, which is what makes it so quick and simple, but also means if you need to change dependencies and test the changes within Docker, you'll need a new image. If this is something you need to do, you can run `make build-image` to generate a local Docker image with updated dependencies, then `make website-local` to use that image and preview.
 
-To start the website in development mode if [you have node installed](https://nodejs.org/en/), you can run `npm start`. This will start the site in dynamic mode, booting up quickly and compiling each page as its loaded.
+### With Node
 
-To export a static version of the website, run `npm run static`. It will be exported to a folder called `out`.
+If your local development environment has a supported version (v10.0.0+) of [node installed](https://nodejs.org/en/) you can run:
 
-To run the website with a server in production mode, run `npm run dynamic` to build the assets in production mode and kick off an express server.
+- `npm install`
+- `npm start`
 
-In both scenarios, you can **visit the local website at `http://localhost:3000`**. When you modify content, the website will automatically reload, you do not have to stop and restart the development environment.
+and then visit `http://localhost:3000`.
 
-### Creating Content
+If you pull down new code from github, you should run `npm install` again. Otherwise, there's no need to re-run `npm install` each time the site is run, you can just run `npm start` to get it going.
 
-#### Pages
+## Editing Content
 
-To create a page, create a Markdown (`mdx`), TypeScript (`tsx` or `ts`), or JavaScript (`jsx` or `js`) file in the `pages/` directory. The path to the file will also be the URL to the page.
+Documentation content is written in [Markdown](https://www.markdownguide.org/cheat-sheet/) and you'll find all files listed under the `/pages` directory.
 
-Markdown files can be used for mostly static, text-based content. You can read the documentation for that in the [Markdown section](#markdown).
-
-TypeScript and JavaScript files enable more complex behavior, data querying, and more. These should be used for layout files, dynamic pages, etc. For TypeScript or JavaScript files, the defaut ES6 export should be a
-React Component. This will be rendered for the page. More documentation can be found on the [Next.js website](https://nextjs.org/docs/#fetching-data-and-component-lifecycle). You will see examples of both of these types of content in the `/pages` folder.
-
-#### Markdown
-
-HashiCorp websites often use Markdown for content authoring. To create a new page with Markdown, create a file ending in `.mdx` in the `pages/` directory. The path in the pages directory will be the URL route. For example, `pages/hello/world.mdx` will be served from the `/hello/world` URL.
+To create a new page with Markdown, create a file ending in `.mdx` in the `pages/` directory. The path in the pages directory will be the URL route. For example, `pages/hello/world.mdx` will be served from the `/hello/world` URL.
 
 This file can be standard Markdown and also supports [YAML frontmatter](https://middlemanapp.com/basics/frontmatter/). YAML frontmatter is optional, there are defaults for all keys.
 
 ```yaml
 ---
-layout: 'custom'
 title: 'My Title'
+description: "A thorough, yet succinct description of the page's contents"
 ---
 
 ```
 
 The significant keys in the YAML frontmatter are:
 
-- `layout` `(string)` - This is the name of the layout file to wrap the Markdown page with, found in `pages/layouts`
 - `title` `(string)` - This is the title of the page that will be set in the HTML title.
+- `description` `(string)` - This is a description of the page that will be set in the HTML description.
 
-#### Analytics
+> ⚠️Since `api` is a reserved directory within NextJS, all `/api/**` pages are listed under the `/pages/api-docs` path.
 
-If your project needs to implement analytics, you can run the provided npm script, `npm run generate:analytics` to generate a typed analytics client based on a specific [Tracking Plan](https://github.com/hashicorp/web-tracking-plans). By default the generated files will be located within an `analytics/generated` directory. Pass an `-o` or `--outputPath` flag to specify a specific output directory. i.e. `next-hashicorp analytics --outputPath ./analytics/typewriter`
+### Editing Sidebars
+
+The structure of the sidebars are controlled by files in the [`/data` directory](data).
+
+To nest sidebar items, you'll want to add a new `category` key/value accompanied by the appropriate embedded `content` values.
+
+- `category` values will be **directories** within the `pages` directory.
+- `content` values will be **files** within their appropriately nested directory.
 
 ### Deployment
 
-Websites can be configured to deploy in one or more ways:
-
-- **Manually** - This requires manually clicking a deploy button on Netlify.com. This is usefulf or humans.
-
-- **On Git Push** - This will automatically deploy the website anytime you push to a configured Git branch. This is useful for patterns such as having a `stable-website` branch outside of `master`.
-
-- **Webhook** - This will give you one or more URLs to `GET` to trigger a deploy. No auth is required, the URL is security through obscurity. This is useful for other automation systems, such as CI.
-
-The methods for deployment are all configured via the Terraform automation explained in the next section.
-
-#### Initial Setup
-
-When you're ready to deploy your website publicly, you'll have to start by configuring all the services that our platform uses, such as Netlify. We've automated this with [Terraform](https://www.terraform.io/).
-
-Copy the `terraform.tfvars.example` file to `terraform.tfvars` in this folderand change the settings that are there. They should be documented with comments.
-
-Set the following environment variables for auth:
-
-- `GITHUB_TOKEN` - This should be a valid GitHub access token with `repo` access to the repository with your website. You can [create tokens here](https://github.com/settings/tokens).
-
-- `NETLIFY_TOKEN` - This should be a valid Netlify personal access token. You can [create a personal access token here](https://app.netlify.com/account/applications).
-
-Then run `make terraform`. This will create and configure the website and the outputs from Terraform will show where you can view the website, view deploy progress, and more.
-
-You shouldn't have to run Terraform again unless noted otherwise.
-
-#### Teardown/Destroy
-
-**To destroy your website,** run `terraform destroy`. This will remove all Netlify configuration, delete deployment keys, and more.
+This website is hosted on Netlify and configured to automatically deploy anytime you push code to the `stable-website` branch. Any time a pull request is submitted that changes files within the `website` folder, a deployment preview will appear in the github checks which can be used to validate the way docs changes will look live. Deployments from `stable-website` will look and behave the same way as deployment previews.
