@@ -1,0 +1,85 @@
+const { allPlugins } = require('@hashicorp/remark-plugins')
+const highlight = require('rehype-highlight')
+let withMDX = require('next-mdx-enhanced')
+const withBundleAnalyzer = require('@next/bundle-analyzer')
+const withOptimizedImages = require('next-optimized-images')
+const withGraphql = require('next-plugin-graphql')
+const withGraphqlBasic = require('./plugins/with-graphql-basic')
+const withTM = require('next-transpile-modules')
+const sentinel = require('./syntax-languages/sentinel')
+const ebnf = require('./syntax-languages/temporary_ebnf')
+
+// Export a plugin function that just goes through and calls our chain
+module.exports = function withHashicorp(options = {}) {
+  if (!options.mdx) options.mdx = {}
+  if (!options.css) options.css = {}
+  if (!options.dato) options.dato = {}
+
+  // merge user-provided remark plugins with the defaults
+  if (options.mdx.remarkPlugins) {
+    options.mdx.remarkPlugins = allPlugins.concat(options.mdx.remarkPlugins)
+  } else {
+    options.mdx.remarkPlugins = allPlugins
+  }
+
+  if (options.mdx.resolveIncludes) {
+    options.mdx.remarkPlugins = options.mdx.remarkPlugins.map(plugin => {
+      if (plugin.name === 'includeMarkdownPlugin') {
+        return [plugin, { resolveFrom: options.mdx.resolveIncludes }]
+      } else {
+        return plugin
+      }
+    })
+    delete options.mdx.resolveIncludes
+  }
+
+  // merge user-provided rehype plugins with the defaults
+  // PR in to merge languages option to main: https://github.com/rehypejs/rehype-highlight/pull/8
+  const highlightPlugin = [
+    highlight,
+    {
+      ignoreMissing: true,
+      aliases: { ruby: 'hcl' },
+      languages: { sentinel, ebnf }
+    }
+  ]
+  if (options.mdx.rehypePlugins) {
+    options.mdx.rehypePlugins = [highlightPlugin].concat(
+      options.mdx.rehypePlugins
+    )
+  } else {
+    options.mdx.rehypePlugins = [highlightPlugin]
+  }
+
+  return function withHashicorpInternal(nextConfig = {}) {
+    // chain is the chain of plugins to call.
+    const chain = [
+      withOptimizedImages,
+      withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' }),
+      // TODO: document this option
+      options.usingApollo ? withGraphql : withGraphqlBasic,
+      withMDX(options.mdx)
+    ]
+
+    if (options.dato.token) {
+      nextConfig.env = {
+        HASHI_DATO_TOKEN: options.dato.token
+      }
+    }
+
+    if (options.transpileModules || options.usingApollo) {
+      // If there are explicitly defined modules to be transpiled, add them to the array
+      nextConfig.transpileModules = [...(options.transpileModules || [])]
+      // If we're using apollo, we need to not transpile withApollo from this lib
+      if (options.usingApollo) {
+        nextConfig.transpileModules.push('@hashicorp/nextjs-scripts')
+      }
+      // this plugin consumes the `transpileModules` key on config.
+      // TODO: I'd like to change this behavior eventually to allow custom configuration,
+      // and to remove the key from the primary nextjs config and use a plugin option instead.
+      chain.unshift(withTM)
+    }
+
+    return chain.reduce((acc, next) => next(acc), nextConfig)
+  }
+}
