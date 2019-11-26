@@ -1,4 +1,3 @@
-import './style.css'
 import fetch from 'isomorphic-unfetch'
 import { VERSION } from '../../data/version.js'
 import ProductDownloader from '@hashicorp/react-product-downloader'

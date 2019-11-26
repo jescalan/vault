@@ -1,7 +1,3 @@
-@import './highlight-color.css';
-@import '@hashicorp/react-docs-sidenav/dist/style.css';
-@import '@hashicorp/react-content/dist/style.css';
-
 #p-docs {
   & .content-wrap {
     display: flex;

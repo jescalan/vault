@@ -1,21 +1,70 @@
-@import '@hashicorp/react-global-styles/style.css';
-@import '@hashicorp/react-global-styles/code-highlighting.css';
-@import '@hashicorp/react-global-styles/custom-properties/color.css';
-@import '@hashicorp/react-mega-nav/dist/style.css';
-@import '@hashicorp/react-newsletter-signup-form/dist/style.css';
-@import '@hashicorp/react-text-input/dist/style.css';
-@import '@hashicorp/react-button/dist/style.css';
-@import '@hashicorp/react-footer/dist/style.css';
-@import '@hashicorp/react-consent-manager/dist/style.css';
-@import '@hashicorp/react-toggle/dist/style.css';
-@import '@hashicorp/react-checkbox-input/dist/style.css';
-@import '@hashicorp/react-product-subnav/dist/style.css';
-@import '@hashicorp/react-hero/dist/style.css';
-
-@import './layout.css';
+/* Global Component Styles */
+@import '~@hashicorp/react-global-styles/style.css';
+@import '~@hashicorp/react-global-styles/code-highlighting.css';
+@import '~@hashicorp/react-global-styles/custom-properties/color.css';
+@import '~@hashicorp/react-global-styles/_temporary-to-remove/layout.css';
 
 :root {
   --highlight-color: var(--brand);
+}
+
+@import '~@hashicorp/react-mega-nav/dist/style.css';
+@import '~@hashicorp/react-newsletter-signup-form/dist/style.css';
+@import '~@hashicorp/react-text-input/dist/style.css';
+@import '~@hashicorp/react-button/dist/style.css';
+@import '~@hashicorp/react-footer/dist/style.css';
+@import '~@hashicorp/react-consent-manager/dist/style.css';
+@import '~@hashicorp/react-toggle/dist/style.css';
+@import '~@hashicorp/react-checkbox-input/dist/style.css';
+@import '~@hashicorp/react-product-subnav/dist/style.css';
+@import '~@hashicorp/react-hero/dist/style.css';
+@import '~@hashicorp/react-section-header/dist/style.css';
+@import '~@hashicorp/react-use-cases/dist/style.css';
+@import '~@hashicorp/react-logo-grid/dist/style.css';
+@import '~@hashicorp/react-product-downloader/dist/style.css';
+@import '~@hashicorp/react-vertical-text-block-list/dist/style.css';
+@import '~@hashicorp/react-docs-sidenav/dist/style.css';
+@import '~@hashicorp/react-content/dist/style.css';
+@import '~@hashicorp/react-text-and-content/dist/style.css';
+
+/* Local Components */
+@import '../components/docs-page/style.css';
+
+/* Pages */
+@import './index/style.css';
+@import './downloads/style.css';
+@import './community/style.css';
+
+/* Index Page Styles */
+#p-index {
+  & > .padded {
+    padding-top: 96px;
+    padding-bottom: 96px;
+
+    @media (max-width: 768px) {
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+  }
+
+  /* override fiest section because hero includes bottom padding */
+  & #use-cases {
+    padding-top: 0;
+
+    & .g-section-header {
+      margin-bottom: 72px;
+    }
+  }
+
+  & #features {
+    background: var(--DEPRECATED-gray-10);
+
+    & .buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+  }
 }
 
 /* Web Fonts */
@@ -23,7 +72,7 @@
   font-family: 'klavika-web';
   src: url('/fonts/klavika/500.woff2') format('woff2'),
     url('/fonts/klavika/500.woff') format('woff');
-  font-weight: var(--font-weight-bold);
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -32,7 +81,7 @@
   font-family: 'gilmer-web';
   src: url('/fonts/gilmer/gilmer-light.woff2') format('woff2'),
     url('/fonts/gilmer/gilmer-light.woff') format('woff');
-  font-weight: var(--font-weight-light);
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -40,7 +89,7 @@
   font-family: 'gilmer-web';
   src: url('/fonts/gilmer/gilmer-regular.woff2') format('woff2'),
     url('/fonts/gilmer/gilmer-regular.woff') format('woff');
-  font-weight: var(--font-weight-reg);
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -48,7 +97,7 @@
   font-family: 'gilmer-web';
   src: url('/fonts/gilmer/gilmer-medium.woff2') format('woff2'),
     url('/fonts/gilmer/gilmer-medium.woff') format('woff');
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
   font-style: normal;
 }
 
@@ -56,7 +105,7 @@
   font-family: 'gilmer-web';
   src: url('/fonts/gilmer/gilmer-bold.woff2') format('woff2'),
     url('/fonts/gilmer/gilmer-bold.woff') format('woff');
-  font-weight: var(--font-weight-bold);
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -65,7 +114,7 @@
   font-family: 'metro-web';
   src: url('/fonts/metro/metro-sans-book.woff2') format('woff2'),
     url('/fonts/metro/metro-sans-book.woff') format('woff');
-  font-weight: var(--font-weight-light);
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -73,7 +122,7 @@
   font-family: 'metro-web';
   src: url('/fonts/metro/metro-sans-regular.woff2') format('woff2'),
     url('/fonts/metro/metro-sans-regular.woff') format('woff');
-  font-weight: var(--font-weight-reg);
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -81,7 +130,7 @@
   font-family: 'metro-web';
   src: url('/fonts/metro/metro-sans-semi-bold.woff2') format('woff2'),
     url('/fonts/metro/metro-sans-semi-bold.woff') format('woff');
-  font-weight: var(--font-weight-semi-bold);
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -89,7 +138,7 @@
   font-family: 'metro-web';
   src: url('/fonts/metro/metro-sans-bold.woff2') format('woff2'),
     url('/fonts/metro/metro-sans-bold.woff') format('woff');
-  font-weight: var(--font-weight-bold);
+  font-weight: 700;
   font-style: normal;
 }
 
