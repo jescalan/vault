@@ -14,12 +14,12 @@ import bugsnagClient from '../lib/bugsnag'
 import Error from './_error'
 import Link from 'next/link'
 
-Router.events.on('routeChangeStart', url => {
-  console.log(`Loading: ${url}`)
-  NProgress.start()
+Router.events.on('routeChangeStart', NProgress.start)
+Router.events.on('routeChangeError', NProgress.done)
+Router.events.on('routeChangeComplete', url => {
+  setTimeout(() => window.analytics.page(url), 0)
+  NProgress.done()
 })
-Router.events.on('routeChangeComplete', () => NProgress.done())
-Router.events.on('routeChangeError', () => NProgress.done())
 
 // Bugsnag
 const ErrorBoundary = bugsnagClient.getPlugin('react')
