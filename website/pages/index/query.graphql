@@ -3,35 +3,27 @@ query VaultHomepage {
     hero {
       ...heroFields
     }
-    useCasesHeadline {
+    infrastructureHeadline {
       ...sectionHeaderFields
+    }
+    infrastructureDiagram {
+      ...beforeAfterDiagramFields
     }
     useCases {
       ...useCasesFields
     }
-    featuresHeadline {
+    principlesHeadline {
       ...sectionHeaderFields
     }
-    featuresButtons {
-      buttons {
-        ...temporary_buttonFields
-      }
+    principles {
+      ...textAndContentFields
     }
-    documentationHeadline {
+    openSourceHeadline {
       ...sectionHeaderFields
     }
-    ossEnterpriseCtas {
-      ...splitCtasFields
+    openSourceCta {
+      url
+      buttonText
     }
-  }
-}
-
-fragment temporary_buttonFields on SbcButtonRecord {
-  title: text
-  url
-  external
-  theme: appearance {
-    name
-    slug
   }
 }
