@@ -1,0 +1,5 @@
+@import '@hashicorp/react-case-study-slider/dist/style.css';
+@import '@hashicorp/react-text-and-content/dist/style.css';
+@import '@hashicorp/react-logo-grid/dist/style.css';
+/* The import below must come secondary to the import above to maintain consistent styling */
+@import '@hashicorp/react-text-and-content/dist/style.css';
