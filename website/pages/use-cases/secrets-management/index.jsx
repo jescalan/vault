@@ -44,14 +44,14 @@ export default function SecretsManagmentUseCase() {
         </div>
       </section>
 
-      <section class="g-section-block theme-black-background-white-text">
-        <div class="g-container">
-          <div class="g-case-study-slider">
-            <div class="case-study-container">
-              <div class="slider-container">
-                <div class="slider-frame single">
-                  <div class="case-study">
-                    <div class="feature-image">
+      <section className="g-section-block theme-black-background-white-text">
+        <div className="g-container">
+          <div className="g-case-study-slider">
+            <div className="case-study-container">
+              <div className="slider-container">
+                <div className="slider-frame single">
+                  <div className="case-study">
+                    <div className="feature-image">
                       <a href="/resources/adobe-100-trillion-transactions-hashicorp-vault">
                         <picture>
                           <source
@@ -68,8 +68,8 @@ export default function SecretsManagmentUseCase() {
                         </picture>
                       </a>
                     </div>
-                    <div class="feature-content">
-                      <div class="single-logo">
+                    <div className="feature-content">
+                      <div className="single-logo">
                         <img
                           src="https://www.datocms-assets.com/2885/1539889072-1524097013-adobe-white-1.svg"
                           alt="Adobe logo"
@@ -87,7 +87,7 @@ export default function SecretsManagmentUseCase() {
                         annually requires a different approach altogether.
                       </p>
                       <a
-                        class="g-btn light-outline"
+                        className="g-btn light-outline"
                         href="/resources/adobe-100-trillion-transactions-hashicorp-vault"
                       >
                         Read Case Study
@@ -148,18 +148,18 @@ telemetry {
           }}
         />
 
-        <div class="g-text-and-content">
-          <div class="text">
+        <div className="g-text-and-content">
+          <div className="text">
             <div>
-              <h3 id="secure-plugins">Identity Plugins</h3>
+              <h3>Identity Plugins</h3>
               <p>
                 Improve the extensibility of Vault with pluggable identity
                 backends
               </p>
             </div>
           </div>
-          <div class="content logo-grid">
-            <ul class="g-logo-grid large">
+          <div className="content logo-grid">
+            <ul className="g-logo-grid large">
               {[
                 'https://www.datocms-assets.com/2885/1506540090-color.svg',
                 'https://www.datocms-assets.com/2885/1506540114-color.svg',

@@ -2,10 +2,10 @@ import './style.css'
 
 export default function UseCaseCtaSection() {
   return (
-    <section class="g-section-block g-cta-section">
+    <section className="g-section-block g-cta-section">
       <div>
         <h2>Ready to get started?</h2>
-        <a class="g-btn white download" href="/downloads.html">
+        <a className="g-btn white download" href="/downloads.html">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -16,7 +16,7 @@ export default function UseCaseCtaSection() {
           </svg>
           Download
         </a>
-        <a class="g-btn white-outline" href="/docs">
+        <a className="g-btn white-outline" href="/docs">
           Explore Docs
         </a>
       </div>
