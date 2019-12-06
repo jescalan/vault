@@ -1,1 +1,2 @@
 /api/*  /api-docs/:splat 200
+/intro /intro/getting-started
