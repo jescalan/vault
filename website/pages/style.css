@@ -1,6 +1,6 @@
-/* Global Component Styles */
 @import '@hashicorp/react-global-styles/style.css';
 @import '@hashicorp/react-global-styles/code-highlighting.css';
+@import '@hashicorp/react-global-styles/custom-properties/color.css';
 @import '@hashicorp/react-mega-nav/dist/style.css';
 @import '@hashicorp/react-newsletter-signup-form/dist/style.css';
 @import '@hashicorp/react-text-input/dist/style.css';
@@ -10,9 +10,45 @@
 @import '@hashicorp/react-toggle/dist/style.css';
 @import '@hashicorp/react-checkbox-input/dist/style.css';
 @import '@hashicorp/react-product-subnav/dist/style.css';
+@import '@hashicorp/react-hero/dist/style.css';
+@import '@hashicorp/react-section-header/dist/style.css';
+@import '@hashicorp/react-use-cases/dist/style.css';
+@import '@hashicorp/react-logo-grid/dist/style.css';
+@import '@hashicorp/react-text-and-content/dist/style.css';
 
 :root {
   --highlight-color: var(--brand);
+}
+
+#p-index {
+  & > .padded {
+    padding-top: 96px;
+    padding-bottom: 96px;
+
+    @media (max-width: 768px) {
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+  }
+
+  /* override fiest section because hero includes bottom padding */
+  & #use-cases {
+    padding-top: 0;
+
+    & .g-section-header {
+      margin-bottom: 72px;
+    }
+  }
+
+  & #features {
+    background: var(--DEPRECATED-gray-10);
+
+    & .buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+  }
 }
 
 /* Web Fonts */
