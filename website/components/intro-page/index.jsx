@@ -1,4 +1,3 @@
-import './style.css'
 import DocsSidenav from '@hashicorp/react-docs-sidenav'
 import Content from '@hashicorp/react-content'
 import InlineSvg from '@hashicorp/react-inline-svg'
