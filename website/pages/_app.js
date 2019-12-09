@@ -1,4 +1,4 @@
-import './style.css'
+import '../styles/style.css'
 import App from 'next/app'
 import NProgress from 'nprogress'
 import Router from 'next/router'
@@ -18,6 +18,9 @@ import Link from 'next/link'
  * We are capturing certain actions to be performed in DatoCMS prior to publish.
  * For now, we can mock these out with simple function calls
  * as to not cause current production issues
+ * However, these will need be performed within the CMS manually,
+ * along with publishing this code to production
+ *
  * Each change is appended with `- [ ]` (checkmark) task
  */
 const _pipe = (a, b) => arg => b(a(arg))
