@@ -9,7 +9,8 @@ import UseCaseCtaSection from '../../../components/UseCaseCtaSection'
 
 export default function DataEncryptionUseCase() {
   return (
-    <>
+    <div id="use-cases" className="g-section-block page-wrap">
+      {/* Header / Buttons */}
       <section class="g-container">
         <SectionHeader
           headline="Leverage Trusted Identities in Low Trust Networks"
@@ -19,11 +20,12 @@ export default function DataEncryptionUseCase() {
 
         <div className="button-container">
           <Button title="Download" url="/downloads.html" />
-          <Button title="Get Started" url="/intro" classes="dark-outline" />
+          <Button title="Get Started" url="/intro" theme="dark-outline" />
         </div>
       </section>
 
-      <section className="pad-bottom">
+      {/* Before/After Diagram */}
+      <section>
         <div className="g-container">
           <BeforeAfterDiagram
             beforeImage={{
@@ -42,7 +44,8 @@ export default function DataEncryptionUseCase() {
         </div>
       </section>
 
-      <section className="g-container pad-bottom">
+      {/* Features / Text and content */}
+      <section className="g-container">
         <SectionHeader headline="Identity-based Access Features" />
 
         <div class="g-text-and-content">
@@ -190,6 +193,6 @@ http://127.0.0.1:8200/v1/secret/foo`
       </section>
 
       <UseCaseCtaSection />
-    </>
+    </div>
   )
 }

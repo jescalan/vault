@@ -9,21 +9,25 @@ import UseCaseCtaSection from '../../../components/UseCaseCtaSection'
 
 export default function SecretsManagmentUseCase() {
   return (
-    <>
+    <div id="use-cases" className="g-section-block page-wrap">
       <section className="g-container">
+        {/* Header / Buttons */}
+
         <SectionHeader
           headline="Secrets Management in Low Trust Networks"
           description="Centrally store, access, and deploy secrets across applications, systems, and infrastructure"
-          use_h1="true"
+          useH1={true}
         />
 
         <div className="button-container">
           <Button title="Download" url="/downloads.html" />
-          <Button title="Get Started" url="/intro" classes="dark-outline" />
+          <Button title="Get Started" url="/intro" theme="dark-outline" />
         </div>
       </section>
 
-      <section className="pad-bottom">
+      {/* Before/After Diagram */}
+
+      <section>
         <div className="g-container">
           <BeforeAfterDiagram
             beforeImage={{
@@ -43,6 +47,8 @@ export default function SecretsManagmentUseCase() {
           />
         </div>
       </section>
+
+      {/* Case study slider */}
 
       <section className="g-section-block theme-black-background-white-text">
         <div className="g-container">
@@ -87,7 +93,7 @@ export default function SecretsManagmentUseCase() {
                         annually requires a different approach altogether.
                       </p>
                       <a
-                        className="g-btn light-outline"
+                        className="g-btn primary-hashicorp-light"
                         href="/resources/adobe-100-trillion-transactions-hashicorp-vault"
                       >
                         Read Case Study
@@ -101,7 +107,8 @@ export default function SecretsManagmentUseCase() {
         </div>
       </section>
 
-      <section className="g-container pad-bottom">
+      {/* Features / Text and content */}
+      <section className="g-container">
         <SectionHeader headline="Secret Management Features" />
 
         <TextAndContent
@@ -232,6 +239,6 @@ $ vault lease revoke database/creds/readonly/3e8174da-6ca0-143b-aa8c-4c238aa0280
       </section>
 
       <UseCaseCtaSection />
-    </>
+    </div>
   )
 }
