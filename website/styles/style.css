@@ -10,6 +10,7 @@
 @import '@hashicorp/react-toggle/dist/style.css';
 @import '@hashicorp/react-checkbox-input/dist/style.css';
 @import '@hashicorp/react-product-subnav/dist/style.css';
+@import '@hashicorp/react-hero/dist/style.css';
 
 @import './layout.css';
 
