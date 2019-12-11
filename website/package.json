@@ -61,7 +61,7 @@
     "format": "next-hashicorp format",
     "generate:component": "next-hashicorp generate component",
     "lint": "next-hashicorp lint",
-    "start": "next dev",
+    "start": "rm -rf node_modules/.cache/babel-loader/ && next dev",
     "static": "next build && next export && cp _redirects out/."
   }
 }
