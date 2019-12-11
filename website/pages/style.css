@@ -4,6 +4,7 @@
 @import '~@hashicorp/react-global-styles/custom-properties/color.css';
 @import '~@hashicorp/react-global-styles/custom-properties/font.css';
 @import '~@hashicorp/react-global-styles/_temporary-to-remove/layout.css';
+@import '../styles/layout.css';
 
 :root {
   --highlight-color: var(--brand);
@@ -28,15 +29,18 @@
 @import '~@hashicorp/react-case-study-slider/dist/style.css';
 @import '~@hashicorp/react-content/dist/style.css';
 @import '~@hashicorp/react-text-and-content/dist/style.css';
+@import '~@hashicorp/react-code-block/dist/style.css';
 
 /* Local Components */
 @import '../components/docs-page/style.css';
 @import '../components/before-after-diagram/style.css';
 @import '../components/intro-page/style.css';
+@import '../components/use-case-cta-section/style.css';
 
 /* Pages */
 @import './downloads/style.css';
 @import './community/style.css';
+@import '../styles/use-cases.css';
 
 /* Index Page Styles */
 #p-index {
