@@ -18,7 +18,6 @@
 @import '~@hashicorp/react-consent-manager/dist/style.css';
 @import '~@hashicorp/react-toggle/dist/style.css';
 @import '~@hashicorp/react-checkbox-input/dist/style.css';
-@import '~@hashicorp/react-product-subnav/dist/style.css';
 @import '~@hashicorp/react-hero/dist/style.css';
 @import '~@hashicorp/react-section-header/dist/style.css';
 @import '~@hashicorp/react-use-cases/dist/style.css';
@@ -36,6 +35,7 @@
 @import '../components/before-after-diagram/style.css';
 @import '../components/intro-page/style.css';
 @import '../components/use-case-cta-section/style.css';
+@import '../components/subnav/style.css';
 
 /* Pages */
 @import './downloads/style.css';
