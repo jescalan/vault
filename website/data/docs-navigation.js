@@ -303,6 +303,7 @@ export default [
   {
     category: 'upgrading',
     content: [
+      'plugins',
       'upgrade-to-0.5.0',
       'upgrade-to-0.5.1',
       'upgrade-to-0.6.0',
