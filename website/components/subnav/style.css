@@ -117,36 +117,6 @@
       padding: 6px 0 6px 10px;
       font-weight: var(--font-weight-bold);
     }
-
-    & li {
-      padding: 15px 20px;
-      color: var(--DEPRECATED-gray-1);
-
-      &:hover {
-        background: var(--DEPRECATED-gray-10);
-      }
-
-      & .img-container {
-        margin-right: 10px;
-
-        & img {
-          width: 30px;
-        }
-      }
-
-      & a {
-        display: flex;
-        color: inherit;
-        align-items: center;
-        line-height: 1em;
-
-        & h5 {
-          font-family: var(--font-display);
-          margin: 0;
-          font-size: 1.25rem;
-        }
-      }
-    }
   }
 
   & .toggle {
