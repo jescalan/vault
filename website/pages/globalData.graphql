@@ -1,7 +1,7 @@
 # This query loads up data that is piped into global elements like the nav and footer
 # and is consumed by _app.jsx, which is where those elements live
 
-query getGlobalData($productId: ItemId!) {
+query getGlobalData {
   # ------------
   # Nav Data
   # ------------
@@ -16,14 +16,5 @@ query getGlobalData($productId: ItemId!) {
       tag
       attributes
     }
-  }
-  # ------------
-  # Product Subnav Data
-  # ------------
-  productSubnav(filter: { product: { eq: $productId } }) {
-    ...productSubnavFields
-  }
-  allEnterpriseProducts {
-    ...allProductsFields
   }
 }
