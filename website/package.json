@@ -27,6 +27,7 @@
     "@hashicorp/react-vertical-text-block-list": "^2.0.1",
     "babel-plugin-import-glob-array": "^0.2.0",
     "highlight.js": "^9.17.0",
+    "ie11-custom-properties": "^2.6.0",
     "imagemin-mozjpeg": "^8.0.0",
     "imagemin-optipng": "^7.1.0",
     "imagemin-svgo": "^7.0.0",
