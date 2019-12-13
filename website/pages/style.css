@@ -36,6 +36,7 @@
 @import '../components/intro-page/style.css';
 @import '../components/use-case-cta-section/style.css';
 @import '../components/subnav/style.css';
+@import '../components/mega-nav/style.css';
 
 /* Pages */
 @import './downloads/style.css';
