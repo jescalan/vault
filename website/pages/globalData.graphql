@@ -3,12 +3,6 @@
 
 query getGlobalData {
   # ------------
-  # Nav Data
-  # ------------
-  megaNav {
-    ...megaNavFields
-  }
-  # ------------
   # Favicon Meta Tags
   # ------------
   _site {
