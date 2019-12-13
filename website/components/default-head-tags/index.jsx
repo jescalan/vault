@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-export default function DefaultHeadTags({ globalData }) {
+export default function DefaultHeadTags() {
   return (
     <Head>
       <title key="title">Vault by HashiCorp</title>
@@ -31,9 +31,30 @@ export default function DefaultHeadTags({ globalData }) {
         content="https://www.vaultproject.io/img/og-image.png"
         key="image"
       />
-      {globalData._site.faviconMetaTags.map(tag => (
-        <link {...tag.attributes} key={tag.attributes.href} />
-      ))}
+      <link
+        sizes="16x16"
+        type="image/png"
+        rel="icon"
+        href="https://www.datocms-assets.com/2885/1527033389-favicon.png?h=16&w=16"
+      />
+      <link
+        sizes="32x32"
+        type="image/png"
+        rel="icon"
+        href="https://www.datocms-assets.com/2885/1527033389-favicon.png?h=32&w=32"
+      />
+      <link
+        sizes="96x96"
+        type="image/png"
+        rel="icon"
+        href="https://www.datocms-assets.com/2885/1527033389-favicon.png?h=96&w=96"
+      />
+      <link
+        sizes="192x192"
+        type="image/png"
+        rel="icon"
+        href="https://www.datocms-assets.com/2885/1527033389-favicon.png?h=192&w=192"
+      />
       <link rel="stylesheet" href="/css/nprogress.css"></link>
       <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap"

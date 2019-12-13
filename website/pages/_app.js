@@ -8,8 +8,6 @@ import MegaNav from '../components/mega-nav'
 import Footer from '@hashicorp/react-footer'
 import { ConsentManager } from '@hashicorp/react-consent-manager'
 import consentManagerConfig from '../lib/consent-manager-config'
-import { fetch } from '@hashicorp/nextjs-scripts/dato/client'
-import globalDataQuery from './globalData.graphql'
 import bugsnagClient from '../lib/bugsnag'
 import Error from './_error'
 import subnavLinks from '../data/subnav'
@@ -44,20 +42,15 @@ class NextApp extends App {
       }
     }
 
-    const globalData = await fetch({
-      query: globalDataQuery,
-      dependencies: [MegaNav]
-    })
-
-    return { pageProps, globalData, path: ctx.asPath }
+    return { pageProps, path: ctx.asPath }
   }
 
   render() {
-    const { Component, pageProps, globalData, path } = this.props
+    const { Component, pageProps, path } = this.props
 
     return (
       <ErrorBoundary FallbackComponent={Error}>
-        <DefaultHeadTags globalData={globalData} />
+        <DefaultHeadTags />
         <MegaNav
           homeUrl="https://www.hashicorp.com"
           titleUrl="https://vaultproject.io"
@@ -68,7 +61,7 @@ class NextApp extends App {
           rootUrl="vaultproject.io"
         />
         <Component {...pageProps} />
-        <Footer data={globalData.globalFooter} />
+        <Footer />
         <ConsentManager {...consentManagerConfig} />
       </ErrorBoundary>
     )
