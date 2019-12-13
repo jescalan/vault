@@ -5,7 +5,7 @@
   line-height: 1.25rem;
   font-family: var(--font-body);
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1140px) {
     height: 64px;
   }
 
@@ -16,13 +16,13 @@
   & .wrapper {
     padding: 25px 0;
 
-    @media (max-width: 1023px) {
+    @media (max-width: 1140px) {
       background-color: var(--white);
       padding: 0;
     }
 
     &.fixed {
-      @media (max-width: 1023px) {
+      @media (max-width: 1140px) {
         position: fixed;
         top: 0;
         left: 0;
@@ -36,7 +36,7 @@
     align-items: center;
     height: 100%;
 
-    @media (max-width: 1023px) {
+    @media (max-width: 1140px) {
       justify-content: space-between;
       height: 64px;
     }
@@ -49,12 +49,12 @@
   & .dropdown {
     cursor: pointer;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1140px) {
       position: relative;
     }
 
     &:hover ul {
-      @media (min-width: 1024px) {
+      @media (min-width: 1140px) {
         visibility: visible;
         opacity: 1;
       }
@@ -85,7 +85,7 @@
     margin-bottom: -13px;
     margin-right: 32px;
 
-    @media (max-width: 1023px) {
+    @media (max-width: 1140px) {
       margin-right: 0;
       width: auto;
     }
@@ -102,7 +102,7 @@
           stroke: var(--DEPRECATED-gray-5);
         }
 
-        @media (max-width: 1023px) {
+        @media (max-width: 1140px) {
           display: none;
         }
       }
@@ -122,7 +122,7 @@
   & .toggle {
     display: none;
 
-    @media (max-width: 1023px) {
+    @media (max-width: 1140px) {
       align-items: center;
       display: flex;
       position: absolute;
@@ -166,9 +166,10 @@
 
   & .links-wrapper {
     background-color: var(--white);
-    margin-right: auto;
+    margin-left: auto;
+    margin-right: 32px;
 
-    @media (max-width: 1023px) {
+    @media (max-width: 1140px) {
       position: absolute;
       top: 100%;
       left: 0;
@@ -181,7 +182,7 @@
     }
 
     &.open {
-      @media (max-width: 1023px) {
+      @media (max-width: 1140px) {
         overflow-y: visible;
         height: 100vh;
       }
@@ -193,7 +194,7 @@
     font-weight: var(--font-weight-bold);
     position: relative;
 
-    @media (max-width: 1023px) {
+    @media (max-width: 1140px) {
       display: block;
       position: absolute;
       top: 0;
@@ -210,7 +211,7 @@
       transition: 0.25s ease;
       transition-property: border-bottom-color;
 
-      @media (max-width: 1023px) {
+      @media (max-width: 1140px) {
         display: block;
         padding: 12px 0;
         border-bottom: 1px solid var(--DEPRECATED-gray-9);
@@ -218,7 +219,7 @@
     }
 
     & span {
-      @media (max-width: 1023px) {
+      @media (max-width: 1140px) {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -233,7 +234,7 @@
       flex-direction: row;
       justify-content: space-between;
 
-      @media (max-width: 1023px) {
+      @media (max-width: 1140px) {
         flex-direction: column;
         justify-content: flex-start;
         font-size: 1.125rem;
@@ -242,7 +243,7 @@
       }
 
       & + ul {
-        @media (min-width: 1024px) {
+        @media (min-width: 1140px) {
           border-left: 1px solid var(--DEPRECATED-gray-8);
           padding-left: 24px;
           margin-left: 24px;
@@ -257,30 +258,30 @@
       & > li {
         margin-right: 35px;
 
-        @media (max-width: 1120px) {
+        @media (max-width: 1140px) {
           margin-right: 28px;
         }
 
-        @media (max-width: 1023px) {
+        @media (max-width: 1140px) {
           margin-right: 0;
         }
 
         &:last-child {
-          @media (min-width: 1024px) {
+          @media (min-width: 1140px) {
             margin-right: 0;
           }
         }
 
         & > a,
         & > span {
-          @media (min-width: 1024px) {
+          @media (min-width: 1140px) {
             border-bottom: 2px solid transparent;
           }
         }
 
         & .selected,
         & > a:hover {
-          @media (min-width: 1024px) {
+          @media (min-width: 1140px) {
             border-bottom-color: var(--brand);
           }
         }
@@ -292,7 +293,7 @@
         margin: -2px 0 0 8px;
         float: right;
 
-        @media (max-width: 1023px) {
+        @media (max-width: 1140px) {
           display: inline-block;
           float: none;
           margin: 0;
@@ -304,7 +305,7 @@
       & path {
         stroke: var(--DEPRECATED-gray-6);
 
-        @media (max-width: 1023px) {
+        @media (max-width: 1140px) {
           stroke: var(--DEPRECATED-gray-1);
         }
       }
@@ -315,7 +316,7 @@
         margin: 6px 0 0 -23px;
         padding: 15px 29px 15px 24px;
 
-        @media (max-width: 1023px) {
+        @media (max-width: 1140px) {
           visibility: visible;
           opacity: 1;
           position: absolute;
@@ -329,20 +330,20 @@
         }
 
         &.open {
-          @media (max-width: 1023px) {
+          @media (max-width: 1140px) {
             left: 0;
           }
         }
       }
 
       & li {
-        @media (min-width: 1024px) {
+        @media (min-width: 1140px) {
           margin: 9px 0;
         }
 
         &.close,
         &.name {
-          @media (min-width: 1024px) {
+          @media (min-width: 1140px) {
             display: none;
           }
         }
@@ -376,12 +377,12 @@
         & span {
           white-space: nowrap;
 
-          @media (min-width: 1024px) {
+          @media (min-width: 1140px) {
             border: none;
           }
 
           &:hover {
-            @media (min-width: 1024px) {
+            @media (min-width: 1140px) {
               color: var(--DEPRECATED-gray-3);
             }
           }
@@ -437,7 +438,7 @@
       height: 2.25rem;
       width: 2.25rem;
 
-      @media (max-width: 1023px) {
+      @media (max-width: 1140px) {
         display: none;
       }
 
@@ -455,7 +456,7 @@
       padding: 10px 15px 10px 12px;
       white-space: nowrap;
 
-      @media (max-width: 1023px) {
+      @media (max-width: 1140px) {
         background: none;
         color: inherit;
         padding: 0;
@@ -464,13 +465,13 @@
       }
 
       &:hover {
-        @media (max-width: 1023px) {
+        @media (max-width: 1140px) {
           color: var(--DEPRECATED-gray-5);
           transform: none;
         }
 
         &:after {
-          @media (max-width: 1023px) {
+          @media (max-width: 1140px) {
             display: none;
           }
         }
@@ -488,7 +489,7 @@
       & path {
         fill: var(--white);
 
-        @media (max-width: 1023px) {
+        @media (max-width: 1140px) {
           fill: var(--brand);
         }
       }
@@ -502,7 +503,7 @@
   & .ctas-mobile {
     margin: 56px 0 28px;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1140px) {
       display: none;
     }
 
