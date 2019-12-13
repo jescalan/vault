@@ -1,0 +1,11 @@
+.g-mega-nav {
+  background: black;
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+
+  & .hashicorp-logo {
+    line-height: 0;
+  }
+}
