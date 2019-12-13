@@ -95,6 +95,11 @@
       color: var(--black);
       display: flex;
 
+      & > img {
+        width: 45px;
+        height: 45px;
+      }
+
       & > svg {
         margin-left: 10px;
 
@@ -112,7 +117,7 @@
       display: flex;
       align-items: center;
       font-family: var(--font-klavika);
-      font-size: 1.5rem;
+      font-size: 2.2rem;
       margin: 0;
       padding: 6px 0 6px 10px;
       font-weight: var(--font-weight-bold);

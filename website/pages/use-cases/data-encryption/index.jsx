@@ -8,7 +8,7 @@ export default function DataEncryptionUseCase() {
   return (
     <div id="use-cases" className="g-section-block page-wrap">
       {/* Header / Buttons */}
-      <section class="g-container">
+      <section className="g-container">
         <SectionHeader
           headline="Encrypt Application Data in Low Trust Networks"
           description="Keep application data secure with one centralized workflow to encrypt data in flight and at rest"

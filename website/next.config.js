@@ -7,6 +7,7 @@ module.exports = withHashicorp({
 })({
   experimental: {
     css: true,
+    granularChunks: true,
     rewrites: () => [
       {
         source: '/api/:path*',

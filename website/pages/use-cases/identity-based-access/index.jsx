@@ -8,7 +8,7 @@ export default function DataEncryptionUseCase() {
   return (
     <div id="use-cases" className="g-section-block page-wrap">
       {/* Header / Buttons */}
-      <section class="g-container">
+      <section className="g-container">
         <SectionHeader
           headline="Leverage Trusted Identities in Low Trust Networks"
           description="Authenticate and access different clouds, systems, and endpoints using trusted identities"
@@ -45,8 +45,8 @@ export default function DataEncryptionUseCase() {
       <section className="g-container">
         <SectionHeader headline="Identity-based Access Features" />
 
-        <div class="g-text-and-content">
-          <div class="text">
+        <div className="g-text-and-content">
+          <div className="text">
             <div>
               <h3 id="secure-plugins">Identity Plugins</h3>
               <p>
@@ -55,8 +55,8 @@ export default function DataEncryptionUseCase() {
               </p>
             </div>
           </div>
-          <div class="content logo-grid">
-            <ul class="g-logo-grid large">
+          <div className="content logo-grid">
+            <ul className="g-logo-grid large">
               {[
                 'aws',
                 'azure',
