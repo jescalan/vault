@@ -18,7 +18,7 @@ export default function DownloadsPage({ downloadData }) {
   )
 }
 
-DownloadsPage.getInitialProps = () => {
+export async function unstable_getStaticProps() {
   return fetch(`https://releases.hashicorp.com/vault/${VERSION}/index.json`)
     .then(r => r.json())
     .then(r => {
@@ -29,5 +29,5 @@ DownloadsPage.getInitialProps = () => {
         return acc
       }, {})
     })
-    .then(r => ({ downloadData: r }))
+    .then(r => ({ props: { downloadData: r } }))
 }

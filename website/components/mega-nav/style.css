@@ -1,3 +1,5 @@
+@import './temporary_suite.css';
+
 .g-mega-nav {
   background: black;
   width: 100%;
@@ -7,5 +9,11 @@
 
   & .hashicorp-logo {
     line-height: 0;
+  }
+
+  & .g-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }

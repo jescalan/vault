@@ -155,7 +155,7 @@ class ProductSubnav extends Component {
               <div className="links g-type-body-small-strong">
                 <ul>
                   {links.map(link => {
-                    if (link.title === '|') return <li class="divider" />
+                    if (link.title === '|') return <li className="divider" />
                     return link.links ? (
                       <li className="dropdown" key={link.title}>
                         <span

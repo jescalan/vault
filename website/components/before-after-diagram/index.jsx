@@ -2,7 +2,6 @@ import marked from 'marked'
 import Image from '@hashicorp/react-image'
 import alertIcon from '../../public/img/icons/alert-icon.svg?include'
 import checkIcon from '../../public/img/icons/check-icon.svg?include'
-import fragment from './fragment.graphql'
 
 function BeforeAfterDiagram(props) {
   const markedOptions = generateMarkedOptions()
@@ -89,8 +88,6 @@ function BeforeAfterDiagram(props) {
     </div>
   )
 }
-
-BeforeAfterDiagram.fragmentSpec = { fragment, dependencies: [Image] }
 
 export default BeforeAfterDiagram
 

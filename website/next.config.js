@@ -5,7 +5,7 @@ module.exports = withHashicorp({
   defaultLayout: true,
   mdx: { resolveIncludes: path.join(__dirname, 'pages') }
 })({
-  experimental: { css: true },
+  experimental: { css: true, granularChunks: true },
   exportTrailingSlash: true,
   webpack(config) {
     // Add yaml loader
