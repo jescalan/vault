@@ -17,37 +17,10 @@ class ProductSubnav extends Component {
     this.toggleMenu = this.toggleMenu.bind(this)
     this.openSubmenu = this.openSubmenu.bind(this)
     this.closeSubmenu = this.closeSubmenu.bind(this)
-    this.toggleFixNav = this.toggleFixNav.bind(this)
-  }
-
-  toggleFixNav() {
-    this.setState({
-      fixed:
-        window.scrollY >=
-        this.nav.getBoundingClientRect().top + window.pageYOffset
-    })
   }
 
   toggleMenu() {
-    const body = document.querySelector('body')
-
-    this.setState({ menuOpen: !this.state.menuOpen }, () => {
-      if (this.state.menuOpen) {
-        const heightAdjustment =
-          Math.max(
-            0,
-            this.nav.getBoundingClientRect().top +
-              window.pageYOffset -
-              window.scrollY
-          ) + this.nav.offsetHeight
-
-        this.linksWrapper.style.maxHeight = `calc(100vh - ${heightAdjustment}px)`
-
-        body.classList.add('g-noscroll')
-      } else {
-        body.classList.remove('g-noscroll')
-      }
-    })
+    this.setState({ menuOpen: !this.state.menuOpen })
   }
 
   openSubmenu(e) {
@@ -65,24 +38,19 @@ class ProductSubnav extends Component {
       ''
     )
 
-    this.links.some(link => {
-      if (
-        link.url &&
-        link.url.split(/[?#]/)[0].replace(/\/$/, '') === location
-      ) {
-        link.el.classList.add('selected')
-        return true
-      }
-    })
+    // this.links.some(link => {
+    //   if (
+    //     link.url &&
+    //     link.url.split(/[?#]/)[0].replace(/\/$/, '') === location
+    //   ) {
+    //     link.el.classList.add('selected')
+    //     return true
+    //   }
+    // })
   }
 
   componentDidMount() {
     this.highlightActiveUrl()
-    window.addEventListener('scroll', this.toggleFixNav)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.toggleFixNav)
   }
 
   render() {
@@ -106,13 +74,10 @@ class ProductSubnav extends Component {
       }
     }
 
-    this.links = []
+    // this.links = []
 
     return (
-      <div
-        className={`g-product-subnav ${currentProduct.slug}`}
-        ref={el => (this.nav = el)}
-      >
+      <div className={`g-product-subnav ${currentProduct.slug}`}>
         <div className={`wrapper${this.state.fixed ? ' fixed' : ''}`}>
           <div className="g-container">
             <div className="logo-wrapper">
@@ -150,25 +115,15 @@ class ProductSubnav extends Component {
             </div>
             <div
               className={`links-wrapper${this.state.menuOpen ? ' open' : ''}`}
-              ref={el => (this.linksWrapper = el)}
             >
               <div className="links g-type-body-small-strong">
                 <ul>
                   {links.map(link => {
-                    if (link.title === '|') return <li className="divider" />
+                    if (link.title === '|')
+                      return <li className="divider" key="divider" />
                     return link.links ? (
                       <li className="dropdown" key={link.title}>
-                        <span
-                          ref={el =>
-                            link.links.map(sublink => {
-                              this.links.push({
-                                el: el,
-                                url: sublink.url
-                              })
-                            })
-                          }
-                          onClick={this.openSubmenu}
-                        >
+                        <span onClick={this.openSubmenu}>
                           {link.title}
                           <InlineSvg src={caratIcon} />
                         </span>
@@ -181,8 +136,7 @@ class ProductSubnav extends Component {
                           <li className="name">{link.title}</li>
                           {link.links.map(sublink => (
                             <li key={sublink.title}>
-                              <LinkWrap
-                                Link={Link}
+                              <a
                                 href={resolveLocalUrl(rootUrl, sublink.url)}
                                 {...(sublink.external && {
                                   rel: 'noopener',
@@ -191,7 +145,7 @@ class ProductSubnav extends Component {
                                 data-ga-product-subnav={`Subnav sublink | ${sublink.title}`}
                               >
                                 {sublink.title}
-                              </LinkWrap>
+                              </a>
                             </li>
                           ))}
                         </ul>
@@ -200,12 +154,6 @@ class ProductSubnav extends Component {
                       <li key={link.url}>
                         <LinkWrap
                           Link={Link}
-                          ref={el => {
-                            this.links.push({
-                              el: el,
-                              url: link.url
-                            })
-                          }}
                           href={resolveLocalUrl(rootUrl, link.url)}
                           onClick={this.toggleMenu}
                           {...(link.external && {

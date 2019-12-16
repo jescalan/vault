@@ -3,6 +3,7 @@ const path = require('path')
 
 module.exports = withHashicorp({
   defaultLayout: true,
+  transpileModules: ['is-absolute-url'],
   mdx: { resolveIncludes: path.join(__dirname, 'pages') }
 })({
   experimental: {
@@ -26,6 +27,23 @@ module.exports = withHashicorp({
       ]
     })
 
+    // Add polyfills
+    const originalEntry = config.entry
+    config.entry = async () => {
+      const entries = await originalEntry()
+      let polyEntry = entries['static/runtime/polyfills.js']
+      if (polyEntry && !polyEntry.includes('./lib/polyfills.js')) {
+        if (!Array.isArray(polyEntry)) {
+          entries['static/runtime/polyfills.js'] = [polyEntry]
+        }
+        entries['static/runtime/polyfills.js'].unshift('./lib/polyfills.js')
+      }
+      return entries
+    }
+
     return config
+  },
+  env: {
+    HASHI_ENV: process.env.HASHI_ENV
   }
 })

@@ -1,3 +1,4 @@
+import '../lib/polyfills'
 import './style.css'
 import App from 'next/app'
 import NProgress from 'nprogress'

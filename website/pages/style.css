@@ -10,7 +10,6 @@
   --highlight-color: var(--brand);
 }
 
-@import '~@hashicorp/react-mega-nav/dist/style.css';
 @import '~@hashicorp/react-newsletter-signup-form/dist/style.css';
 @import '~@hashicorp/react-text-input/dist/style.css';
 @import '~@hashicorp/react-button/dist/style.css';

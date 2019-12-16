@@ -1,3 +1,5 @@
+import '../../lib/string-repeat-polyfill'
+import '../../lib/polyfills'
 import Hero from '@hashicorp/react-hero'
 import SectionHeader from '@hashicorp/react-section-header'
 import UseCases from '@hashicorp/react-use-cases'
