@@ -5,7 +5,15 @@ module.exports = withHashicorp({
   defaultLayout: true,
   mdx: { resolveIncludes: path.join(__dirname, 'pages') }
 })({
-  experimental: { css: true },
+  experimental: {
+    css: true,
+    rewrites: () => [
+      {
+        source: '/api/:path*',
+        destination: '/api-docs/:path*'
+      }
+    ]
+  },
   exportTrailingSlash: true,
   webpack(config) {
     // Add yaml loader
