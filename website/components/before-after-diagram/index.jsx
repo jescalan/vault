@@ -1,5 +1,3 @@
-import './style.css'
-
 import marked from 'marked'
 import Image from '@hashicorp/react-image'
 import alertIcon from '../../public/img/icons/alert-icon.svg?include'

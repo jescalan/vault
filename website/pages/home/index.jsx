@@ -1,12 +1,10 @@
-import './style.css'
-
 import Hero from '@hashicorp/react-hero'
 import SectionHeader from '@hashicorp/react-section-header'
 import UseCases from '@hashicorp/react-use-cases'
 import TextAndContent from '@hashicorp/react-text-and-content'
 import Button from '@hashicorp/react-button'
 
-import BeforeAfterDiagram from '../../components/BeforeAfterDiagram'
+import BeforeAfterDiagram from '../../components/before-after-diagram'
 
 export default function Homepage() {
   return (

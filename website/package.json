@@ -6,7 +6,7 @@
   "dependencies": {
     "@bugsnag/js": "^6.4.3",
     "@bugsnag/plugin-react": "^6.4.0",
-    "@hashicorp/nextjs-scripts": "^5.2.6",
+    "@hashicorp/nextjs-scripts": "^6.0.0-0",
     "@hashicorp/react-button": "^1.2.2",
     "@hashicorp/react-case-study-slider": "^2.0.1",
     "@hashicorp/react-consent-manager": "^2.0.0",
@@ -18,17 +18,16 @@
     "@hashicorp/react-hero": "^2.0.3",
     "@hashicorp/react-image": "^2.0.1",
     "@hashicorp/react-inline-svg": "^1.0.0",
-    "@hashicorp/react-linked-text-summary-list": "^2.0.1",
     "@hashicorp/react-mega-nav": "^3.0.0",
     "@hashicorp/react-product-downloader": "^2.0.1",
     "@hashicorp/react-product-subnav": "^4.0.3",
     "@hashicorp/react-section-header": "^2.0.0",
-    "@hashicorp/react-split-cta": "^2.0.1",
     "@hashicorp/react-text-and-content": "^3.0.5",
     "@hashicorp/react-use-cases": "^1.0.2",
     "@hashicorp/react-vertical-text-block-list": "^2.0.1",
     "babel-plugin-import-glob-array": "^0.2.0",
     "highlight.js": "^9.17.0",
+    "ie11-custom-properties": "^2.6.0",
     "imagemin-mozjpeg": "^8.0.0",
     "imagemin-optipng": "^7.1.0",
     "imagemin-svgo": "^7.0.0",
@@ -56,12 +55,13 @@
   },
   "main": "index.js",
   "scripts": {
-    "build": "next build",
+    "build": "node --max-old-space-size=2048 ./node_modules/.bin/next build",
     "dynamic": "NODE_ENV=production next build && next start",
+    "export": "node --max-old-space-size=2048 ./node_modules/.bin/next export",
     "format": "next-hashicorp format",
     "generate:component": "next-hashicorp generate component",
     "lint": "next-hashicorp lint",
     "start": "rm -rf node_modules/.cache/babel-loader/ && next dev",
-    "static": "next build && next export && cp _redirects out/."
+    "static": "npm run build && npm run export && cp _redirects out/."
   }
 }

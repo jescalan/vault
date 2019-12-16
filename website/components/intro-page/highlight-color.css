@@ -1,5 +1,0 @@
-@import '@hashicorp/react-global-styles/custom-properties/color.css';
-
-:root {
-  --highlight-color: var(--brand);
-}

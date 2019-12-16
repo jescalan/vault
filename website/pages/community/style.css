@@ -1,7 +1,3 @@
-@import '@hashicorp/react-global-styles/_temporary-to-remove/layout.css';
-@import '@hashicorp/react-vertical-text-block-list/dist/style.css';
-@import '@hashicorp/react-section-header/dist/style.css';
-
 #community {
   max-width: var(--site-max-width);
   margin: 72px auto;

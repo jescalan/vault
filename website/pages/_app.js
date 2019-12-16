@@ -1,4 +1,4 @@
-import '../styles/style.css'
+import './style.css'
 import App from 'next/app'
 import NProgress from 'nprogress'
 import Router from 'next/router'
@@ -13,6 +13,12 @@ import globalDataQuery from './globalData.graphql'
 import bugsnagClient from '../lib/bugsnag'
 import Error from './_error'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+
+dynamic(
+  () => document.body.msMatchesSelector && import('ie11-custom-properties'),
+  { ssr: false }
+)
 
 /*
  * We are capturing certain actions to be performed in DatoCMS prior to publish.

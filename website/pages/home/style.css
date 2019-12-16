@@ -1,5 +1,3 @@
-@import '@hashicorp/react-use-cases/dist/style.css';
-
 #page-home {
   & .g-section-block.page-wrap {
     padding-top: 0;

@@ -1,5 +1,3 @@
-import './style.css'
-
 export default function UseCaseCtaSection() {
   return (
     <section className="g-section-block g-cta-section">
