@@ -5,7 +5,7 @@ import Head from 'next/head'
 
 export default function DownloadsPage({ downloadData }) {
   return (
-    <div id="p-downloads" class="g-container">
+    <div id="p-downloads" className="g-container">
       <Head>
         <title key="title">Downloads | Vault by HashiCorp</title>
       </Head>

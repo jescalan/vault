@@ -3,9 +3,12 @@ export default [
   {
     title: 'Use Cases',
     links: [
-      { title: 'Secrets Management', url: '/secrets-management' },
-      { title: 'Data Encryption', url: '/data-encryption' },
-      { title: 'Identity-based Access', url: '/identity-based-access' }
+      { title: 'Secrets Management', url: '/use-cases/secrets-management' },
+      { title: 'Data Encryption', url: '/use-cases/data-encryption' },
+      {
+        title: 'Identity-based Access',
+        url: '/use-cases/identity-based-access'
+      }
     ]
   },
   {

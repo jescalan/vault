@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Link from 'next/link'
 import LinkWrap from '@hashicorp/react-link-wrap'
 import InlineSvg from '@hashicorp/react-inline-svg'
 import caratIcon from './img/carat.svg?include'
@@ -32,36 +33,13 @@ class ProductSubnav extends Component {
     e.currentTarget.parentElement.classList.remove('open')
   }
 
-  highlightActiveUrl() {
-    const location = `${window.location.origin}${window.location.pathname}`.replace(
-      /\/$/,
-      ''
-    )
-
-    // this.links.some(link => {
-    //   if (
-    //     link.url &&
-    //     link.url.split(/[?#]/)[0].replace(/\/$/, '') === location
-    //   ) {
-    //     link.el.classList.add('selected')
-    //     return true
-    //   }
-    // })
-  }
-
-  componentDidMount() {
-    this.highlightActiveUrl()
-  }
-
   render() {
     const {
       rootUrl,
       buttonText,
       hideDownloadIcon,
       buttonExternal,
-      links,
-      dropdownUrl,
-      Link
+      links
     } = this.props
     const currentProduct = {
       slug: 'vault',
@@ -74,34 +52,26 @@ class ProductSubnav extends Component {
       }
     }
 
-    // this.links = []
-
     return (
       <div className={`g-product-subnav ${currentProduct.slug}`}>
         <div className={`wrapper${this.state.fixed ? ' fixed' : ''}`}>
           <div className="g-container">
             <div className="logo-wrapper">
-              <div className="logo dropdown">
-                <LinkWrap
-                  Link={Link}
-                  href={resolveLocalUrl(
-                    rootUrl,
-                    dropdownUrl
-                      ? dropdownUrl(currentProduct.slug)
-                      : currentProduct.siteUrl
-                  )}
-                  data-ga-product-subnav={`Product logo | ${currentProduct.slug}`}
-                >
-                  <img
-                    src={currentProduct.colorLogo.url}
-                    alt={currentProduct.colorLogo.alt}
-                  />
-
-                  <h4>
-                    {currentProduct.slug.charAt(0).toUpperCase() +
-                      currentProduct.slug.slice(1)}
-                  </h4>
-                </LinkWrap>
+              <div className="logo">
+                <Link href="/">
+                  <a
+                    data-ga-product-subnav={`Product logo | ${currentProduct.slug}`}
+                  >
+                    <img
+                      src={currentProduct.colorLogo.url}
+                      alt={currentProduct.colorLogo.alt}
+                    />
+                    <h4>
+                      {currentProduct.slug.charAt(0).toUpperCase() +
+                        currentProduct.slug.slice(1)}
+                    </h4>
+                  </a>
+                </Link>
               </div>
             </div>
             <div

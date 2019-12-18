@@ -4,7 +4,6 @@
 @import '~@hashicorp/react-global-styles/custom-properties/color.css';
 @import '~@hashicorp/react-global-styles/custom-properties/font.css';
 @import '~@hashicorp/react-global-styles/_temporary-to-remove/layout.css';
-@import '../styles/layout.css';
 
 :root {
   --highlight-color: var(--brand);
@@ -28,6 +27,7 @@
 @import '~@hashicorp/react-content/dist/style.css';
 @import '~@hashicorp/react-text-and-content/dist/style.css';
 @import '~@hashicorp/react-code-block/dist/style.css';
+@import '~@hashicorp/react-consent-manager/dist/style.css';
 
 /* Local Components */
 @import '../components/docs-page/style.css';
@@ -40,38 +40,45 @@
 /* Pages */
 @import './downloads/style.css';
 @import './community/style.css';
-@import '../styles/use-cases.css';
+@import './use-cases/style.css';
 
-/* Index Page Styles */
-#p-index {
-  & > .padded {
-    padding-top: 96px;
-    padding-bottom: 96px;
+/* Layout Styles */
+.g-section-block section {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
 
-    @media (max-width: 768px) {
-      padding-top: 60px;
-      padding-bottom: 60px;
-    }
-  }
+.g-section-block section > .g-section-header + *,
+.g-section-block section > .g-container > .g-section-header + * {
+  margin-top: 72px;
+}
 
-  /* override fiest section because hero includes bottom padding */
-  & #use-cases {
-    padding-top: 0;
+.g-section-block section > * + *,
+.g-section-block section > .g-container > * + * {
+  margin-top: 96px;
+}
 
-    & .g-section-header {
-      margin-bottom: 72px;
-    }
-  }
+.g-section-block .button-container {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-box-pack: center;
+  justify-content: center;
+  margin: auto -8px -16px;
+}
 
-  & #features {
-    background: var(--DEPRECATED-gray-10);
+.g-section-block section > * + .button-container,
+.g-section-block section > .g-container > * + .button-container {
+  margin-top: 40px;
+}
 
-    & .buttons {
-      display: flex;
-      justify-content: center;
-      margin-top: 40px;
-    }
-  }
+.g-section-block .button-container > * {
+  margin: auto 8px 16px;
+}
+
+.g-section-block.theme-black-background-white-text {
+  background: var(--gray-1);
+  color: white;
 }
 
 /* Web Fonts */
@@ -152,8 +159,8 @@
 /* Code Font (Deja Vu) */
 @font-face {
   font-family: 'dejavu-sans-mono-web';
-  src: url('/fonts/dejavu/DejaVuSansMono.woff2') format('woff2'),
-    url('/fonts/dejavu/DejaVuSansMono.woff') format('woff');
+  src: url('/fonts/dejavu/mono.woff2') format('woff2'),
+    url('/fonts/dejavu/mono.woff') format('woff');
   font-style: normal;
   font-weight: 400;
 }

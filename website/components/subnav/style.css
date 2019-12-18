@@ -98,6 +98,11 @@
       & > img {
         width: 45px;
         height: 45px;
+
+        @media (max-width: 1140px) {
+          width: 30px;
+          height: 30px;
+        }
       }
 
       & > svg {
@@ -121,6 +126,10 @@
       margin: 0;
       padding: 6px 0 6px 10px;
       font-weight: var(--font-weight-bold);
+
+      @media (max-width: 1140px) {
+        font-size: 1.8em;
+      }
     }
   }
 
@@ -238,6 +247,7 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      align-items: center;
 
       @media (max-width: 1140px) {
         flex-direction: column;

@@ -1,4 +1,3 @@
-import '../lib/polyfills'
 import './style.css'
 import App from 'next/app'
 import NProgress from 'nprogress'
@@ -7,7 +6,7 @@ import DefaultHeadTags from '../components/default-head-tags'
 import ProductSubnav from '../components/subnav'
 import MegaNav from '../components/mega-nav'
 import Footer from '@hashicorp/react-footer'
-import { ConsentManager } from '@hashicorp/react-consent-manager'
+import { ConsentManager, open } from '@hashicorp/react-consent-manager'
 import consentManagerConfig from '../lib/consent-manager-config'
 import bugsnagClient from '../lib/bugsnag'
 import Error from './_error'
@@ -62,7 +61,7 @@ class NextApp extends App {
           rootUrl="vaultproject.io"
         />
         <Component {...pageProps} />
-        <Footer />
+        <Footer openConsentManager={open} />
         <ConsentManager {...consentManagerConfig} />
       </ErrorBoundary>
     )

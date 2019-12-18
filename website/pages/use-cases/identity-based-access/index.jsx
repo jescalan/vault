@@ -26,13 +26,13 @@ export default function DataEncryptionUseCase() {
         <div className="g-container">
           <BeforeAfterDiagram
             beforeImage={{
-              url: '/img/use-cases/identity-based-access/challenge.png',
+              url: require('./img/challenge.png'),
               format: 'png'
             }}
             beforeHeadline="The Challenge"
             beforeContent="With the proliferation of different clouds, services, and systems all with their own identity providers, organizations need a way to manage identity sprawl"
             afterImage={{
-              url: '/img/use-cases/identity-based-access/solution.png',
+              url: require('./img/solution.png'),
               format: 'png'
             }}
             afterHeadline="The Solution"
@@ -69,7 +69,7 @@ export default function DataEncryptionUseCase() {
               ].map(logo => (
                 <li key={logo}>
                   <img
-                    src={`/img/use-cases/identity-based-access/logos/${logo}.png`}
+                    src={require(`./img/logos/${logo}.png`)}
                     alt="company logo"
                   />
                 </li>
@@ -87,8 +87,7 @@ Integrated identities across platforms and using this information for policy and
             content: {
               __typename: 'SbcImageRecord',
               image: {
-                url:
-                  '/img/use-cases/identity-based-access/screenshot-entities.png',
+                url: require('./img/screenshot-entities.png'),
                 format: 'png'
               }
             }
@@ -103,8 +102,7 @@ Require multiple Identity Entities or members of Identity Groups to authorize an
             content: {
               __typename: 'SbcImageRecord',
               image: {
-                url:
-                  '/img/use-cases/identity-based-access/screenshot-control-groups.png',
+                url: require('./img/screenshot-control-groups.png'),
                 format: 'png'
               }
             }
@@ -164,8 +162,7 @@ Group trusted identities into logical groups for group-based access control.`,
             content: {
               __typename: 'SbcImageRecord',
               image: {
-                url:
-                  '/img/use-cases/identity-based-access/screenshot-identity-groups.png',
+                url: require('./img/screenshot-identity-groups.png'),
                 format: 'png'
               }
             }
