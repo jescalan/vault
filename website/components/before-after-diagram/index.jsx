@@ -1,7 +1,7 @@
 import marked from 'marked'
 import Image from '@hashicorp/react-image'
-import alertIcon from '../../public/img/icons/alert-icon.svg?include'
-import checkIcon from '../../public/img/icons/check-icon.svg?include'
+import alertIcon from './img/alert-icon.svg?include'
+import checkIcon from './img/check-icon.svg?include'
 
 function BeforeAfterDiagram(props) {
   const markedOptions = generateMarkedOptions()

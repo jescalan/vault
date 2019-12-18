@@ -49,11 +49,12 @@ export default function TemporaryMegaNavSuite({ product }) {
                 type="button"
                 id="mega-nav-ctrl"
                 className="mega-nav-ctrl"
+                onClick={() => {
+                  console.log('clicked')
+                  setOpen(!open)
+                }}
               >
-                <div
-                  className="mega-nav-ctrl-items"
-                  onClick={() => setOpen(!open)}
-                >
+                <div className="mega-nav-ctrl-items">
                   <img src={logoHashicorp} alt="HashiCorp Logo" />
                   <strong>HashiCorp Suite</strong>
                   <span className="mega-nav-icon-outline">
