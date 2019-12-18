@@ -1,11 +1,4 @@
 import React, { useState } from 'react'
-import logoHashicorp from './img/temporary_suite/logo-hashicorp.svg'
-import logoVagrant from './img/temporary_suite/logo-vagrant.svg'
-import logoPacker from './img/temporary_suite/logo-packer.svg'
-import logoNomad from './img/temporary_suite/logo-nomad.svg'
-import logoTerraform from './img/temporary_suite/logo-terraform.svg'
-import logoVault from './img/temporary_suite/logo-vault.svg'
-import logoConsul from './img/temporary_suite/logo-consul.svg'
 
 export default function TemporaryMegaNavSuite({ product }) {
   const [open, setOpen] = useState(false)
@@ -55,7 +48,10 @@ export default function TemporaryMegaNavSuite({ product }) {
                 }}
               >
                 <div className="mega-nav-ctrl-items">
-                  <img src={logoHashicorp} alt="HashiCorp Logo" />
+                  <img
+                    src={require('./img/temporary_suite/logo-hashicorp.svg')}
+                    alt="HashiCorp Logo"
+                  />
                   <strong>HashiCorp Suite</strong>
                   <span className="mega-nav-icon-outline">
                     <svg
@@ -107,8 +103,11 @@ export default function TemporaryMegaNavSuite({ product }) {
                         href="https://www.hashicorp.com/"
                         className="mega-nav-btn"
                       >
-                        <img src={logoHashicorp} alt="HashiCorp Logo" /> Learn
-                        the HashiCorp Enterprise&nbsp;Suite{' '}
+                        <img
+                          src={require('./img/temporary_suite/logo-hashicorp.svg')}
+                          alt="HashiCorp Logo"
+                        />{' '}
+                        Learn the HashiCorp Enterprise&nbsp;Suite{' '}
                         <svg
                           className="mega-nav-icon mega-nav-icon-angle-right"
                           aria-hidden="true"
@@ -133,7 +132,10 @@ export default function TemporaryMegaNavSuite({ product }) {
                             )}`}
                           >
                             <div className="mega-nav-grid-item-img">
-                              <img src={logoVagrant} alt="Vagrant Logo" />
+                              <img
+                                src={require('./img/temporary_suite/logo-vagrant.svg')}
+                                alt="Vagrant Logo"
+                              />
                             </div>
                             <b>Vagrant</b>
                             <ul>
@@ -154,7 +156,10 @@ export default function TemporaryMegaNavSuite({ product }) {
                             )}`}
                           >
                             <div className="mega-nav-grid-item-img">
-                              <img src={logoPacker} alt="Packer Logo" />
+                              <img
+                                src={require('./img/temporary_suite/logo-packer.svg')}
+                                alt="Packer Logo"
+                              />
                             </div>
                             <b>Packer</b>
                             <ul>
@@ -172,7 +177,10 @@ export default function TemporaryMegaNavSuite({ product }) {
                             )}`}
                           >
                             <div className="mega-nav-grid-item-img">
-                              <img src={logoTerraform} alt="Terraform Logo" />
+                              <img
+                                src={require('./img/temporary_suite/logo-terraform.svg')}
+                                alt="Terraform Logo"
+                              />
                             </div>
                             <b>Terraform</b>
                             <ul>
@@ -195,7 +203,10 @@ export default function TemporaryMegaNavSuite({ product }) {
                             )}`}
                           >
                             <div className="mega-nav-grid-item-img">
-                              <img src={logoVault} alt="Vault Logo" />
+                              <img
+                                src={require('./img/temporary_suite/logo-vault.svg')}
+                                alt="Vault Logo"
+                              />
                             </div>
                             <b>Vault</b>
                             <ul>
@@ -216,7 +227,10 @@ export default function TemporaryMegaNavSuite({ product }) {
                             className="mega-nav-grid-item mega-nav-grid-item-consul"
                           >
                             <div className="mega-nav-grid-item-img">
-                              <img src={logoConsul} alt="Consul Logo" />
+                              <img
+                                src={require('./img/temporary_suite/logo-consul.svg')}
+                                alt="Consul Logo"
+                              />
                             </div>
                             <b>Consul</b>
                             <ul>
@@ -239,7 +253,10 @@ export default function TemporaryMegaNavSuite({ product }) {
                             )}`}
                           >
                             <div className="mega-nav-grid-item-img">
-                              <img src={logoNomad} alt="Nomad Logo" />
+                              <img
+                                src={require('./img/temporary_suite/logo-nomad.svg')}
+                                alt="Nomad Logo"
+                              />
                             </div>
                             <b>Nomad</b>
                             <ul>

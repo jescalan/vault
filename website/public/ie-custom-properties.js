@@ -12,7 +12,7 @@
     root = document,
     Observer
 
-  w.c1.onElement = function(selector, options /*, disconnectedCallback*/) {
+  c1.onElement = function(selector, options /*, disconnectedCallback*/) {
     if (typeof options === 'function') {
       options = { parsed: options }
     }
@@ -111,7 +111,6 @@
         for (var i = 0, sheet; (sheet = all[i++]); ) {
           if (sheet.ownerNode === this) return sheet
         }
-        return null
       }
     })
   }
@@ -142,7 +141,7 @@
   const regHasVar = /var\(/
   const regPseudos = /:(hover|active|focus|target|:before|:after)/
 
-  w.c1.onElement('link[rel="stylesheet"]', {
+  c1.onElement('link[rel="stylesheet"]', {
     immediate: function(el) {
       fetchCss(el.href, function(css) {
         var newCss = rewriteCss(css)
@@ -155,7 +154,7 @@
       })
     }
   })
-  w.c1.onElement('style', {
+  c1.onElement('style', {
     immediate: function(el) {
       if (el.hasAttribute('ie-polyfilled')) return
       if (el.ieCP_elementSheet) return
@@ -165,7 +164,7 @@
       activateStyleElement(el, newCss)
     }
   })
-  w.c1.onElement('[ie-style]', {
+  c1.onElement('[ie-style]', {
     immediate: function(el) {
       var newCss = rewriteCss('{' + el.getAttribute('ie-style')).substr(1)
       el.style.cssText += ';' + newCss
@@ -275,7 +274,7 @@
 
   function addGettersSelector(selector, properties) {
     selectorAddPseudoListeners(selector)
-    w.c1.onElement(unPseudo(selector), function(el) {
+    c1.onElement(unPseudo(selector), function(el) {
       addGetterElement(el, properties, selector)
       drawElement(el)
     })
@@ -300,7 +299,7 @@
   }
   function addSettersSelector(selector, propVals) {
     selectorAddPseudoListeners(selector)
-    w.c1.onElement(unPseudo(selector), function(el) {
+    c1.onElement(unPseudo(selector), function(el) {
       addSetterElement(el, propVals)
     })
   }
@@ -354,7 +353,7 @@
         var ending = parts[1].match(/^[^\s]*/) // ending elementpart of selector (used for not(:active))
         let selector = unPseudo(parts[0] + ending)
         const listeners = pseudos[pseudo]
-        w.c1.onElement(selector, function(el) {
+        c1.onElement(selector, function(el) {
           el.addEventListener(listeners.on, drawTreeEvent)
           el.addEventListener(listeners.off, drawTreeEvent)
         })
@@ -479,7 +478,12 @@
 
   const regValueGetters = /var\(([^),]+)(\,(.+))?\)/g
   function styleComputeValueWidthVars(style, valueWithVar, details) {
-    return valueWithVar.replace(regValueGetters, function(variable, fallback) {
+    return valueWithVar.replace(regValueGetters, function(
+      full,
+      variable,
+      x,
+      fallback
+    ) {
       variable = variable.trim()
       // beta if (details && details.onpropertyneeded) details.onpropertyneeded(variable)  // draw depending CPs first while drawing the element
       var pValue = style.getPropertyValue(variable)
@@ -506,7 +510,7 @@
 
   // :target listener
   var oldHash = location.hash
-  addEventListener('hashchange', function() {
+  addEventListener('hashchange', function(e) {
     var newEl = document.getElementById(location.hash.substr(1))
     if (newEl) {
       var oldEl = document.getElementById(oldHash.substr(1))
