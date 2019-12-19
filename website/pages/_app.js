@@ -11,12 +11,6 @@ import consentManagerConfig from '../lib/consent-manager-config'
 import bugsnagClient from '../lib/bugsnag'
 import Error from './_error'
 import subnavLinks from '../data/subnav'
-import dynamic from 'next/dynamic'
-
-dynamic(
-  () => document.body.msMatchesSelector && import('ie11-custom-properties'),
-  { ssr: false }
-)
 
 Router.events.on('routeChangeStart', NProgress.start)
 Router.events.on('routeChangeError', NProgress.done)
