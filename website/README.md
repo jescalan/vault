@@ -56,10 +56,13 @@ The significant keys in the YAML frontmatter are:
 
 The structure of the sidebars are controlled by files in the [`/data` directory](data).
 
+- Edit [this file](data/docs-navigation.js) to change the **docs** sidebar
+- Edit [this file](data/docs-navigation.js) to change the **api docs** sidebar
+
 To nest sidebar items, you'll want to add a new `category` key/value accompanied by the appropriate embedded `content` values.
 
-- `category` values will be **directories** within the `pages` directory.
-- `content` values will be **files** within their appropriately nested directory.
+- `category` values will be **directory names** within the `pages` directory
+- `content` values will be **file names** within their appropriately nested directory.
 
 ### Creating New Pages
 
