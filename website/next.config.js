@@ -18,15 +18,6 @@ module.exports = withHashicorp({
   },
   exportTrailingSlash: true,
   webpack(config) {
-    // Add yaml loader
-    config.module.rules.push({
-      test: /\.yml$/,
-      use: [
-        { loader: path.join(__dirname, 'node_modules/json-loader') },
-        { loader: path.join(__dirname, 'node_modules/yaml-loader') }
-      ]
-    })
-
     // Add polyfills
     const originalEntry = config.entry
     config.entry = async () => {
