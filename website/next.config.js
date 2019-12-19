@@ -14,6 +14,9 @@ module.exports = withHashicorp({
         source: '/api/:path*',
         destination: '/api-docs/:path*'
       }
+    ],
+    redirects: () => [
+      { source: '/intro', destination: '/intro/getting-started' }
     ]
   },
   exportTrailingSlash: true,

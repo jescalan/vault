@@ -1,11 +1,11 @@
-import IntroPage, { getInitialProps } from '../components/intro-page'
+import DocsPage, { getInitialProps } from '../components/docs-page'
 import orderData from '../data/intro-navigation.js'
 import { frontMatter } from '../pages/intro/**/*.mdx'
 
 function IntroLayoutWrapper(pageMeta) {
   function IntroLayout(props) {
     return (
-      <IntroPage
+      <DocsPage
         {...props}
         orderData={orderData}
         frontMatter={frontMatter}
