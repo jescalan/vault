@@ -16,18 +16,9 @@ function CommunityPage() {
       <VerticalTextBlockList
         data={[
           {
-            header: 'IRC',
-            body: '`#vault-tool` on Freenode'
-          },
-          {
-            header: 'Announcement List',
-            body:
-              '[HashiCorp Announcement Google Group](https://groups.google.com/group/hashicorp-announce)'
-          },
-          {
             header: 'Discussion List',
             body:
-              '[Vault Google Group](https://groups.google.com/group/vault-tool)'
+              '[Vault Community Forum](https://discuss.hashicorp.com/c/vault)'
           },
           {
             header: 'Bug Tracker',
@@ -37,7 +28,7 @@ function CommunityPage() {
           {
             header: 'Training',
             body:
-              '[Paid HashiCorp](https://www.hashicorp.com/training.html) training courses are available in a city near you. Private training courses are also available.'
+              '[Paid HashiCorp](https://www.hashicorp.com/training) training courses are available in a city near you. Private training courses are also available.'
           }
         ]}
       />
