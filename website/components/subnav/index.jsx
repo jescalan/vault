@@ -106,7 +106,8 @@ class ProductSubnav extends Component {
                           <li className="name">{link.title}</li>
                           {link.links.map(sublink => (
                             <li key={sublink.title}>
-                              <a
+                              <LinkWrap
+                                Link={Link}
                                 href={resolveLocalUrl(rootUrl, sublink.url)}
                                 {...(sublink.external && {
                                   rel: 'noopener',
@@ -115,7 +116,7 @@ class ProductSubnav extends Component {
                                 data-ga-product-subnav={`Subnav sublink | ${sublink.title}`}
                               >
                                 {sublink.title}
-                              </a>
+                              </LinkWrap>
                             </li>
                           ))}
                         </ul>

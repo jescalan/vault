@@ -408,6 +408,8 @@
 
   & .divider {
     border-left: 1px solid #d2d4db;
+    width: 1px;
+    height: 100%;
   }
 
   & .ctas-mobile,

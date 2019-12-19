@@ -31,7 +31,6 @@
 /* Local Components */
 @import '../components/docs-page/style.css';
 @import '../components/before-after-diagram/style.css';
-@import '../components/intro-page/style.css';
 @import '../components/use-case-cta-section/style.css';
 @import '../components/subnav/style.css';
 @import '../components/mega-nav/style.css';
@@ -83,8 +82,8 @@
 /* Web Fonts */
 @font-face {
   font-family: 'klavika-web';
-  src: url('/fonts/klavika/500.woff2') format('woff2'),
-    url('/fonts/klavika/500.woff') format('woff');
+  src: url('/fonts/klavika/medium.woff2') format('woff2'),
+    url('/fonts/klavika/medium.woff') format('woff');
   font-weight: 700;
   font-style: normal;
 }
@@ -92,32 +91,32 @@
 /* Display Font (Gilmer) */
 @font-face {
   font-family: 'gilmer-web';
-  src: url('/fonts/gilmer/gilmer-light.woff2') format('woff2'),
-    url('/fonts/gilmer/gilmer-light.woff') format('woff');
+  src: url('/fonts/gilmer/light.woff2') format('woff2'),
+    url('/fonts/gilmer/light.woff') format('woff');
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'gilmer-web';
-  src: url('/fonts/gilmer/gilmer-regular.woff2') format('woff2'),
-    url('/fonts/gilmer/gilmer-regular.woff') format('woff');
+  src: url('/fonts/gilmer/regular.woff2') format('woff2'),
+    url('/fonts/gilmer/regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'gilmer-web';
-  src: url('/fonts/gilmer/gilmer-medium.woff2') format('woff2'),
-    url('/fonts/gilmer/gilmer-medium.woff') format('woff');
+  src: url('/fonts/gilmer/medium.woff2') format('woff2'),
+    url('/fonts/gilmer/medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'gilmer-web';
-  src: url('/fonts/gilmer/gilmer-bold.woff2') format('woff2'),
-    url('/fonts/gilmer/gilmer-bold.woff') format('woff');
+  src: url('/fonts/gilmer/bold.woff2') format('woff2'),
+    url('/fonts/gilmer/bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
 }
@@ -125,32 +124,32 @@
 /* Body Font (Metro) */
 @font-face {
   font-family: 'metro-web';
-  src: url('/fonts/metro/metro-sans-book.woff2') format('woff2'),
-    url('/fonts/metro/metro-sans-book.woff') format('woff');
+  src: url('/fonts/metro-sans/book.woff2') format('woff2'),
+    url('/fonts/metro-sans/book.woff') format('woff');
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'metro-web';
-  src: url('/fonts/metro/metro-sans-regular.woff2') format('woff2'),
-    url('/fonts/metro/metro-sans-regular.woff') format('woff');
+  src: url('/fonts/metro-sans/regular.woff2') format('woff2'),
+    url('/fonts/metro-sans/regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'metro-web';
-  src: url('/fonts/metro/metro-sans-semi-bold.woff2') format('woff2'),
-    url('/fonts/metro/metro-sans-semi-bold.woff') format('woff');
+  src: url('/fonts/metro-sans/semi-bold.woff2') format('woff2'),
+    url('/fonts/metro-sans/semi-bold.woff') format('woff');
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'metro-web';
-  src: url('/fonts/metro/metro-sans-bold.woff2') format('woff2'),
-    url('/fonts/metro/metro-sans-bold.woff') format('woff');
+  src: url('/fonts/metro-sans/bold.woff2') format('woff2'),
+    url('/fonts/metro-sans/bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
 }

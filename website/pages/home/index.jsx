@@ -181,11 +181,11 @@ Use policy to codify, protect, and automate access to secrets`,
               content: {
                 __typename: 'SbcCodeBlockRecord',
                 chrome: true,
-                code: `$ curl \
---header "X-Vault-Token: ..." \
---request POST \
---data @payload.json \
-https://127.0.0.1:8200/v1/secret/config`
+                code: `$ curl \n
+    --header "X-Vault-Token: ..." \n
+    --request POST \n
+    --data @payload.json \n
+    https://127.0.0.1:8200/v1/secret/config`
               }
             }}
           />
