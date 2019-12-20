@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = withHashicorp({
   defaultLayout: true,
-  transpileModules: ['is-absolute-url'],
+  transpileModules: ['is-absolute-url', '@hashicorp/react-mega-nav'],
   mdx: { resolveIncludes: path.join(__dirname, 'pages') }
 })({
   experimental: {
