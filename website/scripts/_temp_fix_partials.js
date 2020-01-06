@@ -1,7 +1,4 @@
-// This script removes any `layout` keys in mdx files in a given directory,
-// recursively. In this project, we use a default layout for all topic content,
-// so the layout key is not necessary unless a topic needs to render into a
-// unique layout
+// This script fixes any erb-based markdown includes to use our markdown plugin
 
 const glob = require('glob')
 const path = require('path')
