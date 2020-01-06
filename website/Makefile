@@ -12,7 +12,7 @@ website:
 		--volume "/website/node_modules" \
 		--publish "3000:3000" \
 		hashicorp/vault-website \
-		/bin/bash -c "rm -rf .next/cache/next-babel-loader && npm start"
+		npm start
 
 # This command will generate a static version of the website to the "out" folder.
 build:
@@ -50,7 +50,7 @@ website-local:
 		--volume "/website/node_modules" \
 		--publish "3000:3000" \
 		hashicorp-vault-website-local \
-		/bin/bash -c "rm -rf .next/cache/next-babel-loader && npm start"
+		npm start
 
 .DEFAULT_GOAL := website
 .PHONY: build build-image website website-local

@@ -76,6 +76,7 @@ export default [
       { category: 'github' },
       { category: 'gcp' },
       { category: 'jwt' },
+      { category: 'kerberos' },
       { category: 'kubernetes' },
       { category: 'ldap' },
       { category: 'oci' },
@@ -99,6 +100,7 @@ export default [
       'config-auditing',
       'config-control-group',
       'config-cors',
+      'config-state',
       'config-ui',
       'control-group',
       'generate-root',
@@ -134,6 +136,7 @@ export default [
       'rotate',
       'seal',
       'seal-status',
+      'sealwrap-rewrap',
       'step-down',
       {
         category: 'storage',

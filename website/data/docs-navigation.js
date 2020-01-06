@@ -33,7 +33,8 @@ export default [
       'response-wrapping',
       'policies',
       'ha',
-      'pgp-gpg-keybase'
+      'pgp-gpg-keybase',
+      'recovery-mode'
     ]
   },
   {
@@ -81,8 +82,13 @@ export default [
           'zookeeper'
         ]
       },
+      {
+        category: 'service-registration',
+        content: ['consul']
+      },
       'telemetry',
-      { category: 'ui' }
+      { category: 'ui' },
+      { category: 'entropy-augmentation' }
     ]
   },
   {
@@ -97,6 +103,7 @@ export default [
         category: 'auth',
         content: ['disable', 'enable', 'help', 'list', 'tune']
       },
+      'debug',
       'delete',
       {
         category: 'kv',
@@ -156,6 +163,7 @@ export default [
         content: ['capabilities', 'create', 'lookup', 'renew', 'revoke']
       },
       'unwrap',
+      'version',
       'write',
       'token-helper'
     ]
@@ -186,7 +194,8 @@ export default [
           }
         ]
       },
-      { category: 'caching' }
+      { category: 'caching' },
+      { category: 'template' }
     ]
   },
   '----------------',
@@ -253,6 +262,7 @@ export default [
       'cf',
       'gcp',
       'jwt',
+      'kerberos',
       'kubernetes',
       'github',
       'ldap',
@@ -302,7 +312,20 @@ export default [
     content: [
       {
         category: 'k8s',
-        content: ['helm', 'run']
+        content: [
+          {
+            category: 'helm',
+            content: ['run', 'configuration', 'examples']
+          },
+          {
+            category: 'injector',
+            content: ['installation', 'examples']
+          }
+        ]
+      },
+      {
+        category: 'aws-mp',
+        content: ['run']
       }
     ]
   },
@@ -310,6 +333,7 @@ export default [
   {
     category: 'upgrading',
     content: [
+      'plugins',
       'upgrade-to-0.5.0',
       'upgrade-to-0.5.1',
       'upgrade-to-0.6.0',
@@ -333,8 +357,11 @@ export default [
       'upgrade-to-1.0.0',
       'upgrade-to-1.1.0',
       'upgrade-to-1.1.1',
+      'upgrade-to-1.1.2',
       'upgrade-to-1.2.0',
-      'upgrade-to-1.2.1'
+      'upgrade-to-1.2.1',
+      'upgrade-to-1.2.4',
+      'upgrade-to-1.3.0'
     ]
   },
   '----------------',
@@ -346,6 +373,7 @@ export default [
         category: 'hsm',
         content: ['behavior', 'security']
       },
+      { category: 'entropy-augmentation' },
       { category: 'sealwrap' },
       { category: 'namespaces' },
       { category: 'performance-standby' },

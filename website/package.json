@@ -58,7 +58,8 @@
     "format": "next-hashicorp format",
     "generate:component": "next-hashicorp generate component",
     "lint": "next-hashicorp lint",
-    "start": "rm -rf node_modules/.cache/babel-loader/ && next dev",
-    "static": "npm run build && npm run export && cp _redirects out/."
+    "start": "npm run clear_babel_cache && next dev",
+    "static": "npm run clear_babel_cache && npm run build && npm run export && cp _redirects out/.",
+    "clear_babel_cache": "rm -rf .next/cache/next-babel-loader"
   }
 }
